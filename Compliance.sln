@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanArc.Compliance.Web", "HumanArc.Compliance.Web\HumanArc.Compliance.Web.csproj", "{C2318B1F-8501-48FD-95CB-68E18E7DB8B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanArc.Compliance.Data", "HumanArc.Compliance.Data\HumanArc.Compliance.Data.csproj", "{F9D7D7A4-435E-4905-865F-A33410BEE8C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanArc.Compliance.Shared", "HumanArc.Compliance.Shared\HumanArc.Compliance.Shared.csproj", "{3DA0A9C5-BD63-47B8-B02A-75468B101917}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanArc.Compliance.ServiceHost", "HumanArc.Compliance.ServiceHost\HumanArc.Compliance.ServiceHost.csproj", "{D93F2967-4B6F-4BF5-BDA5-576B6DC9A3C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanArc.Compliance.Service", "HumanArc.Compliance.Service\HumanArc.Compliance.Service.csproj", "{15A922AA-D689-4F06-8A75-3B40A9C6131A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFC6E7A4-EC3E-4E47-A3DC-B784BBAB21DB}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2318B1F-8501-48FD-95CB-68E18E7DB8B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2318B1F-8501-48FD-95CB-68E18E7DB8B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2318B1F-8501-48FD-95CB-68E18E7DB8B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2318B1F-8501-48FD-95CB-68E18E7DB8B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D7D7A4-435E-4905-865F-A33410BEE8C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D7D7A4-435E-4905-865F-A33410BEE8C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D7D7A4-435E-4905-865F-A33410BEE8C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D7D7A4-435E-4905-865F-A33410BEE8C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA0A9C5-BD63-47B8-B02A-75468B101917}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA0A9C5-BD63-47B8-B02A-75468B101917}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA0A9C5-BD63-47B8-B02A-75468B101917}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA0A9C5-BD63-47B8-B02A-75468B101917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93F2967-4B6F-4BF5-BDA5-576B6DC9A3C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93F2967-4B6F-4BF5-BDA5-576B6DC9A3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93F2967-4B6F-4BF5-BDA5-576B6DC9A3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93F2967-4B6F-4BF5-BDA5-576B6DC9A3C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A922AA-D689-4F06-8A75-3B40A9C6131A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A922AA-D689-4F06-8A75-3B40A9C6131A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A922AA-D689-4F06-8A75-3B40A9C6131A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A922AA-D689-4F06-8A75-3B40A9C6131A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;..\..\Packages\Unity.2.1.505.2\lib\NET35;..\..\Packages\Unity.Interception.2.1.505.2\lib\NET35;..\..\Packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;..\..\Packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;..\..\Packages\Unity.2.1.505.0\lib\NET35;..\..\Packages\Unity.Interception.2.1.505.0\lib\NET35
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfsserver01:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = HumanArc.Compliance.Data\\HumanArc.Compliance.Data.csproj
+		SccProjectName1 = HumanArc.Compliance.Data
+		SccLocalPath1 = HumanArc.Compliance.Data
+		SccProjectUniqueName2 = HumanArc.Compliance.Shared\\HumanArc.Compliance.Shared.csproj
+		SccProjectName2 = HumanArc.Compliance.Shared
+		SccLocalPath2 = HumanArc.Compliance.Shared
+		SccProjectUniqueName3 = HumanArc.Compliance.Web\\HumanArc.Compliance.Web.csproj
+		SccProjectName3 = HumanArc.Compliance.Web
+		SccLocalPath3 = HumanArc.Compliance.Web
+		SccProjectUniqueName4 = HumanArc.Compliance.ServiceHost\\HumanArc.Compliance.ServiceHost.csproj
+		SccProjectName4 = HumanArc.Compliance.ServiceHost
+		SccLocalPath4 = HumanArc.Compliance.ServiceHost
+		SccProjectUniqueName5 = HumanArc.Compliance.Service\\HumanArc.Compliance.Service.csproj
+		SccProjectName5 = HumanArc.Compliance.Service
+		SccLocalPath5 = HumanArc.Compliance.Service
+	EndGlobalSection
+EndGlobal

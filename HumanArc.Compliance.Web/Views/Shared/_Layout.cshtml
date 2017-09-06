@@ -1,0 +1,44 @@
+﻿@{
+    Response.Cache.SetCacheability(HttpCacheability.NoCache);  // HTTP 1.1.
+    Response.Cache.AppendCacheExtension("no-store, must-revalidate");
+    Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0.
+    Response.AppendHeader("Expires", "0");
+}
+
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Compliance</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div style="margin-left:30px;">
+                <img src="/Content/Images/complianceLogo.png" />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div ui-view="topnav"></div>
+        </div>
+
+        <div id="sidebar" class="col-md-2">
+            <div ui-view="leftnav"></div>
+        </div>
+
+        <div class="col-md-10">
+            <div id="content" ui-view="content">
+                @RenderBody()
+            </div>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/Scripts/angularComponents")
+    </div>
+</body>
+</html>

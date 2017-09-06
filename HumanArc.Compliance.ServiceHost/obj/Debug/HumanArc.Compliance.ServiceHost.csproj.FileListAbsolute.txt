@@ -1,0 +1,6 @@
+C:\Users\scl1995\Desktop\CS470\Compliance\HumanArc.Compliance.ServiceHost\bin\Debug\HumanArc.Compliance.ServiceHost.exe.config
+C:\Users\scl1995\Desktop\CS470\Compliance\HumanArc.Compliance.ServiceHost\bin\Debug\HumanArc.Compliance.ServiceHost.exe
+C:\Users\scl1995\Desktop\CS470\Compliance\HumanArc.Compliance.ServiceHost\bin\Debug\HumanArc.Compliance.ServiceHost.pdb
+C:\Users\scl1995\Desktop\CS470\Compliance\HumanArc.Compliance.ServiceHost\obj\Debug\HumanArc.Compliance.ServiceHost.csprojResolveAssemblyReference.cache
+C:\Users\scl1995\Desktop\CS470\Compliance\HumanArc.Compliance.ServiceHost\obj\Debug\HumanArc.Compliance.ServiceHost.exe
+C:\Users\scl1995\Desktop\CS470\Compliance\HumanArc.Compliance.ServiceHost\obj\Debug\HumanArc.Compliance.ServiceHost.pdb

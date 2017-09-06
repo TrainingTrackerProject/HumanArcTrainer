@@ -1,0 +1,96 @@
+#container {
+    position: absolute;
+    height: 97%;
+    margin: 0 auto;
+    width: 100%;
+    background: #ffffff;
+}
+
+#header {
+    min-height: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0px;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    position: fixed;
+    z-index:4;
+    background-color: white;
+}
+
+#content {
+    /*float:left;
+    width:60%;*/
+    margin-top: 25px;
+    margin-left:21%;
+    width: 98%;
+    min-height: 33em;
+    padding: .8em 0 1.3em 1em;
+    z-index:1;
+}
+
+#sidebar {
+    height: 100%;
+    padding-right: 0;
+    padding-top: 55px;
+    margin-top: 20px;
+    min-height: 100%;
+    background-color: #f7f7f7;
+    border-right: 1px solid #eee;
+    position: fixed;
+    z-index:3;
+}
+
+    #sidebar .nav {
+    width: 100%;
+    }
+
+    #sidebar li {
+        border: 0 #f2f2f2 solid;
+    }
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    .login-container {
+        padding-top:5%;
+    }
+
+    .angularSpinner {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+}
+    .scheduleSpacing {
+        margin-top: 10px;
+    }
+    .breadcrumbSpacing {
+        margin-top: 45px;
+    }
+    .fancyDate .input-group-addon {
+    padding: 3px;
+    background-color: #ffffff;
+    font-size: 12px;
+}
+
+.fancyDate .input-group-addon:hover {
+    cursor: pointer;
+}
