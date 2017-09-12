@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="content">
+            <div class="content-inside">
+                <div id="header">
+                    @Html.ActionLink("Human Arc Compliance", "Index", "Home", new { @id = "logo" })
+                    <hr />
+                </div>
+                @*<div class="navbar navbar-fixed-left col-md-2">
+                <div ui-view="leftnav"></div>
+                <ul class="navbar navbar-nav">
+                    <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Training", "Training", "Training")</li>
+                    <li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>
+                </ul>
+                </div>*@
+
+                <div class="navbar navbar-fixed-left"> 
+                    <div class="navbar-header">
+                        @Html.ActionLink("Compliance", "Index", "Home", new { @class = "navbar-brand" })
+                    </div>
+                    <ul class="nav navbar-nav">                      
+                        @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Sub Menu1</a></li>
+                            <li><a href="#">Sub Menu2</a></li>
+                            <li><a href="#">Sub Menu3</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Sub Menu4</a></li>
+                            <li><a href="#">Sub Menu5</a></li>
+                        </ul>
+                    </li>*@
+                        <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Training", "Training", "Training")</li>
+                        <li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>
+                    </ul>
+                </div>
+                <div class="container-fluid">
+                    <div class="col-md-offset-1 col-md-10">
+                        <div id="content" ui-view="content">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <footer class="footer">
+                <p>&copy; @DateTime.Now.Year - Human Arc</p>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
