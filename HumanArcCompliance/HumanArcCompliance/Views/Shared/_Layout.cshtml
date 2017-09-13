@@ -9,27 +9,29 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="content">
-            <div class="content-inside">
-                <div id="header">
-                    @Html.ActionLink("Human Arc Compliance", "Index", "Home", new { @id = "logo" })
-                    <hr />
-                </div>
-                @*<div class="navbar navbar-fixed-left col-md-2">
-                <div ui-view="leftnav"></div>
-                <ul class="navbar navbar-nav">
-                    <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Training", "Training", "Training")</li>
-                    <li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>
-                </ul>
-                </div>*@
-
-                <div class="navbar navbar-fixed-left"> 
-                    <div class="navbar-header">
-                        @Html.ActionLink("Compliance", "Index", "Home", new { @class = "navbar-brand" })
-                    </div>
-                    <ul class="nav navbar-nav">                      
-                        @*<li class="dropdown">
+        <div id="header">
+            @Html.ActionLink("Human Arc Compliance", "Index", "Home", new { @id = "logo" })
+            <hr />
+        </div>
+        @*<div class="navbar navbar-fixed-left col-md-2">
+        <div ui-view="leftnav"></div>
+        <ul class="navbar navbar-nav">
+            <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Training", "Training", "Training")</li>
+            <li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>
+        </ul>
+        </div>*@
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 col-lg-1" style="border:1px solid black;">
+                    <div class="navbar navbar-fixed-left" style="border:1px solid black;">
+                       
+                        <div class="navbar-header" style="border:1px solid black;">
+                            @Html.ActionLink("Compliance", "Index", "Home", new { @class = "navbar-brand" })
+                        </div>
+                           
+                        <ul class="nav navbar-nav">
+                            @*<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#">Sub Menu1</a></li>
@@ -40,24 +42,26 @@
                             <li><a href="#">Sub Menu5</a></li>
                         </ul>
                     </li>*@
-                        <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Training", "Training", "Training")</li>
-                        <li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>
-                    </ul>
-                </div>
-                <div class="container-fluid">
-                    <div class="col-md-offset-1 col-md-10">
-                        <div id="content" ui-view="content">
-                            @RenderBody()
-                        </div>
+                            <li class="active"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                            <li class="active"><a href="@Url.Action("Training","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
+                            @*<li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>*@
+                        </ul>
                     </div>
                 </div>
+                <div class="col-md-10 col-lg-10">
+                    <div id="content" ui-view="content">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="col-lg-1">
+
+                </div>
             </div>
-            <hr />
-            <footer class="footer">
-                <p>&copy; @DateTime.Now.Year - Human Arc</p>
-            </footer>
         </div>
+        <hr />
+        <footer class="footer">
+            <p>&copy; @DateTime.Now.Year - Human Arc</p>
+        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
