@@ -12,6 +12,11 @@ namespace HumanArcCompliance.Controllers
         {
             return View();
         }
+
+		public ActionResult EditTraining()
+		{
+			return View();
+		}
     
     }
 }
