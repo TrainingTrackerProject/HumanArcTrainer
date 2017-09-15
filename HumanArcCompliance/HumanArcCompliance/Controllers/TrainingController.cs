@@ -6,17 +6,20 @@ using System.Web.Mvc;
 
 namespace HumanArcCompliance.Controllers
 {
-    public class TrainingController: Controller
+    public class TrainingController : Controller
     {
         public ActionResult Training()
         {
             return View();
         }
 
+        public ActionResult EditTraining()
+        {
+            return View();
+        }
         public ActionResult AddTraining()
         {
             return View();
         }
-    
     }
 }

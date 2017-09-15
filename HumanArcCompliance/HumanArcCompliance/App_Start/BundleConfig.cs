@@ -18,14 +18,14 @@ namespace HumanArcCompliance
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap.min.js",
                       "~/Scripts/dataTables.bootstrap.min.js",
                       "~/Scripts/dataTables.colReorder.min.js"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Scripts/font-awesome.min.css",
+                      //"~/Scripts/font-awesome.min.css",
                       "~/Content/layout.css"
                       ));
 
