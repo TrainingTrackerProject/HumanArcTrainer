@@ -150,15 +150,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-flex.min.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\colReorder.bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap.min.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Images\addEditDelete.jpg" />
     <Content Include="Content\Images\complianceLogo.png" />
     <Content Include="Content\Images\loader128.gif" />
     <Content Include="Content\Images\loader32.gif" />
+    <Content Include="Content\Images\manage.png" />
+    <Content Include="Content\Images\redGradient.jpg" />
+    <Content Include="Content\Images\training.png" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\layout.css" />
     <Content Include="favicon.ico" />
@@ -170,10 +171,11 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
-    <Content Include="Scripts\dataTables.colReorder.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.maskedinput.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\ManageEmployees.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -206,10 +208,13 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Training\Training.cshtml" />
+    <Content Include="Views\Training\MyTraining.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Training\AddTraining.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Training\ManageEmployees.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
