@@ -15,41 +15,35 @@
             @Html.ActionLink("Human Arc Compliance", "Index", "Home", new { @id = "logo" })
             <hr />
         </div>
-        <div class="row">
-            @*<div class="navbar navbar-fixed-left col-md-2">
-            <div ui-view="leftnav"></div>
-            <ul class="navbar navbar-nav">
-                <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("Training", "Training", "Training")</li>
-                <li><a><i class="fa fa-lock" aria-hidden="true"></i> Authorization</a></li>
-            </ul>
-            </div>*@
-            <div class="col-md-2">
-                <div class="container-fluid">
-                    <div class="navbar navbar-fixed-left">
-                        @*<div class="navbar-header" style="border:1px solid black;">
-                    @Html.ActionLink("Compliance", "Index", "Home", new { @class = "navbar-brand" })
-                    </div>*@
-                        <ul class="nav navbar-nav nav-pills nav-stacked" style="margin-left:-20px; margin-right:-20px;">
+        <div id="content">
+            <div class="row">
+                <div class="col-md-2" style="margin-right:-40px;">
+                    <div class="container-fluid">
+                        <div class="navbar navbar-fixed-left">
+                            <ul class="nav navbar-nav nav-pills nav-stacked">
+                                <li class="active navLink" style="text-align:center;"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                                @*This link is for manager and general employees*@
+                                <li class="navLink"><a href="@Url.Action("MyTraining","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
+                                <li class="navLink"><a href="@Url.Action("ManageEmployees", "Training")"><span class="glyphicon glyphicon-user"></span> Manage Employees</a></li>
 
-                            <li class="active" style="text-align:center;"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                            <li class="active"><a href="@Url.Action("Training","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
-                            <li class="active"><a href="@Url.Action("EditTraining","Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu 1 <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Submenu 1-1</a></li>
-                                    <li><a href="#">Submenu 1-2</a></li>
-                                    <li><a href="#">Submenu 1-3</a></li>
-                                </ul>
-							</li>
-                        </ul>
+
+                                @*This dropdown is for HR it is a more convient menu for them to access add and edit features*@
+                                @*<li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-book"></span> Training<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li class=""><a href="@Url.Action("Training","Training")"><span class="glyphicon glyphicon-book"></span> View Training</a></li>
+                                        <li class=""><a href="@Url.Action("AddTraining","Training")"><span class="glyphicon glyphicon-plus"></span> Add Training</a></li>
+                                        <li class=""><a href="@Url.Action("EditTraining","Training")"><span class="glyphicon glyphicon-edit"></span> Edit Training</a></li>
+                                    </ul>
+                                </li>*@
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-10">
-                <div id="content" ui-view="content">
-                    @RenderBody()
+                <div class="col-md-10">
+                    <div id="content" ui-view="content">
+                        @RenderBody()
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,8 +52,10 @@
             <p>&copy; @DateTime.Now.Year - Human Arc</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/DataTables/css")
+    @Scripts.Render("~/Scripts/DataTables/js")
+    <script src="~/Scripts/site.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
