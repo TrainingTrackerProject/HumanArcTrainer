@@ -170,6 +170,7 @@
     </Content>
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\TrainingDataset.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.maskedinput.min.js" />
