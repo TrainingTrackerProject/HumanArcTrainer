@@ -8,12 +8,7 @@ namespace HumanArcCompliance.Controllers
 {
     public class TrainingController : Controller
     {
-        public ActionResult MyTraining()
-        {
-            return View();
-        }
-
-        public ActionResult ManageEmployees()
+        public ActionResult Training()
         {
             return View();
         }
