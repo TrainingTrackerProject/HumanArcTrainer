@@ -4,6 +4,12 @@
     /*background: url("https://static.pexels.com/photos/1440/city-road-street-buildings.jpg") no-repeat center / contain;
     background-color: #eee;*/
     position: relative; /*REQUIRED Sets up positioning for your footer*/
+    /*background-image: url('Images/redGradient.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;*/
+}
+.content{
+    padding-bottom:60px;
 }
 
 .footer {
@@ -17,15 +23,18 @@
     text-align: center;
     bottom: 0; /*to the bottom of the body*/
     left: 0; /*and to the left of the body.*/
+    position:relative;
     /*EFFECTS*/
     /*border-top: 1px solid whitesmoke; /*border for accent*/
     /*box-shadow: 0 -6px 32px; /*shadow*/
+
 }
 
 #header {
     position: relative;
     transform: translateY(25%);
 }
+
 
 #logo {
     background: url(../Content/Images/complianceLogo.png) no-repeat top left;
@@ -48,5 +57,71 @@
 .navbar-fixed-left .navbar-nav > li > .dropdown-menu {
     margin-top: -50px;
 }
+
+li a {
+    text-align:center;
+}
+
+.linkPics {
+    width: 300px;
+    height: 200px;
+    border-radius: 25px;
+}
+
+.linkPics {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.linkPics:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.linkPics {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.linkPics::after {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.linkPics:hover::after {
+    opacity: 1;
+}
+
+.image {
+    position: relative;
+    width: 100%; /* for IE 6 */
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+    .image h2 {
+        position: absolute;
+        top: 125px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(66, 139, 202, 0.5);
+        color: white;
+        font-weight: bold;
+        padding-left: 10px;
+    }
+    .image:hover {
+        transform: scale(1.1);
+    }
+
+    /*.image::after {
+        opacity: 0;
+
+        transition: opacity 0.3s ease-out;
+    }
+    .image:hover::after {
+        transform: scale(0.9);
+        transition: opacity 0.3s ease-out;
+        opacity: 1;
+    }*/
 
 
