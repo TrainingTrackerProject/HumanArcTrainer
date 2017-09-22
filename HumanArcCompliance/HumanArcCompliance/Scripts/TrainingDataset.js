@@ -4,7 +4,7 @@ var takeQuiz = "<a href='quiz.html'>Take Quiz</a";
 
 var toDoDataSet = [
     ["Learn Assembly", downloadFile, takeQuiz, "24%"],
-    ["How to cook lasagna", downloadFile, takeQuiz, "53%"]
+    ["Learn Whitespace....why", downloadFile, takeQuiz, "53%"]
 ];
 
 $(document).ready(function () {
@@ -24,8 +24,8 @@ var downloadFileCompleted = "<a href='download.html'>Download Training File</a>"
 
 var completedDataSet = [
     ["How to wash your hands", downloadFileCompleted],
-    ["How to cook lasagna", downloadFileCompleted],
-    ["How to whatever", downloadFileCompleted]
+    ["How to drink water", downloadFileCompleted],
+    ["How to breathe air", downloadFileCompleted]
 ];
 
 $(document).ready(function () {
