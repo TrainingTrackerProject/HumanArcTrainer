@@ -1,7 +1,8 @@
 ﻿//Dataset for To Do list
+
 var toDoDataSet = [
-    ["Learn Assembly", "Assembly.ppt", "Take Quiz", "24%"],
-    ["How to cook lasagna", "Lasagna.ppt", "Take Quiz", "53%"]
+    ["Learn Assembly", "<a href='download.html'>Download Training File</a>", "<a href='Quiz'>Take Quiz</a>", "24%"],
+    ["Learn Whitespace....why", "<a href='download.html'>Download Training File</a>", "<a href='Quiz'>Take Quiz</a>", "53%"]
 ];
 
 $(document).ready(function () {
@@ -14,21 +15,13 @@ $(document).ready(function () {
             { title: "Completion" },
         ]
     });
-
-    $('#toDoTable tbody').on('click', 'tr', function () {
-
-        var data = $('#toDoTable').DataTable().row(this).data()
-
-        alert('Pretend you\'re downloading ' + data[0] + '\'s data.');
-
-    });
 });
 
 //Dataset for Completed list
 var completedDataSet = [
-    ["How to wash your hands", "Hands.ppt"],
-    ["How to cook lasagna", "Lasagna.ppt"],
-    ["How to whatever", "Whatever.ppt"]
+    ["How to wash your hands", "<a href='download.html'>Download Training File</a>"],
+    ["How to drink water", "<a href='download.html'>Download Training File</a>"],
+    ["How to breathe air", "<a href='download.html'>Download Training File</a>"]
 ];
 
 $(document).ready(function () {
@@ -38,14 +31,6 @@ $(document).ready(function () {
             { title: "Training Title" },
             { title: "Training File" },
         ]
-    });
-
-    $('#completedTable tbody').on('click', 'tr', function () {
-
-        var data = $('#completedTable').DataTable().row(this).data()
-
-        alert('Pretend you\'re downloading ' + data[1]);
-
     });
 });
 
