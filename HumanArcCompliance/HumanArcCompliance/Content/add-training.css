@@ -1,3 +1,10 @@
 ﻿.resizeBtn {
     width: 89.6px;
 }
+
+.hide-file {
+    visibility: hidden;
+    position: absolute;
+}
+
+

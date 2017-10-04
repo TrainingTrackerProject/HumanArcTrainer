@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="~/Content/add-training.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/add-training.css"/>
 
 
 <h2>Add Training</h2>
@@ -16,22 +16,23 @@
             <div class="form-group">
                 <label for="groupApplied">Group(s) Applied To</label>
                 <select multiple class="form-control" id="groupsApplied">
-                    <option>All Employees</option>
-                    <option>HR</option>
-                    <option>Managers</option>
-                    <option>Development</option>
+                    <option>Training Administrators</option>
+                    <option>Leadership</option>
+                    <option>Users</option>
                 </select>
             </div>
+
             <div class="form-group">
                 <label for="uploadMedia">Upload Media File</label>
-                <input type="file" name="uploadFile" style="visibility:hidden;position:absolute">
+                <input type="file" name="uploadFile" class="hide-file">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Upload Media">
+                    <input type="text" class="form-control" placeholder="Choose Media">
                     <span class="input-group-btn">
                         <button class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
                     </span>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="addLink">Insert Quiz Link</label>
                 <input type="text" class="form-control" id="addLink" placeholder="Enter Quiz Link">
@@ -39,6 +40,7 @@
             <button type="submit" class="btn btn-primary pull-right resizeBtn">Submit</button>
         </div>   
     </div>
-    
 
 </form>
+
+<script src="~/Scripts/AddTraining.js"></script>
