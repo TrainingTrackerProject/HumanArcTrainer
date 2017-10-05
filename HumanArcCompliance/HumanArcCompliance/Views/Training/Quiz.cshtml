@@ -13,23 +13,21 @@
 </div>
 *@
 
-<!DOCTYPE html>
-<html>
+
+@*
+BASICALLY, THIS CODE RUNS IN ANY HTML OTHER THAN THIS ONE.
+I DON'T KNOW WHY, BUT THIS PARTICULAR FILE DOESN'T READ ANGULARJS EVEN WHEN THE SCRIPT IS PROVIDED.
+*@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<body>
+<div ng-app="Quizapp" ng-controller="QuizCtrl">
+    {{name + " "}}
+    <question-container ng-show="questionsvisible"></question-container>
+    <correct-container ng-show="!notvisible"></correct-container>
+</div>
 
-    <div ng-app="Quizapp" ng-controller="QuizCtrl">
-        {{name + " "}}
-        <question-container ng-show="questionsvisible"></question-container>
-        <correct-container ng-show="!notvisible"></correct-container>
-    </div>
-
-    <script>
-        var Myapp = angular.module('Quizapp', []);
-        Myapp.controller('QuizCtrl', function ($scope, $http) {
-            $scope.name = "Test";
-        });
-    </script>
-
-</body>
-</html>
+<script>
+    var Myapp = angular.module('Quizapp', []);
+    Myapp.controller('QuizCtrl', function ($scope, $http) {
+        $scope.name = "Test";
+    });
+</script>
