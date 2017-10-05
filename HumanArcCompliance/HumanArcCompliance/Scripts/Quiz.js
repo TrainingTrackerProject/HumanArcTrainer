@@ -1,6 +1,7 @@
 ﻿var Myapp = angular.module('Quizapp', []);
-Myapp.controller('QuizCtrl', ['$scope', '$http', 'getQuestion', function (scope, http, getQuestion) {
-    scope.QuestionAnswer = []
+Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
+    $scope.name = "Test";
+    /*scope.QuestionAnswer = []
     scope.count = 0;
     scope.correctAns = 0;
     scope.checkedCount = 0;
@@ -39,8 +40,8 @@ Myapp.controller('QuizCtrl', ['$scope', '$http', 'getQuestion', function (scope,
             scope.QuestionAnswer.OptionC = scope.QuestionAnswer[nextQuestion].OpC;
             scope.count = scope.count + 1;
         }
-    }
-}]);
+    }*/
+});
 //http get to retrive the questions from Home Controller QuizQuestionAns Action //Methood  
 Myapp.service('getQuestion', function ($http) {
     this.result = function () {
