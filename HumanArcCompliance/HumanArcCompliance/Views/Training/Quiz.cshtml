@@ -17,12 +17,9 @@
 @*
 BASICALLY, THIS CODE RUNS IN ANY HTML OTHER THAN THIS ONE.
 I DON'T KNOW WHY, BUT THIS PARTICULAR FILE DOESN'T READ ANGULARJS EVEN WHEN THE SCRIPT IS PROVIDED.
-*@
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
 <div ng-app="Quizapp" ng-controller="QuizCtrl">
     {{name + " "}}
-    <question-container ng-show="questionsvisible"></question-container>
-    <correct-container ng-show="!notvisible"></correct-container>
 </div>
 
 <script>
@@ -30,4 +27,11 @@ I DON'T KNOW WHY, BUT THIS PARTICULAR FILE DOESN'T READ ANGULARJS EVEN WHEN THE 
     Myapp.controller('QuizCtrl', function ($scope, $http) {
         $scope.name = "Test";
     });
-</script>
+</script>*@
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.js"></script>
+<body ng-app="">
+    <p>My first expression: {{ 5 + 5 }}</p>
+</body>

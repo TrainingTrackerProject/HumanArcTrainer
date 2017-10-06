@@ -1,4 +1,4 @@
-﻿var Myapp = angular.module('Quizapp', []);
+﻿/*var Myapp = angular.module('Quizapp', []);
 Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
     $scope.name = "Test";
     /*scope.QuestionAnswer = []
@@ -65,4 +65,4 @@ Myapp.directive("correctContainer", function () {
         template: '<div>Total Correct Answer {{correctAns}}<br/>',
             restrict: "E"
     }
-}  
+}  */
