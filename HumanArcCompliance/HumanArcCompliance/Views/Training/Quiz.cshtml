@@ -1,4 +1,9 @@
-﻿@*{
+﻿@*
+
+@{
+    Layout = "";
+}
+@{
     ViewBag.Title = "Quiz";
 }
 
@@ -10,28 +15,19 @@
 <div ng-app="Quizapp" ng-controller="QuizCtrl">
     <question-container ng-show="questionsvisible"></question-container>
     <correct-container ng-show="!notvisible"></correct-container>
-</div>
-*@
+</div>*@
 
+@*CHECK THE LAYOUT. FIND OUT HOW TO KEEP IT WHILE RUNNING ANGULAR AT THE SAME TIME
+https://docs.microsoft.com/en-us/aspnet/core/client-side/angular
+Also, BundleConfig script doesn't work.*@
 
-@*
-BASICALLY, THIS CODE RUNS IN ANY HTML OTHER THAN THIS ONE.
-I DON'T KNOW WHY, BUT THIS PARTICULAR FILE DOESN'T READ ANGULARJS EVEN WHEN THE SCRIPT IS PROVIDED.
-
-<div ng-app="Quizapp" ng-controller="QuizCtrl">
-    {{name + " "}}
-</div>
-
-<script>
-    var Myapp = angular.module('Quizapp', []);
-    Myapp.controller('QuizCtrl', function ($scope, $http) {
-        $scope.name = "Test";
-    });
-</script>*@
-
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.js"></script>
-<body ng-app="">
-    <p>My first expression: {{ 5 + 5 }}</p>
+@{
+    Layout = "";
+}
+<html>
+<body ng-app>
+    <script src="~/Scripts/angular.min.js"></script>
+    <h1>Directives</h1>
+    {{2+2}}
 </body>
+</html>

@@ -1,7 +1,6 @@
-﻿/*var Myapp = angular.module('Quizapp', []);
+﻿var Myapp = angular.module('Quizapp', []);
 Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
-    $scope.name = "Test";
-    /*scope.QuestionAnswer = []
+    scope.QuestionAnswer = []
     scope.count = 0;
     scope.correctAns = 0;
     scope.checkedCount = 0;
@@ -40,7 +39,7 @@ Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
             scope.QuestionAnswer.OptionC = scope.QuestionAnswer[nextQuestion].OpC;
             scope.count = scope.count + 1;
         }
-    }*/
+    }
 });
 //http get to retrive the questions from Home Controller QuizQuestionAns Action //Methood  
 Myapp.service('getQuestion', function ($http) {
@@ -65,4 +64,4 @@ Myapp.directive("correctContainer", function () {
         template: '<div>Total Correct Answer {{correctAns}}<br/>',
             restrict: "E"
     }
-}  */
+});
