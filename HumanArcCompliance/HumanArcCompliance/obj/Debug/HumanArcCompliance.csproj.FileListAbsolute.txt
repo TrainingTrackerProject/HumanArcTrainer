@@ -335,3 +335,8 @@ C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompli
 C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\bin\Microsoft.AI.Web.xml
 C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.dll
 C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.pdb
+C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\bin\EntityFramework.dll
+C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\bin\EntityFramework.SqlServer.dll
+C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\bin\System.DirectoryServices.dll
+C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\bin\EntityFramework.xml
+C:\Users\Administrator\Desktop\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\bin\EntityFramework.SqlServer.xml
