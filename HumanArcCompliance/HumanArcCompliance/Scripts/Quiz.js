@@ -1,5 +1,5 @@
 ﻿var Myapp = angular.module('Quizapp', []);
-Myapp.controller('QuizCtrl', ['$scope', '$http', 'getQuestion', function (scope, http, getQuestion) {
+Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
     scope.QuestionAnswer = []
     scope.count = 0;
     scope.correctAns = 0;
@@ -40,7 +40,7 @@ Myapp.controller('QuizCtrl', ['$scope', '$http', 'getQuestion', function (scope,
             scope.count = scope.count + 1;
         }
     }
-}]);
+});
 //http get to retrive the questions from Home Controller QuizQuestionAns Action //Methood  
 Myapp.service('getQuestion', function ($http) {
     this.result = function () {
@@ -64,4 +64,4 @@ Myapp.directive("correctContainer", function () {
         template: '<div>Total Correct Answer {{correctAns}}<br/>',
             restrict: "E"
     }
-}  
+});

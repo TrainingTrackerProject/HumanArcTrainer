@@ -1,44 +1,33 @@
-﻿@{
+﻿@*
+
+@{
+    Layout = "";
+}
+@{
     ViewBag.Title = "Quiz";
 }
 
 <h2>Quiz</h2>
 
-@*<head runat="server">
-        <title></title>
-        <style type="text/css">
-            div#test {
-
-                border: solid;
-                width: 730px;
-                height: 360px;
-                padding-left: 83px;
-                padding-top: 53px;
-                margin: 88px;
-            }
-
-            div#test-Result {
-                width: 730px;
-                height: 36px;
-                padding-left: 26px;
-                padding-top: 8px;
-                margin: 88px;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="time"></div>
-        <div id="test-Result"></div>
-        <div id="test"></div>
-    </body>
-    </html>*@
-
 <script src="~/Scripts/angular.min.js"></script>
-<script src="~/Scripts/Javascripts/Quiz.js"></script>
-<div ng-app="Quizapp">
-    <div ng-controller="QuizCtrl">
-        <question-container ng-show="questionsvisible"></question-container>
-        <correct-container ng-show="!notvisible"></correct-container>
-    </div>
-</div>
+<script src="~/Scripts/Quiz.js"></script>
 
+<div ng-app="Quizapp" ng-controller="QuizCtrl">
+    <question-container ng-show="questionsvisible"></question-container>
+    <correct-container ng-show="!notvisible"></correct-container>
+</div>*@
+
+@*CHECK THE LAYOUT. FIND OUT HOW TO KEEP IT WHILE RUNNING ANGULAR AT THE SAME TIME
+https://docs.microsoft.com/en-us/aspnet/core/client-side/angular
+Also, BundleConfig script doesn't work.*@
+
+@{
+    Layout = "";
+}
+<html>
+<body ng-app>
+    <script src="~/Scripts/angular.min.js"></script>
+    <h1>Directives</h1>
+    {{2+2}}
+</body>
+</html>
