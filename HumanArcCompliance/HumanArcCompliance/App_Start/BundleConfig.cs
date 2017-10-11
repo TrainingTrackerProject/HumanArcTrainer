@@ -9,9 +9,9 @@ namespace HumanArcCompliance
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery.min.js"
+                        "~/Scripts/jquery.min.js",
                         //"~/Scripts/maskedinput.min.js",
-                        //"~/Scripts/angular.min.js"
+                        "~/Scripts/angular.min.js"
                         ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
