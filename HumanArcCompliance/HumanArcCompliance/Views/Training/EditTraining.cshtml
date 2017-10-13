@@ -9,15 +9,18 @@
 <div class="form-group">
 	<div class="row">   
 	    <div class="table table-stripped">
+			<!--creates table based off script -->
             <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"> 
             </table>
     </div>
 	<div class ="col-md-10">
+        <!--button placement to add a new training, goes to add training page --> 
         <input type="submit" value="Add A New Training" id="AddTrainingButton" 
                class="btn btn-primary" role="button" aria-disabled="false"
                onclick="location.href='@Url.Action("AddTraining", "Training")'"/>
 	</div>
 </div>
 
+<!-- calls script --> 
 <script src="~/Scripts/EditTraining.js"></script>
 
