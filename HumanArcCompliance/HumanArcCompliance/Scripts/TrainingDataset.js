@@ -1,4 +1,4 @@
-﻿//Dataset for To Do list
+﻿//Dataset for To Do list for My Training
 
 var toDoDataSet = [
     ["Learn Assembly", "<a href='download.html'>Download Training File</a>", "<a href='Quiz'>Take Quiz</a>", "24%"],
@@ -17,7 +17,7 @@ $(document).ready(function () {
     });
 });
 
-//Dataset for Completed list
+//Dataset for Completed list for My Training
 var completedDataSet = [
     ["How to wash your hands", "<a href='download.html'>Download Training File</a>"],
     ["How to drink water", "<a href='download.html'>Download Training File</a>"],
