@@ -11,15 +11,18 @@ namespace HumanArcCompliance.helpers
 {
     public class ADSearcher
     {
+        //User and Password for connecting to local machine -- Will be stored in config files
         String ADUser_Id = "SCLDC\\Administrator"; //make sure user name has domain name.
         String Password = "Sheen5454!";
-        //private PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "SCLDC.com", "SCLDC\\Administrator", "Sheen5454!");
-        PrincipalContext ctx = new PrincipalContext(
-                                         ContextType.Domain,
-                                         "SCLDC.com",
-                                         "CN=Users,DC=SCLDC,DC=com",
-                                         "administrator",
-                                         "Sheen5454!");
+        //connection to active directory 
+        PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+
+        //PrincipalContext ctx = new PrincipalContext(
+        //                                 ContextType.Domain,
+        //                                 "SCLDC.com",
+        //                                 "CN=Users,DC=SCLDC,DC=com",
+        //                                 "administrator",
+        //                                 "Sheen5454!");
         private DirectorySearcher ds = new DirectorySearcher();
         private SortOption option = new System.DirectoryServices.SortOption("sn", System.DirectoryServices.SortDirection.Ascending);
 
@@ -44,7 +47,7 @@ namespace HumanArcCompliance.helpers
         /// <returns>UserPrincipal for obtaining different information about the current user/searched account</returns>
         public ADUser findByUserName(UserPrincipal currentUser)
         {
-            // find currently logged in user
+            // find currently logged in user LDAP Query
             ds.Filter = ("(&(objectClass=user)(sAMAccountName=" + currentUser.SamAccountName + "))");
             ds.Sort = option;
             ADUser myADUser = new ADUser();
@@ -52,7 +55,7 @@ namespace HumanArcCompliance.helpers
             {
                 SearchResult adSearchResult = ds.FindOne();
                 DirectoryEntry de = adSearchResult.GetDirectoryEntry();
-                
+                // Goes through all properties
                 foreach (string Key in de.Properties.PropertyNames)
                 {
                     myADUser = checkFields(de, Key, myADUser);
@@ -65,9 +68,10 @@ namespace HumanArcCompliance.helpers
             return myADUser;
         }
 
-
+        //If property matches with a specific property name then give ADUser that value
         public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
         {
+            //property names will be declared in config files
             if (Key == "givenName")
             {
                 item.givenName = de.Properties["givenName"].Value.ToString();
@@ -83,10 +87,10 @@ namespace HumanArcCompliance.helpers
             return item;
         }
 
-        public void setSessionVars(ADUser user)
-        {
-            HttpContext.Current.Session["currentUser"] = user;
-        }
+        //public void setSessionVars(ADUser user)
+        //{
+        //    HttpContext.Current.Session["currentUser"] = user;
+        //}
 
     }
 }

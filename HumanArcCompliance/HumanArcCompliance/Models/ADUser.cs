@@ -5,6 +5,7 @@ using System.Web;
 
 namespace HumanArcCompliance.Models
 {
+    //Active Driectory User
     public class ADUser
     {
         // First Name

@@ -17,15 +17,16 @@ namespace HumanArcCompliance.Controllers
         /// checks if active directory is updated accouring to the last log entry 
         /// </summary>
         /// <param name="req"></param>
-        /// <returns>List of all managers whose last name CONTAINS the value given</returns>
         public ActionResult Index()
         {
             //ApplicationDbContext will be user when a user logs in a new user entry is created for them
             //ApplicationDbContext db = new ApplicationDbContext();
             ADSearcher ad = new ADSearcher();
             ADUser myADUser = new ADUser();
+            // Stored in config files so Human Arc can change to meet their group names
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
+            // Call to ADSearcher
             UserPrincipal user = ad.findCurrentUserName(Request);
             using (var context = new PrincipalContext(ContextType.Domain))
             {
@@ -56,7 +57,7 @@ namespace HumanArcCompliance.Controllers
                     myADUser.isHR = "false";
                 }
             }
-            ad.setSessionVars(myADUser);
+            //ad.setSessionVars(myADUser);
 
             return View(myADUser);
         }  

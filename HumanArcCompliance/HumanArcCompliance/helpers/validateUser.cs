@@ -9,6 +9,7 @@ namespace HumanArcCompliance
 {
     public class validateUser
     {
+        // not being used currently --- here to reference/might use
         public string validate(){
             try
             {
