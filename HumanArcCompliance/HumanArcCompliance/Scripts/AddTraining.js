@@ -1,5 +1,6 @@
 ﻿angular.module('myApp', ['ngRoute']);
 
+
 $(document).on('click', '.browse', function () {
     var file = $(this).parent().parent().parent().find('.hide-file');
     file.trigger('click');
