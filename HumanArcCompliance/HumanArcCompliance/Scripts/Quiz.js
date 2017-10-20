@@ -1,10 +1,8 @@
 ﻿/*
 Test code for the Quiz application, called on Quiz.js.
-It doesn't work for now so because the Angular directive isn't
-called on the View file so just skip over this.
 */
+var Myapp = angular.module('Quizapp', ['ngRoute']);
 
-var Myapp = angular.module('Quizapp', []);
 Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
     scope.QuestionAnswer = []
     scope.count = 0;
@@ -47,10 +45,10 @@ Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
         }
     }
 });
-//http get to retrive the questions from Home Controller QuizQuestionAns Action //Methood  
+//http get to retrieve the questions from Home Controller QuizQuestionAns Action  
 Myapp.service('getQuestion', function ($http) {
     this.result = function () {
-        var ans = $http.get('Training/QuizQuestionAns');
+        var ans = $http.get('QuizQuestionAns');
         return ans;
     }
 });
@@ -59,15 +57,18 @@ Myapp.service('getQuestion', function ($http) {
 //This directive displays the question along with the options to select  
 Myapp.directive("questionContainer", function () {
     return {
-        template: '<div>{{QuestionAnswer.Question}}<br/>' + '<input name="choices" name="choices" type="radio" value="A" ng-show="rbshow" />{{QuestionAnswer.OptionA}}<br/>' + '<input name="choices" name="choices" type="radio" value="B" ng-show="rbshow" />{{QuestionAnswer.OptionB}}<br/>' + '<input name="choices" name="choices" type="radio" value="C" ng-show="rbshow" />{{QuestionAnswer.OptionC}}</br>' + ' <input type="button" ng-click="nextQuestion()" value="Next"/>' + '</div>',
+        template: '<div>{{QuestionAnswer.Question}}<br/>'
+        + '<input name="choices" name="choices" type="radio" value="A" ng-show="rbshow" />{{QuestionAnswer.OptionA}}<br/>'
+        + '<input name="choices" name="choices" type="radio" value="B" ng-show="rbshow" />{{QuestionAnswer.OptionB}}<br/>'
+        + '<input name="choices" name="choices" type="radio" value="C" ng-show="rbshow" />{{QuestionAnswer.OptionC}}</br>'
+        + ' <input type="button" ng-click="nextQuestion()" value="Next"/>' + '</div>',
         restrict: "E"
     }
 });
 //Directive is shown at last once the quiz is completed with the total number of correct answers  
 Myapp.directive("correctContainer", function () {
-    return
-    {
+    return {
         template: '<div>Total Correct Answer {{correctAns}}<br/>',
-            restrict: "E"
+        restrict: "E"
     }
 });
