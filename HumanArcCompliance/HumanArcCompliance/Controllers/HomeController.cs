@@ -32,19 +32,20 @@ namespace HumanArcCompliance.Controllers
             {
                 try
                 {
-                    if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
+                    myADUser = ad.findByUserName(user);
+                    if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
                     {
-                        myADUser = ad.findByUserName(user);
-                        myADUser.isManager = "true";
-                    }
-                    else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
-                    {
-                        myADUser = ad.findByUserName(user);
                         myADUser.isHR = "true";
+                        myADUser.isManager = "false";
+
                     }
+                    else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
+                    {
+                        myADUser.isHR = "false";
+                        myADUser.isManager = "true";
+                    }                
                     else
                     {
-                        myADUser = ad.findByUserName(user);
                         myADUser.isManager = "false";
                         myADUser.isHR = "false";
                     }
@@ -52,9 +53,9 @@ namespace HumanArcCompliance.Controllers
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    myADUser = ad.findByUserName(user);
-                    myADUser.isManager = "false";
-                    myADUser.isHR = "false";
+                    //***Not*** imlemented yet if user info fails to be pulled go to login page
+                    //return RedirectToAction("login", "LoginController");
+
                 }
             }
             //ad.setSessionVars(myADUser);

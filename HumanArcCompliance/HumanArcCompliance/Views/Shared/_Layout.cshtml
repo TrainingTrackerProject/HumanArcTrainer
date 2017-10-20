@@ -24,8 +24,8 @@
                                 <li class="active navLink" style="text-align:center;"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                                 @*This link is for manager and general employees*@
                                 <li class="navLink"><a href="@Url.Action("MyTraining","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
-                                <li class="navLink"><a href="@Url.Action("ManageEmployees", "Training")"><span class="glyphicon glyphicon-user"></span> Manage Employees</a></li>
-                                <li class="navLink"><a href="@Url.Action("EditTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
+                                <li class="navLink managers"><a href="@Url.Action("ManageEmployees", "Training")"><span class="glyphicon glyphicon-user"></span> Manage Employees</a></li>
+                                <li class="navLink humanResources"><a href="@Url.Action("EditTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
 
                                 @*This dropdown is for HR it is a more convient menu for them to access add and edit features*@
                                 @*<li class="dropdown">

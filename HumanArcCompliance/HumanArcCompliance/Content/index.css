@@ -1,2 +1,69 @@
-﻿body {
+﻿
+
+.linkPics {
+    width: 300px;
+    height: 200px;
+    border-radius: 25px;
 }
+
+.linkPics {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+    .linkPics:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+.linkPics {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+    .linkPics::after {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .linkPics:hover::after {
+        opacity: 1;
+    }
+
+.image {
+    position: relative;
+    width: 100%; /* for IE 6 */
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+h2 {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.banner {
+    margin-left:0px;
+    position: absolute;
+    top: 130px;
+    width: 300px;
+    background-color: rgba(66, 139, 202, 0.5);
+    color: white;
+}
+
+    .image:hover {
+        transform: scale(1.1);
+    }
+
+/*.image::after {
+        opacity: 0;
+
+        transition: opacity 0.3s ease-out;
+    }
+    .image:hover::after {
+        transform: scale(0.9);
+        transition: opacity 0.3s ease-out;
+        opacity: 1;
+    }*/
+
+

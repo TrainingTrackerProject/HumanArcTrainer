@@ -12,8 +12,8 @@ namespace HumanArcCompliance.helpers
     public class ADSearcher
     {
         //User and Password for connecting to local machine -- Will be stored in config files
-        String ADUser_Id = "SCLDC\\Administrator"; //make sure user name has domain name.
-        String Password = "Sheen5454!";
+        //String ADUser_Id = ConfigurationManager.AppSettings["domain"] + "\\" + ConfigurationManager.AppSettings["superUserName"]; //make sure user name has domain name.
+        //String Password = ConfigurationManager.AppSettings["superUserPass"];
         //connection to active directory 
         PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
 
@@ -34,7 +34,9 @@ namespace HumanArcCompliance.helpers
         /// <returns>UserPrincipal for obtaining different information about the user account</returns>
         public UserPrincipal findCurrentUserName(HttpRequestBase req)
         {
+            //string username = "test1"; 
             string username = req.LogonUserIdentity.Name;
+
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             UserPrincipal up = UserPrincipal.FindByIdentity(ctx, username);
             return up;
@@ -48,7 +50,7 @@ namespace HumanArcCompliance.helpers
         public ADUser findByUserName(UserPrincipal currentUser)
         {
             // find currently logged in user LDAP Query
-            ds.Filter = ("(&(objectClass=user)(sAMAccountName=" + currentUser.SamAccountName + "))");
+            ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
             ds.Sort = option;
             ADUser myADUser = new ADUser();
             try
@@ -72,15 +74,15 @@ namespace HumanArcCompliance.helpers
         public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
         {
             //property names will be declared in config files
-            if (Key == "givenName")
+            if (Key == ConfigurationManager.AppSettings["givenName"])
             {
                 item.givenName = de.Properties["givenName"].Value.ToString();
             }
-            if (Key == "sn")
+            if (Key == ConfigurationManager.AppSettings["sn"])
             {
                 item.sn = de.Properties["sn"].Value.ToString();
             }
-            if (Key == "mail")
+            if (Key == ConfigurationManager.AppSettings["mail"])
             {
                 item.mail = de.Properties["mail"].Value.ToString();
             }

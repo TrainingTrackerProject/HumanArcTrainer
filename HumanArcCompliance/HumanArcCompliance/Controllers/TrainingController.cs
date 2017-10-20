@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HumanArcCompliance.helpers;
+using System.DirectoryServices.AccountManagement;
+using System.Configuration;
+
 
 namespace HumanArcCompliance.Controllers
 {
@@ -10,21 +14,35 @@ namespace HumanArcCompliance.Controllers
     {
         public ActionResult MyTraining()
         {
+            //get list of quizes assigned to user and return
             return View();
         }
 
         public ActionResult ManageEmployees()
         {
-            return View();
+            if (checkUserAuth("manager"))
+            {
+                //get employees 
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult EditTraining()
         {
-            return View();
+            if (checkUserAuth("hr"))
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult AddTraining()
         {
-            return View();
+            if (checkUserAuth("hr"))
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult Quiz()
         {
@@ -58,6 +76,46 @@ namespace HumanArcCompliance.Controllers
                 Ans = "A"
             });
             return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        public bool checkUserAuth(string type)
+        {
+            String hr = (ConfigurationManager.AppSettings["hrGroup"]);
+            String manager = (ConfigurationManager.AppSettings["managers"]);
+            ADSearcher searcher = new ADSearcher();
+            UserPrincipal user = searcher.findCurrentUserName(Request);
+            using (var context = new PrincipalContext(ContextType.Domain))
+            {
+                if (type == "manager")
+                {
+                    try
+                    {                 
+                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+                else if(type == "hr")
+                {
+                    try
+                    {
+                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }                   
+            }
+            return false;
         }
     }
     public class Questionsoptions
