@@ -1,11 +1,17 @@
-﻿@model HumanArcCompliance.Models.ADUser
+﻿@*This html file is the project's home page. It displays the screen which a user 
+  will first be directed to. It provides a header section and some dynamic buttons 
+  with images to go to different parts of the web application. These buttons are 
+  only visual depending on the users access (employee, manager, or hr).*@
+
+@model HumanArcCompliance.Models.ADUser
 @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
 @Html.HiddenFor(m => m.isManager, new { id= "managerCheck" })
 <link rel="stylesheet" type="text/css" href="~/Content/index.css" />
 <div class="jumbotron">
-    <h1>Heading</h1>
-    <p class="lead">Some sort of content here. I feel that there is not enough on this page and something here is necessary. Thoughts?</p>
-    <p>I feel like we can just stick a picture there.</p>
+    <h2>Home</h2>
+    <p class="lead">Welcome to the Human Arc Compliance website. This site 
+		provides you with the required compliance training. 
+	</p>
 </div>
 
 <div class="row">

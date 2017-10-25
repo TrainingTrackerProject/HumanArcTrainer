@@ -1,4 +1,16 @@
-﻿
+﻿/* This script connects to the edit training table. It provides the data which
+    which fills the table and also sets up the table's columns*/
+
+    /*Additional script not being used but saving for later
+
+    $('#trainingTable tbody').on('click', 'tr', function () {
+
+        var data = $('#trainingTable').DataTable().row(this).data()
+
+        alert('You clicked on ' + data[1] + '\'s row');
+
+    });*/
+
 var edit = "<a ui-sref='.edit({trainingId : training.ID})'>Edit</a>";
 var del = "<a href='#' ng-click='trainingCtrl.delete(training.ID)'>Delete</a";
 
@@ -21,11 +33,5 @@ $(document).ready(function () {
         ]
     });
 
-  /*  $('#trainingTable tbody').on('click', 'tr', function () {
-
-        var data = $('#trainingTable').DataTable().row(this).data()
-
-        alert('You clicked on ' + data[1] + '\'s row');
-
-    }); */
 });
+
