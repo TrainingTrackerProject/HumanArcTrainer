@@ -26,13 +26,13 @@ Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
             if (choicesArr[i].checked) {
                 scope.checkedCount = scope.checkedCount + 1;
                 answer = scope.QuestionAnswer[nextQuestion - 1].Ans;
-                if (choicesArr[i].value == answer) {
+                if (choicesArr[i].value === answer) {
                     scope.correctAns = scope.correctAns + 1;
                 }
                 choicesArr[i].checked = false;
             }
         }
-        if (scope.checkedCount == scope.QuestionAnswer.length) {
+        if (scope.checkedCount === scope.QuestionAnswer.length) {
             scope.notvisible = false;
             scope.questionsvisible = false;
         }
