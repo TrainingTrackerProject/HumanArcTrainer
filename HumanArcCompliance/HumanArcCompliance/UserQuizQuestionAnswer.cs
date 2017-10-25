@@ -12,15 +12,17 @@ namespace HumanArcCompliance
     using System;
     using System.Collections.Generic;
     
-    public partial class UserAnswer
+    public partial class UserQuizQuestionAnswer
     {
-        public int UserId { get; set; }
-        public int QuestionId { get; set; }
-        public int AnswerId { get; set; }
-        public bool IsCorrect { get; set; }
+        public int id { get; set; }
+        public int quizId { get; set; }
+        public int questionId { get; set; }
+        public int answerId { get; set; }
+        public bool isChecked { get; set; }
+        public Nullable<bool> isApproved { get; set; }
     
+        public virtual Answer Answer { get; set; }
         public virtual Question Question { get; set; }
-        public virtual QuestionAnswer QuestionAnswer { get; set; }
-        public virtual User User { get; set; }
+        public virtual Quize Quize { get; set; }
     }
 }

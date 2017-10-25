@@ -1,4 +1,7 @@
-﻿@{
+﻿@*This file holds the page where the ability to edit traning is. Users can look
+  at different trainig and either delete or edit exisitng traning. They can also  
+  They can also add training, which will reroute them to a new page to do so.*@
+@{
     ViewBag.Title = "Edit Training";
 }
 
@@ -9,18 +12,18 @@
 <div class="form-group">
 	<div class="row">   
 	    <div class="table table-stripped">
-			<!--creates table based off script -->
+			@* creates table based off script *@
             <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"> 
             </table>
     </div>
 	<div class ="col-md-10">
-        <!--button placement to add a new training, goes to add training page --> 
+        @* button placement to add a new training, goes to add training page *@ 
         <input type="submit" value="Add A New Training" id="AddTrainingButton" 
                class="btn btn-primary" role="button" aria-disabled="false"
                onclick="location.href='@Url.Action("AddTraining", "Training")'"/>
 	</div>
 </div>
-
-<!-- calls script --> 
+x
+@* calls script *@
 <script src="~/Scripts/EditTraining.js"></script>
 

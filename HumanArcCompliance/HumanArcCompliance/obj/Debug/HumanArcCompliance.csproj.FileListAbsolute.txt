@@ -565,3 +565,6 @@ C:\Users\Administrator\Desktop\TestingRepo\HumanArcTrainer\HumanArcCompliance\Hu
 C:\Users\Administrator\Desktop\TestingRepo\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\TestingRepo\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.dll
 C:\Users\Administrator\Desktop\TestingRepo\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.pdb
+C:\Users\Administrator\Desktop\WorkingDirectory\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\WorkingDirectory\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.dll
+C:\Users\Administrator\Desktop\WorkingDirectory\HumanArcTrainer\HumanArcCompliance\HumanArcCompliance\obj\Debug\HumanArcCompliance.pdb

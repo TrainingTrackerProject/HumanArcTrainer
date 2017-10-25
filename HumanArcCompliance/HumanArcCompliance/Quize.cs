@@ -12,22 +12,25 @@ namespace HumanArcCompliance
     using System;
     using System.Collections.Generic;
     
-    public partial class Quiz
+    public partial class Quize
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Quiz()
+        public Quize()
         {
             this.Questions = new HashSet<Question>();
+            this.UserQuizQuestionAnswers = new HashSet<UserQuizQuestionAnswer>();
         }
     
-        public int QuizId { get; set; }
-        public int GroupId { get; set; }
-        public string QuizTitle { get; set; }
-        public string QuizDesc { get; set; }
-        public byte[] MediaFile { get; set; }
+        public int id { get; set; }
+        public int groupId { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public string media { get; set; }
     
         public virtual Group Group { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Question> Questions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserQuizQuestionAnswer> UserQuizQuestionAnswers { get; set; }
     }
 }
