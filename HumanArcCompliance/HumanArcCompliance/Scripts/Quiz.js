@@ -1,10 +1,8 @@
 ﻿/*
-Test code for the Quiz application, called on Quiz.js.
-It doesn't work for now so because the Angular directive isn't
-called on the View file so just skip over this.
+Test code for the Quiz application, called on Quiz.cshtml.
 */
 
-var Myapp = angular.module('Quizapp', []);
+var Myapp = angular.module('Quizapp', ['ngRoute']);
 Myapp.controller('QuizCtrl', function ($scope, $http, $getQuestion) {
     scope.QuestionAnswer = []
     scope.count = 0;

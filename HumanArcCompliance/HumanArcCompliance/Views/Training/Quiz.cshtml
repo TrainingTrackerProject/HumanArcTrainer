@@ -1,34 +1,8 @@
-﻿
-@*
+﻿<h2>Quiz</h2>
 
-@{
-    Layout = "";
-}
-@{
-    ViewBag.Title = "Quiz";
-}
-
-<h2>Quiz</h2>
-
-<script src="~/Scripts/angular.min.js"></script>
 <script src="~/Scripts/Quiz.js"></script>
 
 <div ng-app="Quizapp" ng-controller="QuizCtrl">
     <question-container ng-show="questionsvisible"></question-container>
     <correct-container ng-show="!notvisible"></correct-container>
-</div>*@
-
-@*CHECK THE LAYOUT. FIND OUT HOW TO KEEP IT WHILE RUNNING ANGULAR AT THE SAME TIME
-https://docs.microsoft.com/en-us/aspnet/core/client-side/angular
-Also, BundleConfig script doesn't work.*@
-
-@{
-    Layout = "";
-}
-<html>
-<body ng-app>
-    <script src="~/Scripts/angular.min.js"></script>
-    <h1>Directives</h1>
-    {{2+2}}
-</body>
-</html>
+</div>

@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿/*$(document).ready(function () {
     if ($('#hrCheck').val() == "false") {
         var hrContent = $('.humanResources');
         hrContent.each(function (key, value) {
@@ -13,4 +13,4 @@
     }
     
 
-});
+});*/
