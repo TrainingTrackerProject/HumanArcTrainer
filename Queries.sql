@@ -1,6 +1,3 @@
-drop database if exists HumanArc;
-create database HumanArc;
-
 use HumanArc;
 
 drop table if exists UserQuizQuestionAnswers;
@@ -54,6 +51,8 @@ create table UserQuizQuestionAnswers(
 	quizId int not null,
 	questionId int not null,
 	answerId int not null,
+	isChecked bit not null,
+	isApproved bit,
 	foreign key (quizId) references Quizes(id),
 	foreign key (questionId) references Questions(id),
 	foreign key (answerId) references Answers(id)

@@ -25,11 +25,11 @@ namespace HumanArcCompliance
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
-        public virtual DbSet<QuestionAnswer> QuestionAnswers { get; set; }
-        public virtual DbSet<Quiz> Quizs { get; set; }
+        public virtual DbSet<Quize> Quizes { get; set; }
+        public virtual DbSet<UserQuizQuestionAnswer> UserQuizQuestionAnswers { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserAnswer> UserAnswers { get; set; }
     }
 }
