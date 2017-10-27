@@ -17,21 +17,19 @@ namespace HumanArcCompliance
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Question()
         {
-            this.QuestionAnswers = new HashSet<QuestionAnswer>();
-            this.UserAnswers = new HashSet<UserAnswer>();
+            this.Answers = new HashSet<Answer>();
+            this.UserQuizQuestionAnswers = new HashSet<UserQuizQuestionAnswer>();
         }
     
-        public int QuestionId { get; set; }
-        public int QuizId { get; set; }
-        public int AnswerId { get; set; }
-        public string QuestionText { get; set; }
-        public string QuestionType { get; set; }
+        public int id { get; set; }
+        public int quizId { get; set; }
+        public string questionText { get; set; }
+        public string questionType { get; set; }
     
-        public virtual QuestionAnswer QuestionAnswer { get; set; }
-        public virtual Quiz Quiz { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QuestionAnswer> QuestionAnswers { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual Quize Quize { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
+        public virtual ICollection<UserQuizQuestionAnswer> UserQuizQuestionAnswers { get; set; }
     }
 }

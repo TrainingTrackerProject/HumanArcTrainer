@@ -12,24 +12,21 @@ namespace HumanArcCompliance
     using System;
     using System.Collections.Generic;
     
-    public partial class QuestionAnswer
+    public partial class Answer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public QuestionAnswer()
+        public Answer()
         {
-            this.Questions = new HashSet<Question>();
-            this.UserAnswers = new HashSet<UserAnswer>();
+            this.UserQuizQuestionAnswers = new HashSet<UserQuizQuestionAnswer>();
         }
     
-        public int AnswerId { get; set; }
-        public int QuestionId { get; set; }
-        public bool IsCorrect { get; set; }
-        public string Choice { get; set; }
+        public int id { get; set; }
+        public int questionId { get; set; }
+        public string answerText { get; set; }
+        public bool isCorrect { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Question> Questions { get; set; }
         public virtual Question Question { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
+        public virtual ICollection<UserQuizQuestionAnswer> UserQuizQuestionAnswers { get; set; }
     }
 }

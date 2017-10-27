@@ -1,6 +1,7 @@
 ﻿angular.module('myApp', ['ngRoute']);
 
 
+// This lets the HR memeber look for media files when "Browse" is clicked.
 $(document).on('click', '.browse', function () {
     var file = $(this).parent().parent().parent().find('.hide-file');
     file.trigger('click');
