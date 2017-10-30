@@ -11,11 +11,11 @@ namespace HumanArcCompliance.helpers
         public bool checkExistingUser(ADUser myADUser)
         {
 
-            using (var ctx = new HumanArcEntities())
+            /*using (var ctx = new HumanArcEntities())
             {
                 var DBUser = ctx.Users.Where(Users => Users.SAMAccountName == myADUser.sAMAccountName);
 
-            }
+            }*/
             return true;
         }
     }
