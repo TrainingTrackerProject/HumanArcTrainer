@@ -374,6 +374,7 @@
     </Compile>
     <Compile Include="helpers\ADSearcher.cs" />
     <Compile Include="helpers\Queries.cs" />
+    <Compile Include="helpers\sessionStorage.cs" />
     <Compile Include="helpers\validateUser.cs" />
     <Compile Include="Models\ADUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

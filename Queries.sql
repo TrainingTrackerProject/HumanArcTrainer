@@ -51,7 +51,7 @@ create table UserQuizQuestionAnswers(
 	quizId int not null,
 	questionId int not null,
 	answerId int not null,
-	isChecked bit not null,
+	isChecked bit,
 	isApproved bit,
 	foreign key (quizId) references Quizes(id),
 	foreign key (questionId) references Questions(id),

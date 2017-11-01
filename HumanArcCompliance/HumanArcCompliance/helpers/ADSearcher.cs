@@ -15,16 +15,14 @@ namespace HumanArcCompliance.helpers
         //String ADUser_Id = ConfigurationManager.AppSettings["domain"] + "\\" + ConfigurationManager.AppSettings["superUserName"]; //make sure user name has domain name.
         //String Password = ConfigurationManager.AppSettings["superUserPass"];
         //connection to active directory 
+
+        
         PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
 
-        //PrincipalContext ctx = new PrincipalContext(
-        //                                 ContextType.Domain,
-        //                                 "SCLDC.com",
-        //                                 "CN=Users,DC=SCLDC,DC=com",
-        //                                 "administrator",
-        //                                 "Sheen5454!");
+
         private DirectorySearcher ds = new DirectorySearcher();
         private SortOption option = new System.DirectoryServices.SortOption("sn", System.DirectoryServices.SortDirection.Ascending);
+
 
 
         /// <summary>
@@ -50,7 +48,8 @@ namespace HumanArcCompliance.helpers
         public ADUser findByUserName(UserPrincipal currentUser)
         {
             // find currently logged in user LDAP Query
-            ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
+            //ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
+            ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=" + currentUser.SamAccountName + "))";
             ds.Sort = option;
             ADUser myADUser = new ADUser();
             try
@@ -86,13 +85,20 @@ namespace HumanArcCompliance.helpers
             {
                 item.mail = de.Properties["mail"].Value.ToString();
             }
+            if (Key == ConfigurationManager.AppSettings["memberOf"])
+            {
+                for (int i = 0; i < de.Properties["memberOf"].Count; i++)
+                {
+
+                }
+                
+
+                //item.memberOf = memberString.Split(',').Split(',')[0];
+            }
             return item;
         }
 
-        //public void setSessionVars(ADUser user)
-        //{
-        //    HttpContext.Current.Session["currentUser"] = user;
-        //}
+        
 
     }
 }
