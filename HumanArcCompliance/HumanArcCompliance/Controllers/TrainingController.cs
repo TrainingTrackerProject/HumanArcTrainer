@@ -64,7 +64,7 @@ namespace HumanArcCompliance.Controllers
 
         }
 
-        public ActionResult EditTraining()
+        public ActionResult editTraining()
         {
             return View(session.getSessionVars());
 
@@ -163,8 +163,13 @@ namespace HumanArcCompliance.Controllers
         // group comment end
         //sean uncomment end
 
-         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        public ActionResult gradeQuiz()
+        {
+            return View(session.getSessionVars());
+
+        }
     }
     public class Questionsoptions
     {
