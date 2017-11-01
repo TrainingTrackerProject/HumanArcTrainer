@@ -7,7 +7,7 @@ var Myapp = angular.module('Quizapp', ['ngRoute']);
 //Retrieves the questions from TrainingController's QuizQuestionAns
 Myapp.service('getQuestion', function ($http) {
     this.result = function () {
-        var ans = $http.get('~/Training/QuizQuestionAns');
+        var ans = $http.get('QuizQuestionAns');
         return ans;
     };
 });
@@ -23,9 +23,10 @@ Myapp.controller('QuizCtrl', function ($scope, getQuestion) {
 
     //get the Question and answers from the controller and pass it to array  
     $scope.rbshow = false;
-    getQuestion.result().success(function (response) {
+    getQuestion.result().then(function (response) {
         for (var i = 0; i < response.length; i++) {
             $scope.QuestionAnswer.push(response[i]);
+            document.write("yes")
         }
     });
     $scope.nextQuestion = function () {
