@@ -8,6 +8,9 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using HumanArcCompliance.helpers;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+
 namespace HumanArcCompliance.Controllers
 {
     public class HomeController : Controller
@@ -19,46 +22,70 @@ namespace HumanArcCompliance.Controllers
         /// <param name="req"></param>
         public ActionResult Index()
         {
-            //ApplicationDbContext will be user when a user logs in a new user entry is created for them
-            //ApplicationDbContext db = new ApplicationDbContext();
-            ADSearcher ad = new ADSearcher();
             ADUser myADUser = new ADUser();
+            sessionStorage session = new sessionStorage();
             // Stored in config files so Human Arc can change to meet their group names
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
-            // Call to ADSearcher
-            UserPrincipal user = ad.findCurrentUserName(Request);
-            using (var context = new PrincipalContext(ContextType.Domain))
+            if (session.getSessionVars() != null)
             {
-                try
-                {
-                    myADUser = ad.findByUserName(user);
-                    if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
-                    {
-                        myADUser.isHR = "true";
-                        myADUser.isManager = "false";
-
-                    }
-                    else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
-                    {
-                        myADUser.isHR = "false";
-                        myADUser.isManager = "true";
-                    }                
-                    else
-                    {
-                        myADUser.isManager = "false";
-                        myADUser.isHR = "false";
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    //***Not*** imlemented yet if user info fails to be pulled go to login page
-                    //return RedirectToAction("login", "LoginController");
-
-                }
+                return View(session.getSessionVars());
             }
-            //ad.setSessionVars(myADUser);
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //group comment start
+            //sean uncomment start
+            //ApplicationDbContext will be user when a user logs in a new user entry is created for them
+
+            //ApplicationDbContext db = new ApplicationDbContext();
+            //ADSearcher ad = new ADSearcher();
+
+
+            //UserPrincipal user = ad.findCurrentUserName(Request);
+            //using (var context = new PrincipalContext(ContextType.Domain))
+            //{
+            //    try
+            //    {
+            //        myADUser = ad.findByUserName(user);
+            //        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
+            //        {
+            //            myADUser.isHR = "true";
+            //            myADUser.isManager = "false";
+
+            //        }
+            //        else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
+            //        {
+            //            myADUser.isHR = "false";
+            //            myADUser.isManager = "true";
+            //        }
+            //        else
+            //        {
+            //            myADUser.isManager = "false";
+            //            myADUser.isHR = "false";
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e);
+            //        //***Not*** imlemented yet if user info fails to be pulled go to login page
+            //        //return RedirectToAction("login", "LoginController");
+
+            //    }
+            //}
+            //setSessionVars(myADUser);
+            //group comment end
+            //sean uncomment end
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            //sean comment start
+            //group uncomment start
+            validateUser validation = new validateUser();
+            myADUser = validation.validate();
+
+            //sean comment end
+            //group uncomment end
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             return View(myADUser);
         }  

@@ -14,9 +14,12 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
+    @model HumanArcCompliance.Models.ADUser
+    @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+    @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
     <div class="container-fluid">
         <div id="header">
-            @Html.ActionLink("Human Arc Compliance", "Index", "Home", new { @id = "logo" })
+            @Html.ActionLink(".", "Index", "Home", new { @id = "logo" })
             <hr />
         </div>
         <div id="content">

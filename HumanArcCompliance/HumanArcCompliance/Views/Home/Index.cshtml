@@ -3,9 +3,6 @@
   with images to go to different parts of the web application. These buttons are 
   only visual depending on the users access (employee, manager, or hr).*@
 
-@model HumanArcCompliance.Models.ADUser
-@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
-@Html.HiddenFor(m => m.isManager, new { id= "managerCheck" })
 <link rel="stylesheet" type="text/css" href="~/Content/index.css" />
 <div class="jumbotron">
     <h2>Home</h2>
