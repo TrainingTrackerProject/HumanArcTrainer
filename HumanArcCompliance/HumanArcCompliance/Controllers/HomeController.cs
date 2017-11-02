@@ -21,30 +21,30 @@ namespace HumanArcCompliance.Controllers
         {
             //ApplicationDbContext will be user when a user logs in a new user entry is created for them
             //ApplicationDbContext db = new ApplicationDbContext();
-            ADSearcher ad = new ADSearcher();
+            //ADSearcher ad = new ADSearcher();
             ADUser myADUser = new ADUser();
             // Stored in config files so Human Arc can change to meet their group names
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
             // Call to ADSearcher
-            UserPrincipal user = ad.findCurrentUserName(Request);
-            using (var context = new PrincipalContext(ContextType.Domain))
+            //UserPrincipal user = ad.findCurrentUserName(Request);
+            /*using (var context = new PrincipalContext(ContextType.Domain))
             {
                 try
                 {
-                    myADUser = ad.findByUserName(user);
-                    if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
+                    //myADUser = ad.findByUserName(user);
+                    //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
                     {
                         myADUser.isHR = "true";
                         myADUser.isManager = "false";
 
                     }
-                    else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
+                    //else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
                     {
                         myADUser.isHR = "false";
                         myADUser.isManager = "true";
                     }                
-                    else
+                    //else
                     {
                         myADUser.isManager = "false";
                         myADUser.isHR = "false";
@@ -57,7 +57,7 @@ namespace HumanArcCompliance.Controllers
                     //return RedirectToAction("login", "LoginController");
 
                 }
-            }
+            }*/
             //ad.setSessionVars(myADUser);
 
             return View(myADUser);

@@ -82,15 +82,15 @@ namespace HumanArcCompliance.Controllers
         {
             String hr = (ConfigurationManager.AppSettings["hrGroup"]);
             String manager = (ConfigurationManager.AppSettings["managers"]);
-            ADSearcher searcher = new ADSearcher();
-            UserPrincipal user = searcher.findCurrentUserName(Request);
-            using (var context = new PrincipalContext(ContextType.Domain))
+            //ADSearcher searcher = new ADSearcher();
+            //UserPrincipal user = searcher.findCurrentUserName(Request);
+            /*using (var context = new PrincipalContext(ContextType.Domain))
             {
                 if (type == "manager")
                 {
                     try
                     {                 
-                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
+                        //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
                         {
                             return true;
                         }
@@ -104,7 +104,7 @@ namespace HumanArcCompliance.Controllers
                 {
                     try
                     {
-                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
+                        //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
                         {
                             return true;
                         }
@@ -114,8 +114,8 @@ namespace HumanArcCompliance.Controllers
                         Console.WriteLine(e);
                     }
                 }                   
-            }
-            return false;
+            }*/
+            return true;
         }
     }
     public class Questionsoptions
