@@ -9,14 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Scripts.Render("~/bundles/jquery")
-
-
     @Styles.Render("~/Content/css")
+
 </head>
 <body>
-    <div class="container-fluid">
+    @model HumanArcCompliance.Models.ADUser
+    @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+    @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+    @Html.HiddenFor(m => m.memberOf, new { id = "memberOf" })
+    <div id="fullBody" class="container-fluid" style="display:none;">
         <div id="header">
-            @Html.ActionLink("Human Arc Compliance", "Index", "Home", new { @id = "logo" })
+            <a id="logo" href="@Url.Action("Index", "Home")"></a>
             <hr />
         </div>
         <div id="content">
@@ -29,7 +32,8 @@
                                 @*This link is for manager and general employees*@
                                 <li class="navLink"><a href="@Url.Action("MyTraining","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
                                 <li class="navLink managers"><a href="@Url.Action("ManageEmployees", "Training")"><span class="glyphicon glyphicon-user"></span> Manage Employees</a></li>
-                                <li class="navLink humanResources"><a href="@Url.Action("EditTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
+                                <li class="navLink humanResources"><a href="@Url.Action("editTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
+                                <li class="navLink humanResources"><a href="@Url.Action("gradeQuiz", "Training")"><span class="glyphicon glyphicon-book"></span> Grade Quizes</a></li>
 
                                 @*This dropdown is for HR it is a more convient menu for them to access add and edit features*@
                                 @*<li class="dropdown">
@@ -56,10 +60,9 @@
             <p>&copy; @DateTime.Now.Year - Human Arc</p>
         </footer>
     </div>
-    @Scripts.Render("~/bundles/bootstrap")
     @Styles.Render("~/Content/DataTables/css")
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/DataTables/js")
-    <script src="~/Scripts/site.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

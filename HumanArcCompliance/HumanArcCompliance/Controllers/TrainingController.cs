@@ -12,18 +12,26 @@ namespace HumanArcCompliance.Controllers
 {
     public class TrainingController : Controller
     {
+        sessionStorage session = new sessionStorage();
         public ActionResult MyTraining()
         {
+
             //get list of quizes assigned to user and return
-            return View();
+            return View(session.getSessionVars());
         }
 
+        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //group comment start
+        // sean uncomment start
         public ActionResult ManageEmployees()
-        {
+        {          
             if (checkUserAuth("manager"))
             {
-                //get employees 
-                return View();
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }              
             }
             return RedirectToAction("Index", "Home");
         }
@@ -32,7 +40,10 @@ namespace HumanArcCompliance.Controllers
         {
             if (checkUserAuth("hr"))
             {
-                return View();
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
             }
             return RedirectToAction("Index", "Home");
         }
@@ -40,10 +51,46 @@ namespace HumanArcCompliance.Controllers
         {
             if (checkUserAuth("hr"))
             {
-                return View();
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
             }
             return RedirectToAction("Index", "Home");
         }
+        //group comment end
+        //sean uncomment end
+
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // sean comment start
+        // group uncomment start
+        //public ActionResult ManageEmployees()
+        //{
+
+        //    //get employees 
+        //    return View(session.getSessionVars());
+
+        //}
+
+
+        //public ActionResult EditTraining()
+        //{
+        //    return View(session.getSessionVars());
+
+
+        //}
+        //public ActionResult AddTraining()
+        //{
+
+        //    return View(session.getSessionVars());
+
+        //}
+        // sean comment end
+        //group uncomment end
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public ActionResult Quiz()
         {
             return View();
@@ -57,6 +104,7 @@ namespace HumanArcCompliance.Controllers
                 OpA = "21",
                 OpB = "32",
                 OpC = "41",
+                OpD = "12",
                 Ans = "B"
             });
             obj.Add(new Questionsoptions
@@ -65,6 +113,7 @@ namespace HumanArcCompliance.Controllers
                 OpA = "10",
                 OpB = "12",
                 OpC = "24",
+                OpD = "12",
                 Ans = "C"
             });
             obj.Add(new Questionsoptions
@@ -73,11 +122,16 @@ namespace HumanArcCompliance.Controllers
                 OpA = "36",
                 OpB = "24",
                 OpC = "12",
+                OpD = "12",
                 Ans = "A"
             });
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+         /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // group comment start
+        //sean uncomment start
         public bool checkUserAuth(string type)
         {
             String hr = (ConfigurationManager.AppSettings["hrGroup"]);
@@ -117,6 +171,16 @@ namespace HumanArcCompliance.Controllers
             }*/
             return true;
         }
+        // group comment end
+        //sean uncomment end
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public ActionResult gradeQuiz()
+        {
+            return View(session.getSessionVars());
+
+        }
     }
     public class Questionsoptions
     {
@@ -124,6 +188,7 @@ namespace HumanArcCompliance.Controllers
         public string OpA { get; set; }
         public string OpB { get; set; }
         public string OpC { get; set; }
+        public string OpD { get; set; }
         public string Ans { get; set; }
     }
 }
