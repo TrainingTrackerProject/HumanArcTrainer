@@ -73,9 +73,11 @@ namespace HumanArcCompliance.Controllers
 
         //}
 
+
         //public ActionResult EditTraining()
         //{
         //    return View(session.getSessionVars());
+
 
         //}
         //public ActionResult AddTraining()
@@ -172,8 +174,13 @@ namespace HumanArcCompliance.Controllers
         // group comment end
         //sean uncomment end
 
-         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        public ActionResult gradeQuiz()
+        {
+            return View(session.getSessionVars());
+
+        }
     }
     public class Questionsoptions
     {
