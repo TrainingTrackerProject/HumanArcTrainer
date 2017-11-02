@@ -6,7 +6,8 @@ using System.Configuration;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using HumanArcCompliance.Models;
- 
+using System.Text.RegularExpressions;
+
 namespace HumanArcCompliance.helpers
 {
     public class ADSearcher
@@ -32,7 +33,7 @@ namespace HumanArcCompliance.helpers
         /// <returns>UserPrincipal for obtaining different information about the user account</returns>
         public UserPrincipal findCurrentUserName(HttpRequestBase req)
         {
-            //string username = "test1"; 
+            //string username = "jsmith"; 
             string username = req.LogonUserIdentity.Name;
 
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
@@ -75,30 +76,56 @@ namespace HumanArcCompliance.helpers
             //property names will be declared in config files
             if (Key == ConfigurationManager.AppSettings["givenName"])
             {
-                item.givenName = de.Properties["givenName"].Value.ToString();
+                item.givenName = de.Properties[ConfigurationManager.AppSettings["givenName"]].Value.ToString();
             }
-            if (Key == ConfigurationManager.AppSettings["sn"])
+            if (Key == ConfigurationManager.AppSettings["surname"])
             {
-                item.sn = de.Properties["sn"].Value.ToString();
+                item.sn = de.Properties[ConfigurationManager.AppSettings["surname"]].Value.ToString();
             }
-            if (Key == ConfigurationManager.AppSettings["mail"])
+            if (Key == ConfigurationManager.AppSettings["email"])
             {
-                item.mail = de.Properties["mail"].Value.ToString();
+                item.mail = de.Properties[ConfigurationManager.AppSettings["email"]].Value.ToString();
+            }
+            if (Key == ConfigurationManager.AppSettings["sAMAccountName"])
+            {
+                item.sAMAccountName = de.Properties[ConfigurationManager.AppSettings["sAMAccountName"]].Value.ToString();
             }
             if (Key == ConfigurationManager.AppSettings["memberOf"])
             {
-                for (int i = 0; i < de.Properties["memberOf"].Count; i++)
-                {
 
+                List<String> memberGroups = new List<String>();
+                foreach (String s in de.Properties[ConfigurationManager.AppSettings["memberOf"]])
+                {
+                    List<string> cn = parseMemberGroup(s);
+                    foreach(string str in cn)
+                    {
+                        memberGroups.Add(str);
+                    }                   
                 }
-                
+                item.memberOf = memberGroups.ToArray();
+
 
                 //item.memberOf = memberString.Split(',').Split(',')[0];
             }
             return item;
         }
 
-        
+        public List<string> parseMemberGroup(String memberGroup)
+        {
+            List<string> cn = new List<string>();
+            String[] parsedGroup = memberGroup.Split(',');
+            for (int i = 0; i < parsedGroup.Length; i++)
+            {
+                if (parsedGroup[i].Substring(0, 2).Equals("CN"))
+                {
+                    String[] cnParsed = parsedGroup[i].Split('=');
+                    cn.Add(cnParsed[1]);
+                }
+            }
+            return cn;
+        }
+
+
 
     }
 }

@@ -9,17 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Scripts.Render("~/bundles/jquery")
-
-
     @Styles.Render("~/Content/css")
+
 </head>
 <body>
     @model HumanArcCompliance.Models.ADUser
     @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
     @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
-    <div class="container-fluid">
+    @Html.HiddenFor(m => m.memberOf, new { id = "memberOf" })
+    <div id="fullBody" class="container-fluid" style="display:none;">
         <div id="header">
-            @Html.ActionLink(".", "Index", "Home", new { @id = "logo" })
+            <a id="logo" href="@Url.Action("Index", "Home")"></a>
             <hr />
         </div>
         <div id="content">
@@ -59,10 +59,9 @@
             <p>&copy; @DateTime.Now.Year - Human Arc</p>
         </footer>
     </div>
-    @Scripts.Render("~/bundles/bootstrap")
     @Styles.Render("~/Content/DataTables/css")
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/DataTables/js")
-    <script src="~/Scripts/site.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
