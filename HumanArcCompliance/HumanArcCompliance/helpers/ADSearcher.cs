@@ -17,7 +17,8 @@ namespace HumanArcCompliance.helpers
         //String Password = ConfigurationManager.AppSettings["superUserPass"];
         //connection to active directory 
 
-        
+        private String _path;
+        private String _filterAttribute;
         PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
 
 
@@ -31,6 +32,7 @@ namespace HumanArcCompliance.helpers
         /// </summary>
         /// <param name="req"></param>
         /// <returns>UserPrincipal for obtaining different information about the user account</returns>
+        /// To get LogonUserIdentity you must use this HttpRequestBase
         public UserPrincipal findCurrentUserName(HttpRequestBase req)
         {
             //string username = "jsmith"; 
@@ -38,6 +40,19 @@ namespace HumanArcCompliance.helpers
 
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             UserPrincipal up = UserPrincipal.FindByIdentity(ctx, username);
+            return up;
+        }
+
+        /// <summary>
+        /// finds the user object of the person that was searched for 
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns>UserPrincipal for obtaining different information about the searched user account</returns>
+        /// Similar method because the one above must use the HttpRequestBase
+        public UserPrincipal findSearchedUserName(String sam)
+        {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            UserPrincipal up = UserPrincipal.FindByIdentity(ctx, sam);
             return up;
         }
 
@@ -69,6 +84,9 @@ namespace HumanArcCompliance.helpers
             }
             return myADUser;
         }
+
+        
+        
 
         //If property matches with a specific property name then give ADUser that value
         public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
@@ -125,7 +143,40 @@ namespace HumanArcCompliance.helpers
             return cn;
         }
 
+        
+        public bool IsAuthenticated(String username, String pwd)
+        {
 
+            String domain = ConfigurationManager.AppSettings["domain"];
+            String domainAndUsername = domain + @"\" + username;
+            DirectoryEntry entry = new DirectoryEntry(_path, domainAndUsername, pwd);
+
+            try
+            {//Bind to the native AdsObject to force authentication.
+                Object obj = entry.NativeObject;
+
+                DirectorySearcher search = new DirectorySearcher(entry);
+
+                search.Filter = "(SAMAccountName=" + username + ")";
+                search.PropertiesToLoad.Add("cn");
+                SearchResult result = search.FindOne();
+
+                if (null == result)
+                {
+                    return false;
+                }
+
+                //Update the new path to the user in the directory.
+                //_path = result.Path;
+                //_filterAttribute = (String)result.Properties["cn"][0];
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
     }
 }
