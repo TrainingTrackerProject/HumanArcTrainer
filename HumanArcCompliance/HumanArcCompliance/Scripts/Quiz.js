@@ -24,9 +24,10 @@ Myapp.controller('QuizCtrl', function ($scope, getQuestion) {
     //get the Question and answers from the controller and pass it to array  
     $scope.rbshow = false;
     getQuestion.result().then(function (response) {
+        document.write(response+"\n");
+        document.write(response.length);
         for (var i = 0; i < response.length; i++) {
             $scope.QuestionAnswer.push(response[i]);
-            document.write("yes")
         }
     });
     $scope.nextQuestion = function () {
