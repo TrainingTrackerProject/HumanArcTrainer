@@ -15,7 +15,6 @@ namespace HumanArcCompliance.helpers
         public void checkExistingUser(ADUser myADUser)
         {
 
-
             string conn = ConfigurationManager.ConnectionStrings["HumanArcEntities"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(conn))
             {

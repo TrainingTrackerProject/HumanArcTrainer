@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +19,7 @@ namespace HumanArcCompliance.helpers
 
         private String _path;
         private String _filterAttribute;
+
         PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
 
 
@@ -37,7 +38,6 @@ namespace HumanArcCompliance.helpers
         {
             //string username = "jsmith"; 
             string username = req.LogonUserIdentity.Name;
-
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             UserPrincipal up = UserPrincipal.FindByIdentity(ctx, username);
             return up;
@@ -70,23 +70,35 @@ namespace HumanArcCompliance.helpers
             ADUser myADUser = new ADUser();
             try
             {
-                SearchResult adSearchResult = ds.FindOne();
-                DirectoryEntry de = adSearchResult.GetDirectoryEntry();
-                // Goes through all properties
-                foreach (string Key in de.Properties.PropertyNames)
+                // find currently logged in user LDAP Query
+                //ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
+                ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=" + currentUser.SamAccountName + "))";
+                ds.Sort = option;
+                try
                 {
-                    myADUser = checkFields(de, Key, myADUser);
+                    SearchResult adSearchResult = ds.FindOne();
+                    DirectoryEntry de = adSearchResult.GetDirectoryEntry();
+                    // Goes through all properties
+                    foreach (string Key in de.Properties.PropertyNames)
+                    {
+                        myADUser = checkFields(de, Key, myADUser);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Console.WriteLine(e);
+
             }
             return myADUser;
         }
 
-        
-        
+
+
+        //If property matches with a specific property name then give ADUser that value
 
         //If property matches with a specific property name then give ADUser that value
         public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
@@ -115,10 +127,10 @@ namespace HumanArcCompliance.helpers
                 foreach (String s in de.Properties[ConfigurationManager.AppSettings["memberOf"]])
                 {
                     List<string> cn = parseMemberGroup(s);
-                    foreach(string str in cn)
+                    foreach (string str in cn)
                     {
                         memberGroups.Add(str);
-                    }                   
+                    }
                 }
                 item.memberOf = memberGroups.ToArray();
 
@@ -143,7 +155,7 @@ namespace HumanArcCompliance.helpers
             return cn;
         }
 
-        
+
         public bool IsAuthenticated(String username, String pwd)
         {
 
@@ -177,6 +189,5 @@ namespace HumanArcCompliance.helpers
 
             return true;
         }
-
     }
 }
