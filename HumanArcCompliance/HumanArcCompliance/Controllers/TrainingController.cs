@@ -15,6 +15,7 @@ namespace HumanArcCompliance.Controllers
         sessionStorage session = new sessionStorage();
         public ActionResult MyTraining()
         {
+
             //get list of quizes assigned to user and return
             return View(session.getSessionVars());
         }
@@ -23,32 +24,40 @@ namespace HumanArcCompliance.Controllers
 
         //group comment start
         // sean uncomment start
-        //public ActionResult ManageEmployees()
-        //{
-        //    if (checkUserAuth("manager"))
-        //    {
-        //        //get employees 
-        //        return View();
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
+        public ActionResult ManageEmployees()
+        {          
+            if (checkUserAuth("manager"))
+            {
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }              
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
-        //public ActionResult EditTraining()
-        //{
-        //    if (checkUserAuth("hr"))
-        //    {
-        //        return View();
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
-        //public ActionResult AddTraining()
-        //{
-        //    if (checkUserAuth("hr"))
-        //    {
-        //        return View();
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
+        public ActionResult EditTraining()
+        {
+            if (checkUserAuth("hr"))
+            {
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult AddTraining()
+        {
+            if (checkUserAuth("hr"))
+            {
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
         //group comment end
         //sean uncomment end
 
@@ -56,26 +65,28 @@ namespace HumanArcCompliance.Controllers
 
         // sean comment start
         // group uncomment start
-        public ActionResult ManageEmployees()
-        {
+        //public ActionResult ManageEmployees()
+        //{
 
-            //get employees 
-            return View(session.getSessionVars());
+        //    //get employees 
+        //    return View(session.getSessionVars());
 
-        }
+        //}
 
-        public ActionResult EditTraining()
-        {
-            return View(session.getSessionVars());
 
-        }
-        public ActionResult AddTraining()
-        {
+        //public ActionResult EditTraining()
+        //{
+        //    return View(session.getSessionVars());
 
-            return View(session.getSessionVars());
 
-        }
-        // send comment end
+        //}
+        //public ActionResult AddTraining()
+        //{
+
+        //    return View(session.getSessionVars());
+
+        //}
+        // sean comment end
         //group uncomment end
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,15 +136,15 @@ namespace HumanArcCompliance.Controllers
         {
             String hr = (ConfigurationManager.AppSettings["hrGroup"]);
             String manager = (ConfigurationManager.AppSettings["managers"]);
-            ADSearcher searcher = new ADSearcher();
-            UserPrincipal user = searcher.findCurrentUserName(Request);
-            using (var context = new PrincipalContext(ContextType.Domain))
+            //ADSearcher searcher = new ADSearcher();
+            //UserPrincipal user = searcher.findCurrentUserName(Request);
+            /*using (var context = new PrincipalContext(ContextType.Domain))
             {
                 if (type == "manager")
                 {
                     try
                     {                 
-                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
+                        //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
                         {
                             return true;
                         }
@@ -147,7 +158,7 @@ namespace HumanArcCompliance.Controllers
                 {
                     try
                     {
-                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
+                        //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
                         {
                             return true;
                         }
@@ -157,14 +168,19 @@ namespace HumanArcCompliance.Controllers
                         Console.WriteLine(e);
                     }
                 }                   
-            }
-            return false;
+            }*/
+            return true;
         }
         // group comment end
         //sean uncomment end
 
-         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        public ActionResult gradeQuiz()
+        {
+            return View(session.getSessionVars());
+
+        }
     }
     public class Questionsoptions
     {

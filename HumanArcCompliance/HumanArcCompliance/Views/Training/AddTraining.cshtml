@@ -6,7 +6,7 @@
 *@
 
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
-<h2>Add Training</h2>
+<h2>Add Quiz</h2>
 <form>
     <div class="row">
         <div class="col-md-8">
@@ -38,12 +38,33 @@
                 </div>
             </div>
 
+            <h4>Add Quiz Questions</h4>
+
             <div class="form-group">
-                <label for="addQuestion">Add Quiz Question</label>
-                <input type="text" class="form-control" id="addQuestion" placeholder="Add Question">
+                <label for="uploadMedia">Question Type</label>
+                <div class="radio">
+                    <label><input id="mcType" type="radio" name="typeRadio">Multiple Choice</label>
+                </div>
+                <div class="radio">
+                    <label><input id="tfType" type="radio" name="typeRadio">True/False</label>
+                </div>
+                <div class="radio">
+                    <label><input id="saType" type="radio" name="typeRadio">Short Answer</label>
+                </div>
             </div>
+
+            <div class="form-group">
+                <label for="questionText">Question</label>
+                <input type="text" class="form-control" id="questionText" placeholder="Enter Quiz Question">
+            </div>
+            
+   
+
+
+
+            
+
             <button type="submit" class="btn btn-primary pull-right resizeBtn">Add More</button>
-            <button type="submit" class="btn btn-primary pull-right resizeBtn">Submit</button>
         </div>
     </div>
 
