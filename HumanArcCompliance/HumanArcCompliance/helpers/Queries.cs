@@ -15,15 +15,6 @@ namespace HumanArcCompliance.helpers
         public void checkExistingUser(ADUser myADUser)
         {
 
-<<<<<<< HEAD
-            //using (var ctx = new HumanArcEntities())
-            //{
-            //    var DBUser = ctx.Users.Where(Users => Users.SAMAccountName == myADUser.sAMAccountName);
-
-            //}
-            return true;
-=======
-
             string conn = ConfigurationManager.ConnectionStrings["HumanArcEntities"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(conn))
             {
@@ -50,7 +41,6 @@ namespace HumanArcCompliance.helpers
                 
                 connection.Close();
             }
->>>>>>> 047c5b76838955201fd965ff4d476d3464ae2c00
         }
     }
 }

@@ -22,59 +22,47 @@ namespace HumanArcCompliance.Controllers
         /// <param name="req"></param>
         public ActionResult Index()
         {
-<<<<<<< HEAD
-            //ApplicationDbContext will be user when a user logs in a new user entry is created for them
-            //ApplicationDbContext db = new ApplicationDbContext();
-            //ADSearcher ad = new ADSearcher();
-=======
             sessionStorage session = new sessionStorage();
             if (session.getSessionVars() != null)
             {
                 return View(session.getSessionVars());
             }
->>>>>>> 047c5b76838955201fd965ff4d476d3464ae2c00
+
+
             ADUser myADUser = new ADUser();
             // Stored in config files so Human Arc can change to meet their group names
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
-<<<<<<< HEAD
-            // Call to ADSearcher
-            //UserPrincipal user = ad.findCurrentUserName(Request);
-            /*using (var context = new PrincipalContext(ContextType.Domain))
-=======
+
             
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //group comment start
+            /*group comment start
             //sean uncomment start
             //ApplicationDbContext will be user when a user logs in a new user entry is created for them
 
             ADSearcher ad = new ADSearcher();
 
 
-            UserPrincipal user = ad.findCurrentUserName(Request);
+            /*UserPrincipal user = ad.findCurrentUserName(Request);
             using (var context = new PrincipalContext(ContextType.Domain))
->>>>>>> 047c5b76838955201fd965ff4d476d3464ae2c00
+
             {
                 try
                 {
                     //myADUser = ad.findByUserName(user);
-                    //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
+                    if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
                     {
                         myADUser.isHR = "true";
                         myADUser.isManager = "false";
 
                     }
-                    //else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
+                    else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
                     {
                         myADUser.isHR = "false";
                         myADUser.isManager = "true";
-<<<<<<< HEAD
-                    }                
-                    //else
-=======
+
                     }
                     else
->>>>>>> 047c5b76838955201fd965ff4d476d3464ae2c00
                     {
                         myADUser.isManager = "false";
                         myADUser.isHR = "false";
@@ -87,10 +75,6 @@ namespace HumanArcCompliance.Controllers
                     //return RedirectToAction("login", "LoginController");
 
                 }
-<<<<<<< HEAD
-            }*/
-            //ad.setSessionVars(myADUser);
-=======
             }
             //group comment end
             //sean uncomment end
@@ -104,13 +88,13 @@ namespace HumanArcCompliance.Controllers
 
             //sean comment end
             //group uncomment end
->>>>>>> 047c5b76838955201fd965ff4d476d3464ae2c00
+            */
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Queries query = new Queries();
             query.checkExistingUser(myADUser);
             session.setSessionVars(myADUser);
             return View(myADUser);
-        }  
-    }
+        }
+    } 
 }
