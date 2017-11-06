@@ -42,29 +42,46 @@
 
             <div class="form-group">
                 <label for="uploadMedia">Question Type</label>
-                <div class="radio">
-                    <label><input id="mcType" type="radio" name="typeRadio">Multiple Choice</label>
-                </div>
-                <div class="radio">
-                    <label><input id="tfType" type="radio" name="typeRadio">True/False</label>
-                </div>
-                <div class="radio">
-                    <label><input id="saType" type="radio" name="typeRadio">Short Answer</label>
+                <div class="wrap" ng-app="">
+                    <label for="multipleChoice">Multiple Choice</label>
+                    <input id="multipleChoice" type="radio" name="content" ng-model="content" value="multipleChoice">
+                    <br />
+                    <label for="trueFalse">True/False</label>
+                    <input id="trueFalse" type="radio" name="content" ng-model="content" value="trueFalse">
+                    <br />
+                    <label for="shortAnswer">Short Answer</label>
+                    <input id="shortAnswer" type="radio" name="content" ng-model="content" value="shortAnswer">
+                    <br /> <br />
+
+                    <!--Add Question Here-->
+                    <label for="questionText">Question</label>
+                    <input type="text" class="form-control" id="questionText" placeholder="Enter Quiz Question">
+                    <br />
+                    <div class="wrapper">
+                        <!--Box these in.
+                            Multiple choice. Choices:
+                            Four options. Correct choice underneath. Input boxes after choice and answer.-->
+                        <p ng-show="content == 'multipleChoice'">Multiple choice here</p>
+                        <!--Box these in.
+                            Multiple choice. Choices:
+                            Four options. Correct choice underneath. Input boxes after choice and answer.-->
+                        <h2 ng-show="content == 'trueFalse'">True/false here</h2>
+                        <!--Box these in.
+                            Short Answer. Question:
+                            No options. Large input box.-->
+                        <div ng-show="content == 'shortAnswer'">
+                            <label for="comment">Short Answer Question:</label>
+                            <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="questionText">Question</label>
-                <input type="text" class="form-control" id="questionText" placeholder="Enter Quiz Question">
-            </div>
-            
-   
-
-
-
-            
-
+            <!--Think of this too.-->
             <button type="submit" class="btn btn-primary pull-right resizeBtn">Add More</button>
+            <br /> <br />
+            <!--Think of this too.-->
+            <button type="submit" class="btn btn-primary pull-right resizeBtn">Submit Quiz</button>
         </div>
     </div>
 
