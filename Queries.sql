@@ -13,7 +13,8 @@ create table Users(
 	lastName varchar(50) not null,
 	email varchar(100),
 	userGroups varchar(max),
-	SAMAccountName varchar(100) not null
+	SAMAccountName varchar(100) not null,
+	manager varchar(50)
 );
 
 create table Groups(

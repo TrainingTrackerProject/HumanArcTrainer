@@ -22,5 +22,7 @@ namespace HumanArcCompliance.Models
         public String sAMAccountName { get; set; }
 
         public String[] memberOf { get; set; }
+
+        public String manager { get; set; }
     }
 }

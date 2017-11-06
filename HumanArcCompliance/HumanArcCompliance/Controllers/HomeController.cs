@@ -43,23 +43,23 @@ namespace HumanArcCompliance.Controllers
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
 
-            
+
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            /*group comment start
+            //group comment start
             //sean uncomment start
             //ApplicationDbContext will be user when a user logs in a new user entry is created for them
 
-            //ADSearcher ad = new ADSearcher();
+            ADSearcher ad = new ADSearcher();
 
 
 
-            /*UserPrincipal user = ad.findCurrentUserName(Request);
+            UserPrincipal user = ad.findCurrentUserName(Request);
             using (var context = new PrincipalContext(ContextType.Domain))
 
             {
                 try
                 {
-                    //myADUser = ad.findByUserName(user);
+                    myADUser = ad.findByUserName(user);
                     if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
                     {
                         myADUser.isHR = "true";
@@ -82,10 +82,10 @@ namespace HumanArcCompliance.Controllers
                 {
                     Console.WriteLine(e);
                     //***Not*** imlemented yet if user info fails to be pulled go to login page
-                    //return RedirectToAction("login", "LoginController");
+                    return RedirectToAction("login", "LoginController");
 
-            //    }
-            //}
+                }
+            }
 
             
             //group comment end
@@ -100,18 +100,18 @@ namespace HumanArcCompliance.Controllers
 
             //sean comment end
             //group uncomment end
-            */
+            
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Queries query = new Queries();
-            //query.checkExistingUser(myADUser);
             session.setSessionVars(myADUser);
+            query.checkExistingUser(myADUser);
             return View(myADUser);
         }
-        //public ActionResult Login()
-        //{
-        //    return View();
-        //}
+        public ActionResult Login()
+        {
+            return View();
+        }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 

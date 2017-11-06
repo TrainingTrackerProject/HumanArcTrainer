@@ -63,36 +63,25 @@ namespace HumanArcCompliance.helpers
         /// <returns>UserPrincipal for obtaining different information about the current user/searched account</returns>
         public ADUser findByUserName(UserPrincipal currentUser)
         {
+            ADUser myADUser = new ADUser();
             // find currently logged in user LDAP Query
             //ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
-            ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=" + currentUser.SamAccountName + "))";
+            ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=testUser1))";
             ds.Sort = option;
-            ADUser myADUser = new ADUser();
             try
             {
-                // find currently logged in user LDAP Query
-                //ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
-                ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=" + currentUser.SamAccountName + "))";
-                ds.Sort = option;
-                try
+                SearchResult adSearchResult = ds.FindOne();
+                DirectoryEntry de = adSearchResult.GetDirectoryEntry();
+                // Goes through all properties
+                foreach (string Key in de.Properties.PropertyNames)
                 {
-                    SearchResult adSearchResult = ds.FindOne();
-                    DirectoryEntry de = adSearchResult.GetDirectoryEntry();
-                    // Goes through all properties
-                    foreach (string Key in de.Properties.PropertyNames)
-                    {
-                        myADUser = checkFields(de, Key, myADUser);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                    myADUser = checkFields(de, Key, myADUser);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-
-            }
+                Console.WriteLine(e);
+            }        
             return myADUser;
         }
 
@@ -154,7 +143,6 @@ namespace HumanArcCompliance.helpers
             }
             return cn;
         }
-
 
         public bool IsAuthenticated(String username, String pwd)
         {
