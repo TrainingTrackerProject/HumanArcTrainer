@@ -11,10 +11,10 @@ create table Users(
 	id int identity primary key,
 	firstName varchar(50) not null,
 	lastName varchar(50) not null,
-	email varchar(100),
+	email varchar(100) not  null,
 	userGroups varchar(max),
 	SAMAccountName varchar(100) not null,
-	manager varchar(50)
+	manager varchar(50) not  null
 );
 
 create table Groups(

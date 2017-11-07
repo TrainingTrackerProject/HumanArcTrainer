@@ -16,24 +16,17 @@ namespace HumanArcCompliance.helpers
         //String ADUser_Id = ConfigurationManager.AppSettings["domain"] + "\\" + ConfigurationManager.AppSettings["superUserName"]; //make sure user name has domain name.
         //String Password = ConfigurationManager.AppSettings["superUserPass"];
         //connection to active directory 
-
         private String _path;
         private String _filterAttribute;
-
         PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-
-
         private DirectorySearcher ds = new DirectorySearcher();
         private SortOption option = new System.DirectoryServices.SortOption("sn", System.DirectoryServices.SortDirection.Ascending);
-
-
 
         /// <summary>
         /// find Current Username finds the current username based on the Request.ServerVariables["AUTH_USER"] member.
         /// </summary>
         /// <param name="req"></param>
         /// <returns>UserPrincipal for obtaining different information about the user account</returns>
-        /// To get LogonUserIdentity you must use this HttpRequestBase
         public UserPrincipal findCurrentUserName(HttpRequestBase req)
         {
             //string username = "jsmith"; 
@@ -43,18 +36,6 @@ namespace HumanArcCompliance.helpers
             return up;
         }
 
-        /// <summary>
-        /// finds the user object of the person that was searched for 
-        /// </summary>
-        /// <param name="req"></param>
-        /// <returns>UserPrincipal for obtaining different information about the searched user account</returns>
-        /// Similar method because the one above must use the HttpRequestBase
-        public UserPrincipal findSearchedUserName(String sam)
-        {
-            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-            UserPrincipal up = UserPrincipal.FindByIdentity(ctx, sam);
-            return up;
-        }
 
         /// <summary>
         /// Finds the available AD user information based off of the userPrincipal
@@ -74,23 +55,29 @@ namespace HumanArcCompliance.helpers
                 DirectoryEntry de = adSearchResult.GetDirectoryEntry();
                 // Goes through all properties
                 foreach (string Key in de.Properties.PropertyNames)
+
                 {
                     myADUser = checkFields(de, Key, myADUser);
                 }
+                return myADUser;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }        
+            }
             return myADUser;
         }
 
 
+        public UserPrincipal findSearchedUserName(String sam)
+        {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+            UserPrincipal up = UserPrincipal.FindByIdentity(ctx, sam);
+            return up;
+        }
 
-        //If property matches with a specific property name then give ADUser that value
-
-        //If property matches with a specific property name then give ADUser that value
-        public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
+    //If property matches with a specific property name then give ADUser that value
+    public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
         {
             //property names will be declared in config files
             if (Key == ConfigurationManager.AppSettings["givenName"])
@@ -101,6 +88,7 @@ namespace HumanArcCompliance.helpers
             {
                 item.sn = de.Properties[ConfigurationManager.AppSettings["surname"]].Value.ToString();
             }
+
             if (Key == ConfigurationManager.AppSettings["email"])
             {
                 item.mail = de.Properties[ConfigurationManager.AppSettings["email"]].Value.ToString();
@@ -109,9 +97,12 @@ namespace HumanArcCompliance.helpers
             {
                 item.sAMAccountName = de.Properties[ConfigurationManager.AppSettings["sAMAccountName"]].Value.ToString();
             }
+            if (Key == ConfigurationManager.AppSettings["manager"])
+            {
+                item.manager = parseManager(de.Properties[ConfigurationManager.AppSettings["manager"]].Value.ToString());
+            }
             if (Key == ConfigurationManager.AppSettings["memberOf"])
             {
-
                 List<String> memberGroups = new List<String>();
                 foreach (String s in de.Properties[ConfigurationManager.AppSettings["memberOf"]])
                 {
@@ -144,19 +135,31 @@ namespace HumanArcCompliance.helpers
             return cn;
         }
 
+        public string parseManager(string manager)
+        {
+            String[] parsedManager = manager.Split(',');
+            for (int i = 0; i < parsedManager.Length; i++)
+            {
+                if (parsedManager[i].Substring(0, 2).Equals("CN"))
+                {
+                    String[] cnParsed = parsedManager[i].Split('=');
+                    return cnParsed[1];
+                }
+            }
+            return null;
+        }
+
+
         public bool IsAuthenticated(String username, String pwd)
         {
 
             String domain = ConfigurationManager.AppSettings["domain"];
             String domainAndUsername = domain + @"\" + username;
             DirectoryEntry entry = new DirectoryEntry(_path, domainAndUsername, pwd);
-
             try
             {//Bind to the native AdsObject to force authentication.
                 Object obj = entry.NativeObject;
-
                 DirectorySearcher search = new DirectorySearcher(entry);
-
                 search.Filter = "(SAMAccountName=" + username + ")";
                 search.PropertiesToLoad.Add("cn");
                 SearchResult result = search.FindOne();
@@ -165,17 +168,16 @@ namespace HumanArcCompliance.helpers
                 {
                     return false;
                 }
-
-                //Update the new path to the user in the directory.
-                //_path = result.Path;
-                //_filterAttribute = (String)result.Properties["cn"][0];
             }
+            //Update the new path to the user in the directory.
+            //_path = result.Path;
+            //_filterAttribute = (String)result.Properties["cn"][0];
             catch (Exception ex)
             {
                 return false;
             }
-
             return true;
         }
+
     }
 }

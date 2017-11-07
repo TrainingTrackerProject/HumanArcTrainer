@@ -20,25 +20,16 @@ namespace HumanArcCompliance.Controllers
         /// checks if active directory is updated accouring to the last log entry 
         /// </summary>
         /// <param name="req"></param>
-        public ActionResult Index(string logonUser = null)
+        public ActionResult Index()
         {
-            ADUser myADUser = new ADUser();
             sessionStorage session = new sessionStorage();
-            if (logonUser != null)
+            if (session.getSessionVars() != null)
             {
-                myADUser = (ADUser)TempData[logonUser];
+                return View(session.getSessionVars());
             }
-            else
-            {
-                if (session.getSessionVars() != null)
-                {
-                    return View(session.getSessionVars());
-                }
-            }
-         
 
 
-
+            ADUser myADUser = new ADUser();
             // Stored in config files so Human Arc can change to meet their group names
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
@@ -49,45 +40,44 @@ namespace HumanArcCompliance.Controllers
             //sean uncomment start
             //ApplicationDbContext will be user when a user logs in a new user entry is created for them
 
-            ADSearcher ad = new ADSearcher();
+            //ADSearcher ad = new ADSearcher();
 
 
 
-            UserPrincipal user = ad.findCurrentUserName(Request);
-            using (var context = new PrincipalContext(ContextType.Domain))
+            //UserPrincipal user = ad.findCurrentUserName(Request);
+            //using (var context = new PrincipalContext(ContextType.Domain))
 
-            {
-                try
-                {
-                    myADUser = ad.findByUserName(user);
-                    if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
-                    {
-                        myADUser.isHR = "true";
-                        myADUser.isManager = "false";
+            //{
+            //    try
+            //    {
+            //        myADUser = ad.findByUserName(user);
+            //        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
+            //        {
+            //            myADUser.isHR = "true";
+            //            myADUser.isManager = "false";
 
-                    }
-                    else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
-                    {
-                        myADUser.isHR = "false";
-                        myADUser.isManager = "true";
+            //        }
+            //        else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
+            //        {
+            //            myADUser.isHR = "false";
+            //            myADUser.isManager = "true";
 
-                    }
-                    else
-                    {
-                        myADUser.isManager = "false";
-                        myADUser.isHR = "false";
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    //***Not*** imlemented yet if user info fails to be pulled go to login page
-                    return RedirectToAction("login", "LoginController");
+            //        }
+            //        else
+            //        {
+            //            myADUser.isManager = "false";
+            //            myADUser.isHR = "false";
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e);
+            //        //***Not*** imlemented yet if user info fails to be pulled go to login page
+            //        return RedirectToAction("login", "LoginController");
 
-                }
-            }
+            //    }
+            //}
 
-            
             //group comment end
             //sean uncomment end
 
@@ -95,15 +85,16 @@ namespace HumanArcCompliance.Controllers
 
             //sean comment start
             //group uncomment start
-            //validateUser validation = new validateUser();
-            //myADUser = validation.validate();
+            validateUser validation = new validateUser();
+            myADUser = validation.validate();
 
             //sean comment end
             //group uncomment end
-            
+
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Queries query = new Queries();
+
             session.setSessionVars(myADUser);
             query.checkExistingUser(myADUser);
             return View(myADUser);
@@ -117,31 +108,32 @@ namespace HumanArcCompliance.Controllers
 
         //Sean Uncomment start
         //group comment start
-        public ActionResult Login(string username = "", string password = "")
-        {
-            if (username != "" && password != "")
-            {
-                using (var context = new PrincipalContext(ContextType.Domain))
-                {
-                    ADSearcher ad = new ADSearcher();
-                    if (ad.IsAuthenticated(username, password))
-                    {
-                        UserPrincipal user = ad.findSearchedUserName(username);
+        //public ActionResult Login(string username = "", string password = "")
+        //{
+        //    if (username != "" && password != "")
+        //    {
+        //        using (var context = new PrincipalContext(ContextType.Domain))
+        //        {
+        //            ADSearcher ad = new ADSearcher();
+        //            if (ad.IsAuthenticated(username, password))
+        //            {
+        //                UserPrincipal user = ad.findSearchedUserName(username);
 
-                        TempData["logonUser"] = ad.findByUserName(user);
-                        return RedirectToAction("Index", new { logonUser = "logonUser" });
-                    }
-                }
-                ViewBag.userMessage = "Access Denied Invalid Login Please Try Again";
-                return View();
-            }
-            ViewBag.userMessage = "Please Log In";
-            return View();          
-        }
+        //                TempData["logonUser"] = ad.findByUserName(user);
+        //                return RedirectToAction("Index", new { logonUser = "logonUser" });
+        //            }
+        //        }
+        //        ViewBag.userMessage = "Access Denied Invalid Login Please Try Again";
+        //        return View();
+        //    }
+        //    ViewBag.userMessage = "Please Log In";
+        //    return View();          
+        //}
 
         //group comment end
         //sean uncomment end
 
         // /////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
+
 }

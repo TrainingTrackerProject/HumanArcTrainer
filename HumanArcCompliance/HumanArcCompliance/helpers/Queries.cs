@@ -33,14 +33,16 @@ namespace HumanArcCompliance.helpers
                     searchReader.Close();
                     SqlDataReader insertReader;
 
-                    cmd.CommandText = "insert into Users (firstName, lastName, email, userGroups, SAMAccountName)" +
+                    cmd.CommandText = "insert into Users (firstName, lastName, email, userGroups, SAMAccountName, manager)" +
                         "Values('" + myADUser.givenName + "','" + myADUser.sn + "','" + myADUser.mail + "','" +                        
-                        myADUser.memberOf.ToString() + "','" + myADUser.sAMAccountName + "');";
+                        myADUser.memberOf.ToString() + "','" + myADUser.sAMAccountName + "','" + myADUser.manager + "');";
                     insertReader = cmd.ExecuteReader();
                 }
                 else
                 {
                     searchReader.Read();
+                    string obj = (string)searchReader.GetValue(searchReader.GetOrdinal("manager"));
+                    string test = (string)searchReader.GetValue(searchReader.GetOrdinal("firstName"));
                     bool isChanged = false;
                     ADUser updateUser = new ADUser();
                     if(myADUser.givenName != (string)searchReader.GetValue(searchReader.GetOrdinal("firstName")))
