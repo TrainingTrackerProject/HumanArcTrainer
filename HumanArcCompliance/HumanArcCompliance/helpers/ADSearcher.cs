@@ -46,8 +46,8 @@ namespace HumanArcCompliance.helpers
         {
             ADUser myADUser = new ADUser();
             // find currently logged in user LDAP Query
-            //ds.Filter = ("(&(objectClass=user)(sAMAccountName = "+currentUser.SamAccountName+"))"); //+ currentUser.SamAccountName + "))");
-            ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=testUser1))";
+            ds.Filter = "(&(objectClass=user)(sAMAccountName="+currentUser.SamAccountName+"))";
+            //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=testUser1))";
             ds.Sort = option;
             try
             {
@@ -55,7 +55,6 @@ namespace HumanArcCompliance.helpers
                 DirectoryEntry de = adSearchResult.GetDirectoryEntry();
                 // Goes through all properties
                 foreach (string Key in de.Properties.PropertyNames)
-
                 {
                     myADUser = checkFields(de, Key, myADUser);
                 }

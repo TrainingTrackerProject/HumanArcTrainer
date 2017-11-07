@@ -36,20 +36,9 @@
     ["Martena Mccray", "Post-Sales support", "Edinburgh", "8240", "2011/03/09", "$324,050"],
     ["Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675"]
 ];
-
+var userData = [];
 $(document).ready(function () {
-    $('#employeeTable').DataTable({
-        data: dataSet,
-        columns: [
-            { title: "Name" },
-            { title: "Position" },
-            { title: "Office" },
-            { title: "Extn." },
-            { title: "Start date" },
-            { title: "Salary" }
-        ]
-    });
-
+    getAllUsers();
     $('#employeeTable tbody').on('click', 'tr', function () {
 
         var data = $('#employeeTable').DataTable().row(this).data()
@@ -59,3 +48,45 @@ $(document).ready(function () {
     });
 });
 
+getAllUsers = function () {
+    if (document.getElementById("hrCheck").value == "true") {
+        $.ajax({
+            url: '/Training/GetAllUsers',
+            type: 'GET',
+            async: true,
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data, status) {
+                fillDataTable(data);
+            },
+            error: function () {
+            }
+        });
+    } else {
+        $.ajax({
+            url: '/Training/GetAllManagersUsers',
+            type: 'GET',
+            async: true,
+            cache: false,
+            success: function (data, status) {
+                fillDataTable(data);
+            },
+            error: function () {
+            }
+        });
+    }
+}
+
+fillDataTable = function (users) {
+    $.each(users, function (index, value) {
+        userData.push([value.givenName + " " + value.sn, value.sAMAccountName, value.manager]);
+    })
+    $('#employeeTable').DataTable({
+        data: userData,
+        columns: [
+            { title: "Name" },
+            { title: "Username" },
+            { title: "manager" },
+        ]
+    });
+}
