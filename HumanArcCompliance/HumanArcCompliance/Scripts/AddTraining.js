@@ -26,3 +26,20 @@ app.controller('addQuestionController', function ($scope, $http) {
         $scope.choiceSet.choices.splice(z, 1);
     };
 });
+
+function getAllGroups() {
+    $.ajax({
+        type: 'GET',
+        url: '/Training/GetAllGroups',
+        contentType: 'application/json; charset=utf-8',
+        success: function (data, status) {
+            $.each(data, function (index, value) {
+                //alert(value.name);
+            });
+        },
+    })
+}
+
+$(document).ready(function () {
+    getAllGroups();
+});
