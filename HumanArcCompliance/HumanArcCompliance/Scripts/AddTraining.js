@@ -12,7 +12,6 @@ $(document).on('change', '.hide-file', function () {
 var app = angular.module('addQuestionApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
-    document.write("Hello");
     $scope.choiceSet = { choices: [] };
     $scope.quest = {};
 
