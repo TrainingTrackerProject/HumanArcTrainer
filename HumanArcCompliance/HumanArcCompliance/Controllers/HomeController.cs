@@ -29,7 +29,7 @@ namespace HumanArcCompliance.Controllers
             }
 
 
-            ADUser myADUser = new ADUser();
+            User myUser = new User();
             // Stored in config files so Human Arc can change to meet their group names
             String managers = (ConfigurationManager.AppSettings["managers"]);
             String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
@@ -50,14 +50,11 @@ namespace HumanArcCompliance.Controllers
             //{
             //    try
             //    {
-            //        myADUser = ad.findByUserName(user);
-            //        myADUser.isHR = "false";
-            //        myADUser.isManager = "true";
+            //        myUser = ad.findByUserName(user);
             //        //if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
             //        //{
             //        //    myADUser.isHR = "true";
             //        //    myADUser.isManager = "false";
-
             //        //}
             //        //else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
             //        //{
@@ -88,7 +85,7 @@ namespace HumanArcCompliance.Controllers
             //sean comment start
             //group uncomment start
             validateUser validation = new validateUser();
-            myADUser = validation.validate();
+            myUser = validation.validate();
 
             //sean comment end
             //group uncomment end
@@ -96,10 +93,11 @@ namespace HumanArcCompliance.Controllers
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             Queries query = new Queries();
-
-            session.setSessionVars(myADUser);
-            query.checkExistingUser(myADUser);
-            return View(myADUser);
+            ViewModel vm = new ViewModel();
+            UserViewModel vmUser = vm.userToModel(myUser);
+            session.setSessionVars(vmUser);
+            query.checkExistingUser(myUser);
+            return View(vmUser);
         }
         public ActionResult Login()
         {

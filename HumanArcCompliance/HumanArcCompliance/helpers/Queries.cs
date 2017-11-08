@@ -12,130 +12,119 @@ namespace HumanArcCompliance.helpers
 {
     public class Queries
     {
+      
+
         string conn = ConfigurationManager.ConnectionStrings["HumanArcEntities"].ConnectionString;
 
-        public void checkExistingUser(ADUser myADUser)
+        public void checkExistingUser(User myUser)
         {
-            using (SqlConnection connection = new SqlConnection(conn))
+
+            HumanArcEntities db = new HumanArcEntities();
+            User thisUser = db.Users.First(user => user.SAMAccountName == myUser.SAMAccountName);
+            if(thisUser != null)
             {
-                connection.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader searchReader;
-
-                cmd.CommandText = "SELECT * FROM Users where SAMAccountName = '"+myADUser.sAMAccountName+"';";
-
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = connection;
-
-                searchReader = cmd.ExecuteReader();
-                if (!searchReader.HasRows)
+                if(myUser.firstName != thisUser.firstName || myUser.lastName != thisUser.lastName || myUser.email != thisUser.email ||myUser.userGroups != thisUser.userGroups || myUser.manager != thisUser.manager)
                 {
-                    searchReader.Close();
-                    SqlDataReader insertReader;
-
-                    cmd.CommandText = "insert into Users (firstName, lastName, email, userGroups, SAMAccountName, manager)" +
-                        "Values('" + myADUser.givenName + "','" + myADUser.sn + "','" + myADUser.mail + "','" +                        
-                        myADUser.memberOf.ToString() + "','" + myADUser.sAMAccountName + "','" + myADUser.manager + "');";
-                    insertReader = cmd.ExecuteReader();
+                    thisUser = myUser;
                 }
-                else
-                {
-                    searchReader.Read();
-                    string obj = (string)searchReader.GetValue(searchReader.GetOrdinal("manager"));
-                    string test = (string)searchReader.GetValue(searchReader.GetOrdinal("firstName"));
-                    bool isChanged = false;
-                    ADUser updateUser = new ADUser();
-                    if(myADUser.givenName != (string)searchReader.GetValue(searchReader.GetOrdinal("firstName")))
-                    {
-                        isChanged = true;
-                    }
-                    if (myADUser.sn != (string)searchReader.GetValue(searchReader.GetOrdinal("lastName")))
-                    {
-                        isChanged = true;
-                    }
-                    if (myADUser.mail != (string)searchReader.GetValue(searchReader.GetOrdinal("email")))
-                    {
-                        isChanged = true;
-                    }
-                    if (myADUser.manager != (string)searchReader.GetValue(searchReader.GetOrdinal("manager")))
-                    {
-                        isChanged = true;
-                    }
-                    if (isChanged)
-                    {
-                        searchReader.Close();
-                        cmd.CommandText = "UPDATE Users SET firstName = '" + myADUser.givenName + "', " +
-                            "lastName = '" + myADUser.sn + "', email = '" + myADUser.mail + "'," +
-                            "SAMAccountName = '" + myADUser.sAMAccountName + "', manager = '" + myADUser.manager + "' " +
-                            " WHERE SAMAccountName = '" + myADUser.sAMAccountName + "';";
-
-                        SqlDataReader updateReader;
-                        updateReader = cmd.ExecuteReader();
-                    }
-                }               
-                connection.Close();
             }
+            else
+            {
+                db.Users.Add(myUser);
+            }
+            db.SaveChanges();
+
+            //using (SqlConnection connection = new SqlConnection(conn))
+            //{
+            //    connection.Open();
+            //    SqlCommand cmd = new SqlCommand();
+            //    SqlDataReader searchReader;
+
+            //    cmd.CommandText = "SELECT * FROM Users where SAMAccountName = '"+myUser.SAMAccountName+"';";
+
+            //    cmd.CommandType = CommandType.Text;
+            //    cmd.Connection = connection;
+
+            //    searchReader = cmd.ExecuteReader();
+            //    if (!searchReader.HasRows)
+            //    {
+            //        searchReader.Close();
+            //        SqlDataReader insertReader;
+
+            //        cmd.CommandText = "insert into Users (firstName, lastName, email, userGroups, SAMAccountName, manager)" +
+            //            "Values('" + myADUser.givenName + "','" + myADUser.sn + "','" + myADUser.mail + "','" +                        
+            //            myADUser.memberOf.ToString() + "','" + myADUser.sAMAccountName + "','" + myADUser.manager + "');";
+            //        insertReader = cmd.ExecuteReader();
+            //    }
+            //    else
+            //    {
+            //        searchReader.Read();
+            //        string obj = (string)searchReader.GetValue(searchReader.GetOrdinal("manager"));
+            //        string test = (string)searchReader.GetValue(searchReader.GetOrdinal("firstName"));
+            //        bool isChanged = false;
+            //        ADUser updateUser = new ADUser();
+            //        if(myADUser.givenName != (string)searchReader.GetValue(searchReader.GetOrdinal("firstName")))
+            //        {
+            //            isChanged = true;
+            //        }
+            //        if (myADUser.sn != (string)searchReader.GetValue(searchReader.GetOrdinal("lastName")))
+            //        {
+            //            isChanged = true;
+            //        }
+            //        if (myADUser.mail != (string)searchReader.GetValue(searchReader.GetOrdinal("email")))
+            //        {
+            //            isChanged = true;
+            //        }
+            //        if (myADUser.manager != (string)searchReader.GetValue(searchReader.GetOrdinal("manager")))
+            //        {
+            //            isChanged = true;
+            //        }
+            //        if (isChanged)
+            //        {
+            //            searchReader.Close();
+            //            cmd.CommandText = "UPDATE Users SET firstName = '" + myADUser.givenName + "', " +
+            //                "lastName = '" + myADUser.sn + "', email = '" + myADUser.mail + "'," +
+            //                "SAMAccountName = '" + myADUser.sAMAccountName + "', manager = '" + myADUser.manager + "' " +
+            //                " WHERE SAMAccountName = '" + myADUser.sAMAccountName + "';";
+
+            //            SqlDataReader updateReader;
+            //            updateReader = cmd.ExecuteReader();
+            //        }
+            //    }               
+            //    connection.Close();
         }
+    
 
-        public List<ADUser> getAllUsers()
+        public List<User> getAllUsers()
         {
-            List<ADUser> userList = new List<ADUser>();
-            using (SqlConnection connection = new SqlConnection(conn))
-            {
-                connection.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader searchReader;
+            HumanArcEntities db = new HumanArcEntities();
+            List<User> users = db.Users.ToList();
 
-                cmd.CommandText = "SELECT * FROM Users;";
+            //List<ADUser> userList = new List<ADUser>();
+            //using (SqlConnection connection = new SqlConnection(conn))
+            //{
+            //    connection.Open();
+            //    SqlCommand cmd = new SqlCommand();
+            //    SqlDataReader searchReader;
 
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = connection;
+            //    cmd.CommandText = "SELECT * FROM Users;";
 
-                searchReader = cmd.ExecuteReader();
-                while (searchReader.Read())
-                {
-                    ADUser managersUser = new ADUser();
-                    managersUser.givenName = (string)searchReader.GetValue(searchReader.GetOrdinal("firstName"));
-                    managersUser.sn = (string)searchReader.GetValue(searchReader.GetOrdinal("lastName"));
-                    managersUser.mail = (string)searchReader.GetValue(searchReader.GetOrdinal("email"));
-                    managersUser.sAMAccountName = (string)searchReader.GetValue(searchReader.GetOrdinal("SAMAccountName"));
-                    managersUser.manager = (string)searchReader.GetValue(searchReader.GetOrdinal("manager"));
-                    userList.Add(managersUser);
-                }
-            }
-            return userList;
-        }
+            //    cmd.CommandType = CommandType.Text;
+            //    cmd.Connection = connection;
 
-        public List<ADUser> getUserByManager(string manager)
-        {
-
-
-            List<ADUser> userList = new List<ADUser>();
-            using (SqlConnection connection = new SqlConnection(conn))
-            {
-                connection.Open();
-                SqlCommand cmd = new SqlCommand();
-                SqlDataReader searchReader;
-
-                cmd.CommandText = "SELECT * FROM Users where manager = '" + manager + "';";
-                //cmd.CommandText = "SELECT * FROM Users where manager = 'Administrator';";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = connection;
-
-                searchReader = cmd.ExecuteReader();
-
-                while (searchReader.Read())
-                {
-                    ADUser managersUser = new ADUser();
-                    managersUser.givenName = (string)searchReader.GetValue(searchReader.GetOrdinal("firstName"));
-                    managersUser.sn = (string)searchReader.GetValue(searchReader.GetOrdinal("lastName"));
-                    managersUser.mail = (string)searchReader.GetValue(searchReader.GetOrdinal("email"));
-                    managersUser.sAMAccountName = (string)searchReader.GetValue(searchReader.GetOrdinal("SAMAccountName"));
-                    managersUser.manager = (string)searchReader.GetValue(searchReader.GetOrdinal("manager"));
-                    userList.Add(managersUser);
-                }
-            }
-            return userList;
+            //    searchReader = cmd.ExecuteReader();
+            //    while (searchReader.Read())
+            //    {
+            //        ADUser managersUser = new ADUser();
+            //        managersUser.givenName = (string)searchReader.GetValue(searchReader.GetOrdinal("firstName"));
+            //        managersUser.sn = (string)searchReader.GetValue(searchReader.GetOrdinal("lastName"));
+            //        managersUser.mail = (string)searchReader.GetValue(searchReader.GetOrdinal("email"));
+            //        managersUser.sAMAccountName = (string)searchReader.GetValue(searchReader.GetOrdinal("SAMAccountName"));
+            //        managersUser.manager = (string)searchReader.GetValue(searchReader.GetOrdinal("manager"));
+            //        userList.Add(managersUser);
+            //    }
+            //}
+            return users;
         }
     }
 }

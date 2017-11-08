@@ -4,19 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d9b966edfb254493a13d19f2f5abef88" Name="Diagram1">
+      <Diagram DiagramId="c8280227a2e84cbb87dc13a11e122da4" Name="Diagram1">
         <EntityTypeShape EntityType="HumanArcModel.Answer" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.Group" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.Question" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.Quize" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.UserQuizQuestionAnswer" Width="1.5" PointX="9.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.User" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <AssociationConnector Association="HumanArcModel.FK__Answers__questio__3E52440B" ManuallyRouted="false" />
-        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__answe__4316F928" ManuallyRouted="false" />
-        <AssociationConnector Association="HumanArcModel.FK__Quizes__groupId__38996AB5" ManuallyRouted="false" />
-        <AssociationConnector Association="HumanArcModel.FK__Questions__quizI__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__quest__4222D4EF" ManuallyRouted="false" />
-        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__quizI__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__Answers__questio__2B0A656D" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__answe__2FCF1A8A" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__Quizes__groupId__25518C17" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__Questions__quizI__282DF8C2" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__quest__2EDAF651" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__quizI__2DE6D218" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

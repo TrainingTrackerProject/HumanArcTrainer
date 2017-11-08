@@ -42,9 +42,9 @@ namespace HumanArcCompliance.helpers
         /// </summary>
         /// <param name="req"></param>
         /// <returns>UserPrincipal for obtaining different information about the current user/searched account</returns>
-        public ADUser findByUserName(UserPrincipal currentUser)
+        public User findByUserName(UserPrincipal currentUser)
         {
-            ADUser myADUser = new ADUser();
+            User myUser = new User();
             // find currently logged in user LDAP Query
             ds.Filter = "(&(objectClass=user)(sAMAccountName="+currentUser.SamAccountName+"))";
             //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=tManagerF))";
@@ -56,25 +56,25 @@ namespace HumanArcCompliance.helpers
                 // Goes through all properties
                 foreach (string Key in de.Properties.PropertyNames)
                 {
-                    myADUser = checkFields(de, Key, myADUser);
+                    myUser = checkFields(de, Key, myUser);
                 }
-                return myADUser;
+                return myUser;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            return myADUser;
+            return myUser;
         }
 
-        public List<ADUser> getDirectReports(ADUser currentUser)
+        public List<User> getDirectReports(UserViewModel currentUser)
         {
-            ADUser myADUser = new ADUser();
+            User myUser = new User();
             // find currently logged in user LDAP Query
-            ds.Filter = "(&(objectClass=user)(sAMAccountName=" + currentUser.sAMAccountName + "))";
+            ds.Filter = "(&(objectClass=user)(sAMAccountName=" + currentUser.SAMAccountName + "))";
             //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=tManagerF))";
             ds.Sort = option;
-            List<ADUser> directReports = new List<ADUser>();
+            List<User> directReports = new List<User>();
             try
             {
                 SearchResult adSearchResult = ds.FindOne();
@@ -109,25 +109,25 @@ namespace HumanArcCompliance.helpers
         }
 
     //If property matches with a specific property name then give ADUser that value
-    public ADUser checkFields(DirectoryEntry de, String Key, ADUser item)
+    public User checkFields(DirectoryEntry de, String Key, User item)
         {
             //property names will be declared in config files
             if (Key == ConfigurationManager.AppSettings["givenName"])
             {
-                item.givenName = de.Properties[ConfigurationManager.AppSettings["givenName"]].Value.ToString();
+                item.firstName = de.Properties[ConfigurationManager.AppSettings["givenName"]].Value.ToString();
             }
             if (Key == ConfigurationManager.AppSettings["surname"])
             {
-                item.sn = de.Properties[ConfigurationManager.AppSettings["surname"]].Value.ToString();
+                item.lastName = de.Properties[ConfigurationManager.AppSettings["surname"]].Value.ToString();
             }
 
             if (Key == ConfigurationManager.AppSettings["email"])
             {
-                item.mail = de.Properties[ConfigurationManager.AppSettings["email"]].Value.ToString();
+                item.email = de.Properties[ConfigurationManager.AppSettings["email"]].Value.ToString();
             }
             if (Key == ConfigurationManager.AppSettings["sAMAccountName"])
             {
-                item.sAMAccountName = de.Properties[ConfigurationManager.AppSettings["sAMAccountName"]].Value.ToString();
+                item.SAMAccountName = de.Properties[ConfigurationManager.AppSettings["sAMAccountName"]].Value.ToString();
             }
             if (Key == ConfigurationManager.AppSettings["manager"])
             {
@@ -144,7 +144,7 @@ namespace HumanArcCompliance.helpers
                         memberGroups.Add(str);
                     }
                 }
-                item.memberOf = memberGroups.ToArray();
+                item.userGroups = memberGroups.ToString();
 
 
                 //item.memberOf = memberString.Split(',').Split(',')[0];
@@ -210,8 +210,5 @@ namespace HumanArcCompliance.helpers
             }
             return true;
         }
-
-
-
     }
 }

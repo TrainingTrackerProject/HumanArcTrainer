@@ -20,5 +20,6 @@ namespace HumanArcCompliance
         public string email { get; set; }
         public string userGroups { get; set; }
         public string SAMAccountName { get; set; }
+        public string manager { get; set; }
     }
 }

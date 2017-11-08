@@ -77,7 +77,7 @@ getAllUsers = function () {
 
 fillDataTable = function (users) {
     $.each(users, function (index, value) {
-        userData.push([value.givenName + " " + value.sn, value.sAMAccountName, value.manager]);
+        userData.push([value.firstName + " " + value.lastName, value.SAMAccountName, value.manager]);
     });
     $('#employeeTable').DataTable({
         data: userData,

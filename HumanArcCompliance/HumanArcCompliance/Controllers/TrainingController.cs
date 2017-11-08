@@ -21,6 +21,18 @@ namespace HumanArcCompliance.Controllers
             return View(session.getSessionVars());
         }
 
+        public ActionResult GetAllUsers()
+        {
+            Queries q = new Queries();
+            List<User> allUsers = q.getAllUsers();
+            return Json(allUsers, JsonRequestBehavior.AllowGet);
+        }
+
+        //public ActionResult AddQuiz()
+        //{
+        //    HumanArcEntities dbContext = new HumanArcEntities();
+
+        //}
         /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //group comment start
@@ -37,24 +49,16 @@ namespace HumanArcCompliance.Controllers
         //    return RedirectToAction("Index", "Home");
         //}
 
-        //public ActionResult GetAllUsers()
-        //{
-        //    Queries q = new Queries();
-        //    List<ADUser> allUsers = q.getAllUsers();
-        //    return Json(allUsers, JsonRequestBehavior.AllowGet);
-        //}
-
-        //public ActionResult GetAllManagersUsers()
-        //{
-        //    sessionStorage sessUser = new sessionStorage();
-        //    ADSearcher ad = new ADSearcher();
-        //    ADUser currentUser = new ADUser();
-        //    List<ADUser> allUsers = new List<ADUser>();
-        //    currentUser = sessUser.getSessionVars();
-        //    allUsers = ad.getDirectReports(currentUser);
-        //    Queries q = new Queries();
-        //    return Json(allUsers, JsonRequestBehavior.AllowGet);
-        //}
+        public ActionResult GetAllManagersUsers()
+        {
+            sessionStorage sessUser = new sessionStorage();
+            ADSearcher ad = new ADSearcher();
+            UserViewModel currentUser = new UserViewModel();
+            List<User> allUsers = new List<User>();
+            currentUser = sessUser.getSessionVars();
+            allUsers = ad.getDirectReports(currentUser);
+            return Json(allUsers, JsonRequestBehavior.AllowGet);
+        }
 
         //public ActionResult EditTraining()
         //{

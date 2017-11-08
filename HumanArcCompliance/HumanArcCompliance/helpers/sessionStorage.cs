@@ -8,16 +8,16 @@ namespace HumanArcCompliance.helpers
 {
     public class sessionStorage
     {
-        public void setSessionVars(ADUser myADUser)
+        public void setSessionVars(UserViewModel vmUser)
         {
-            HttpContext.Current.Session["currentUser"] = myADUser;
+            HttpContext.Current.Session["currentUser"] = vmUser;
         }
 
 
-        public ADUser getSessionVars()
+        public UserViewModel getSessionVars()
         {
-            ADUser myADUser = (ADUser)HttpContext.Current.Session["currentUser"];
-            return myADUser;
+            UserViewModel vmUser = (UserViewModel)HttpContext.Current.Session["currentUser"];
+            return vmUser;
         }
     }
 }
