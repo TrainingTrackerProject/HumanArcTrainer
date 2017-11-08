@@ -53,7 +53,6 @@ getAllUsers = function () {
         $.ajax({
             url: '/Training/GetAllUsers',
             type: 'GET',
-            async: true,
             cache: false,
             contentType: 'application/json; charset=utf-8',
             success: function (data, status) {
@@ -66,7 +65,6 @@ getAllUsers = function () {
         $.ajax({
             url: '/Training/GetAllManagersUsers',
             type: 'GET',
-            async: true,
             cache: false,
             success: function (data, status) {
                 fillDataTable(data);
@@ -80,7 +78,7 @@ getAllUsers = function () {
 fillDataTable = function (users) {
     $.each(users, function (index, value) {
         userData.push([value.givenName + " " + value.sn, value.sAMAccountName, value.manager]);
-    })
+    });
     $('#employeeTable').DataTable({
         data: userData,
         columns: [

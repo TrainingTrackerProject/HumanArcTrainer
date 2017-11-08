@@ -47,7 +47,7 @@ namespace HumanArcCompliance.helpers
             ADUser myADUser = new ADUser();
             // find currently logged in user LDAP Query
             ds.Filter = "(&(objectClass=user)(sAMAccountName="+currentUser.SamAccountName+"))";
-            //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=testUser1))";
+            //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=tManagerF))";
             ds.Sort = option;
             try
             {
@@ -66,6 +66,39 @@ namespace HumanArcCompliance.helpers
             }
             return myADUser;
         }
+
+        public List<ADUser> getDirectReports(ADUser currentUser)
+        {
+            ADUser myADUser = new ADUser();
+            // find currently logged in user LDAP Query
+            ds.Filter = "(&(objectClass=user)(sAMAccountName=" + currentUser.sAMAccountName + "))";
+            //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=tManagerF))";
+            ds.Sort = option;
+            List<ADUser> directReports = new List<ADUser>();
+            try
+            {
+                SearchResult adSearchResult = ds.FindOne();
+                DirectoryEntry de = adSearchResult.GetDirectoryEntry();               
+                foreach (string user in  de.Properties["directReports"])
+                {                  
+                    List<string> cn = parseMemberGroup(user);
+                    //foreach (string str in cn)
+                    //{
+                        //Use sam name to get userPrincipal
+                        //Use principal object to get user
+                        directReports.Add(findByUserName(findSearchedUserName(cn[0])));
+                    //}   
+                }             
+                return directReports;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return directReports;
+            }          
+        }
+
+
 
 
         public UserPrincipal findSearchedUserName(String sam)
@@ -177,6 +210,8 @@ namespace HumanArcCompliance.helpers
             }
             return true;
         }
+
+
 
     }
 }
