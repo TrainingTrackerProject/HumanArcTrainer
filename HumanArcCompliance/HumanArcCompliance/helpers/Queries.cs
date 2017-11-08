@@ -126,5 +126,11 @@ namespace HumanArcCompliance.helpers
             //}
             return users;
         }
+
+        public List<Group> getAllGroups()
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Groups.ToList();
+        }
     }
 }

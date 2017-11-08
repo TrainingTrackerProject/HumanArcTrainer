@@ -205,6 +205,15 @@ namespace HumanArcCompliance.Controllers
             return View(session.getSessionVars());
 
         }
+
+        public ActionResult getAllGroups()
+        {
+            Queries q = new Queries();
+            List<Group> groups = new List<Group>();
+            groups = q.getAllGroups();
+            return Json(groups, JsonRequestBehavior.AllowGet);
+
+        }
     }
     public class Questionsoptions
     {
