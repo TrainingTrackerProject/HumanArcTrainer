@@ -43,9 +43,6 @@
             <div ng-app="addQuestionApp" ng-controller="addQuestionController">
 
 
-                <input type="button" class="btn btn-info" ng-click="addNewChoice()" value="ADD QUESTION">
-                <br /><br />
-
 
                 <fieldset data-ng-repeat="field in choiceSet.choices track by $index">
 
@@ -120,13 +117,13 @@
                     </div>
 
                 </fieldset>
-
+                <br />
+                <input type="button" class="btn btn-info" ng-click="addNewChoice()" value="ADD QUESTION">
+                <br /><br />
             </div>
 
-            <!--Think of this too.-->
-            <button type="submit" class="btn btn-primary pull-right resizeBtn">Add More</button>
             <br /> <br />
-            <!--Think of this too.-->
+            <!--TODO-->
             <button type="submit" class="btn btn-primary pull-right resizeBtn">Submit Quiz</button>
         </div>
     </div>
