@@ -54,25 +54,54 @@
                     <br /> <br />
 
                     <!--Add Question Here-->
-                    <label for="questionText">Question</label>
-                    <input type="text" class="form-control" id="questionText" placeholder="Enter Quiz Question">
-                    <br />
-                    <div class="wrapper">
-                        <!--Box these in.
-                            Multiple choice. Choices:
-                            Four options. Correct choice underneath. Input boxes after choice and answer.-->
-                        <p ng-show="content == 'multipleChoice'">Multiple choice here</p>
-                        <!--Box these in.
-                            Multiple choice. Choices:
-                            Four options. Correct choice underneath. Input boxes after choice and answer.-->
-                        <h2 ng-show="content == 'trueFalse'">True/false here</h2>
-                        <!--Box these in.
-                            Short Answer. Question:
-                            No options. Large input box.-->
+                    <div class="form-group">
+                        <label for="questionText">Question</label>
+                        <input type="text" class="form-control" id="questionText" placeholder="Enter Quiz Question">
+                    </div>
+                    <div class="form-group">
+                        <div ng-show="content == 'multipleChoice'">
+                            <label for="choices">Multiple Choice Options:</label>
+                            <div class="form-group row">
+                                <label for="labelA" class="col-sm-2 col-form-label">Choice A:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="choiceA" placeholder="Enter Choice A">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="labelB" class="col-sm-2 col-form-label">Choice B:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="choiceB" placeholder="Enter Choice B">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="labelC" class="col-sm-2 col-form-label">Choice C:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="choiceC" placeholder="Enter Choice C">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="labelD" class="col-sm-2 col-form-label">Choice D:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="choiceD" placeholder="Enter Choice D">
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="content == 'trueFalse'">
+                            <div class="form-group row">
+                                <label for="tfStatement" class="col-sm-2 col-form-label">Statement:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="tfStatement" placeholder="Enter Statement">
+                                </div>
+                            </div>
+                        </div>
                         <div ng-show="content == 'shortAnswer'">
                             <label for="comment">Short Answer Question:</label>
                             <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="correctAnswer">Correct Answer</label>
+                        <input type="text" class="form-control" id="correctAnswer" placeholder="Enter Correct Answer">
                     </div>
                 </div>
             </div>
