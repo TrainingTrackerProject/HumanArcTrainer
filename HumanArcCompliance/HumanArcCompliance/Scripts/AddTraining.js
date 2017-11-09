@@ -26,19 +26,13 @@ app.controller('addQuestionController', function ($scope, $http) {
     };
 });
 
-function getAllGroups() {
-    $.ajax({
-        type: 'GET',
-        url: '/Training/GetAllGroups',
-        contentType: 'application/json; charset=utf-8',
-        success: function (data, status) {
-            $.each(data, function (index, value) {
-                //alert(value.name);
-            });
-        },
-    })
-}
-
-$(document).ready(function () {
-    getAllGroups();
+app.controller('addQuizController', function ($scope, $http) {
+    $scope.name = "quiz"
+    var groups = [];
+    $http.get('/Training/GetAllGroups').then(function (data) {
+        $.each(data.data, function (index, value) {
+            groups.push(value.name);
+        });
+    });
+    $scope.groups = groups;
 });

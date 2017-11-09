@@ -88,3 +88,9 @@ fillDataTable = function (users) {
         ]
     });
 }
+
+function makeJSON() {
+    $('.question').each(function (index, question) {
+
+    });
+}
