@@ -26,7 +26,7 @@
                             @*<option>Training Administrators</option>
                                 <option>Leadership</option>
                                 <option>Users</option>*@
-                            <option ng-repeat="group in groups">{{group}}</option>
+                            <option id="{{group.id}}" ng-repeat="group in groups">{{group.name}}</option>
                         </select>
                     </div>
 
@@ -46,101 +46,116 @@
                 <div ng-controller="addQuestionController">
 
 
+                    <div id="questions">
+                        <fieldset data-ng-repeat="field in choiceSet.choices track by $index" class="question">
 
-                    <fieldset data-ng-repeat="field in choiceSet.choices track by $index" class="question">
+                            <div ng-model="choiceSet.choices[$index]">
+                                <label for="uploadMedia">Question Type</label>
+                                <div class="form-group">
+                                    <label for="multipleChoice">Multiple Choice</label>
+                                    <input id="multipleChoice" type="radio" name="content{{$index}}" ng-model="content" value="multipleChoice">
+                                    <br />
+                                    <label for="trueFalse">True/False</label>
+                                    <input id="trueFalse" type="radio" name="content{{$index}}" ng-model="content" value="trueFalse">
+                                    <br />
+                                    <label for="shortAnswer">Short Answer</label>
+                                    <input id="shortAnswer" type="radio" name="content{{$index}}" ng-model="content" value="shortAnswer">
+                                    <br /> <br />
+                                    <div class="form-group">
+                                        <label for="questionText">Question</label>
+                                        <input rows="{{rows}}" type="text" class="form-control" id="questionText{{$index}}" placeholder="Enter Quiz Question">
+                                    </div>
+                                    <div class="form-group">
 
-                        <div ng-model="choiceSet.choices[$index]">
-                            <label for="uploadMedia">Question Type</label>
+                                        <div ng-show="content == 'multipleChoice'">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label for="choices">Multiple Choice Options:</label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="correct">Correct Answer</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="labelA" class="col-sm-2 col-form-label">Choice A:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="choice1{{$index}}" placeholder="Enter Choice A">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <input type="radio" name="correctAnswer{{$index}}" id="is1{{$index}}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="labelB" class="col-sm-2 col-form-label">Choice B:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="choice2{{$index}}" placeholder="Enter Choice B">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <input type="radio" name="correctAnswer{{$index}}" id="is2{{$index}}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="labelC" class="col-sm-2 col-form-label">Choice C:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="choice3{{$index}}" placeholder="Enter Choice C">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <input type="radio" name="correctAnswer{{$index}}" id="is3{{$index}}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="labelD" class="col-sm-2 col-form-label">Choice D:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="choice4{{$index}}" placeholder="Enter Choice D">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <input type="radio" name="correctAnswer{{$index}}" id="is4{{$index}}" />
+                                                </div>
+                                            </div>
+                                            @*<div class="form-group">
+                                    <label for="mcCorrect">Correct Answer</label>
+                                    <input type="text" class="form-control" id="mcCorrect" placeholder="Enter Letter of Answer ONLY">
+                                </div>*@
+
+                                        </div>
+                                        <div ng-show="content == 'trueFalse'">
+                                            <div class="form-group">
+                                                <label for="tfCorrect">Correct Answer</label>
+                                                @*<input type="text" class="form-control" id="tfCorrect" placeholder="Enter T or F">*@
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-2">
+                                                            <label for="trueAnswer{{$index}}">True</label>
+                                                            <input id="trueAnswer{{$index}}" type="radio" value="true" checked name="trueFalse{{$index}}" />
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label for="falseAnswer{{$index}}">False</label>
+                                                            <input id="falseAnswer{{$index}}" type="radio" value="false" name="trueFalse{{$index}}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+
+                                            </div>
+                                        </div>
+                                        <div ng-show="content == 'shortAnswer'">
+                                            @*<label for="comment">Short Answer Question:</label>
+                                <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div class="form-group">
-                                <label for="multipleChoice">Multiple Choice</label>
-                                <input id="multipleChoice" type="radio" name="content" ng-model="content" value="multipleChoice">
-                                <br />
-                                <label for="trueFalse">True/False</label>
-                                <input id="trueFalse" type="radio" name="content" ng-model="content" value="trueFalse">
-                                <br />
-                                <label for="shortAnswer">Short Answer</label>
-                                <input id="shortAnswer" type="radio" name="content" ng-model="content" value="shortAnswer">
-                                <br /> <br />
-                                <div class="form-group">
-                                    <label for="questionText">Question</label>
-                                    <input rows="{{rows}}" type="text" class="form-control" id="questionText" placeholder="Enter Quiz Question">
-                                </div>
-                                <div class="form-group">
-
-                                    <div ng-show="content == 'multipleChoice'">
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <label for="choices">Multiple Choice Options:</label>
-                                            </div>
-                                            <div class="col-sm-4">
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label for="correct">Correct Answer</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="labelA" class="col-sm-2 col-form-label">Choice A:</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="choiceA" placeholder="Enter Choice A">
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <input type="radio" name="correctAnswer{{$index}}" id="isA{{$index}}" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="labelB" class="col-sm-2 col-form-label">Choice B:</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="choiceB" placeholder="Enter Choice B">
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <input type="radio" name="correctAnswer{{$index}}" id="isB{{$index}}" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="labelC" class="col-sm-2 col-form-label">Choice C:</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="choiceC" placeholder="Enter Choice C">
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <input type="radio" name="correctAnswer{{$index}}" id="isC{{$index}}" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="labelD" class="col-sm-2 col-form-label">Choice D:</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="choiceD" placeholder="Enter Choice D">
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <input type="radio" name="correctAnswer{{$index}}" id="isD{{$index}}" />
-                                            </div>
-                                        </div>
-                                        @*<div class="form-group">
-                                                <label for="mcCorrect">Correct Answer</label>
-                                                <input type="text" class="form-control" id="mcCorrect" placeholder="Enter Letter of Answer ONLY">
-                                            </div>*@
-
-                                    </div>
-                                    <div ng-show="content == 'trueFalse'">
-                                        <div class="form-group">
-                                            <label for="tfCorrect">Correct Answer</label>
-                                            <input type="text" class="form-control" id="tfCorrect" placeholder="Enter T or F">
-                                        </div>
-                                    </div>
-                                    <div ng-show="content == 'shortAnswer'">
-                                        @*<label for="comment">Short Answer Question:</label>
-                                            <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>*@
-                                    </div>
-                                </div>
+                                <button type="button" class="btn btn-default btn-sm" ng-click="removeChoice($index)">
+                                    <span class="glyphicon glyphicon-minus"></span> REMOVE
+                                </button>
                             </div>
 
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-default btn-sm" ng-click="removeChoice($index)">
-                                <span class="glyphicon glyphicon-minus"></span> REMOVE
-                            </button>
-                        </div>
-
-                    </fieldset>
+                        </fieldset>
+                    </div>
                     <br />
                     <input type="button" class="btn btn-info" ng-click="addNewChoice();" value="ADD QUESTION">
                     <br /><br />
@@ -148,7 +163,7 @@
 
                 <br /> <br />
                 <!--TODO-->
-                <button type="submit" class="btn btn-primary pull-right resizeBtn">Submit Quiz</button>
+                <button id="submit" type="submit" class="btn btn-primary pull-right resizeBtn">Submit Quiz</button>
             </div>
         </div>
     </div>

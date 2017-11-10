@@ -8,6 +8,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Configuration;
 using HumanArcCompliance.Models;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HumanArcCompliance.Controllers
 {
@@ -206,14 +208,69 @@ namespace HumanArcCompliance.Controllers
 
         }
 
-        public ActionResult getAllGroups()
+        public ActionResult GetAllGroups()
         {
             Queries q = new Queries();
             List<Group> groups = new List<Group>();
             groups = q.getAllGroups();
-            return Json(groups, JsonRequestBehavior.AllowGet);
+            List<Group> sending = new List<Group>();
+            foreach(Group group in groups)
+            {
+                Group g = new Group();
+                g.id = group.id;
+                g.name = group.name;
+                sending.Add(g);
+            }
+            return Json(sending, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult AddQuiz(string group, string j)// string quiz, string question)
+        {
+            Queries query = new Queries();
+            string[] groups = group.Split(',');
+            var result = JsonConvert.DeserializeObject<Quiz>(j);           
+            foreach(string g in groups)
+            {
+                Quize quiz = new Quize();
+                quiz.description = result.description;
+                quiz.title = result.title;
+                quiz.groupId = Convert.ToInt32(g);
+                int quizId = query.addQuiz(quiz);
+                foreach (var question in result.questions)
+                {
+                    Question q = new Question();
+                    q.questionType = question.type;
+                    q.questionText = question.text;
+                    q.quizId = quizId;
+                    int questionId = query.addQuestion(q);
+                    foreach (var answer in question.answers)
+                    {
+                        Answer ans = new Answer();
+                        ans.answerText = answer.answerText;
+                        if (answer.isCorrect == "false")
+                        {
+                            ans.isCorrect = false;
+                        }
+                        else
+                        {
+                            ans.isCorrect = true;
+                        }
+                        ans.questionId = questionId;
+                        query.addAnswer(ans);
+                    }
+
+                }
+            }
+            
+
+            return Json("success", JsonRequestBehavior.AllowGet);
 
         }
+
+       
+
+        
     }
     public class Questionsoptions
     {
@@ -223,5 +280,32 @@ namespace HumanArcCompliance.Controllers
         public string OpC { get; set; }
         public string OpD { get; set; }
         public string Ans { get; set; }
+    }
+
+    public class Answers
+    {
+        public string answerText { get; set; }
+        public string isCorrect { get; set; }
+    }
+
+    public class Questions
+    {
+        public string type { get; set; }
+        public string text { get; set; }
+        public List<Answers> answers { get; set; }
+    }
+
+    public class Quiz
+    {
+        public string title { get; set; }
+        public string description { get; set; }
+        public List<Questions> questions { get; set; }
+
+
+    }
+
+    public class RootObject
+    {
+        public List<Quiz> result { get; set; }
     }
 }
