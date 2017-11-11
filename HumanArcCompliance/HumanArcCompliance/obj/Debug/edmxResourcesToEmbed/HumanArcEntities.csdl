@@ -57,6 +57,8 @@
     <NavigationProperty Name="Answer" Relationship="Self.FK__UserQuizQ__answe__2FCF1A8A" FromRole="UserQuizQuestionAnswers" ToRole="Answers" />
     <NavigationProperty Name="Question" Relationship="Self.FK__UserQuizQ__quest__2EDAF651" FromRole="UserQuizQuestionAnswers" ToRole="Questions" />
     <NavigationProperty Name="Quize" Relationship="Self.FK__UserQuizQ__quizI__2DE6D218" FromRole="UserQuizQuestionAnswers" ToRole="Quizes" />
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="HumanArcModel.FK__UserQuizQ__userI__489AC854" FromRole="UserQuizQuestionAnswer" ToRole="User" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -65,10 +67,11 @@
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="userGroups" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="SAMAccountName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="manager" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="UserQuizQuestionAnswers" Relationship="HumanArcModel.FK__UserQuizQ__userI__489AC854" FromRole="User" ToRole="UserQuizQuestionAnswer" />
   </EntityType>
   <Association Name="FK__Answers__questio__2B0A656D">
     <End Role="Questions" Type="Self.Question" Multiplicity="1" />
@@ -173,5 +176,21 @@
       <End Role="Quizes" EntitySet="Quizes" />
       <End Role="UserQuizQuestionAnswers" EntitySet="UserQuizQuestionAnswers" />
     </AssociationSet>
+    <AssociationSet Name="FK__UserQuizQ__userI__489AC854" Association="HumanArcModel.FK__UserQuizQ__userI__489AC854">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserQuizQuestionAnswer" EntitySet="UserQuizQuestionAnswers" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK__UserQuizQ__userI__489AC854">
+    <End Type="HumanArcModel.User" Role="User" Multiplicity="1" />
+    <End Type="HumanArcModel.UserQuizQuestionAnswer" Role="UserQuizQuestionAnswer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserQuizQuestionAnswer">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

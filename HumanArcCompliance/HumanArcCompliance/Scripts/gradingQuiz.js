@@ -1,10 +1,8 @@
 ﻿var userData = [];
 $(document).ready(function () {
-    $('#employeGradeTable tbody').on('click', 'tr', function () { 
-        var data = $('#employeGradeTable').DataTable().row(this).data()
-        alert('You clicked on ' + data[0] + '\'s row');
-    });
     getAllUsers();
+
+    
 });
 
 getAllUsers = function () {
@@ -15,6 +13,17 @@ getAllUsers = function () {
             contentType: 'application/json; charset=utf-8',
             success: function (data, status) {
                 fillDataTable(data);
+
+                
+                $('#employeeGradeTable tbody tr').on('click', function () {                  
+                    var data = $('#employeeGradeTable').DataTable().row(this).data();
+                    window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
+                    //$.ajax({
+                    //    url: '/Training/EmployeeQuizes',
+                    //    Type: 'POST',
+                    //    data: { id: data[0] }
+                    //});
+                });
             },
             error: function () {
             }
@@ -23,14 +32,16 @@ getAllUsers = function () {
 
 fillDataTable = function (users) {
     $.each(users, function (index, value) {
-        userData.push([value.firstName + " " + value.lastName, value.SAMAccountName, value.manager]);
+        userData.push([value.id, value.firstName + " " + value.lastName, value.SAMAccountName, value.manager]);
     });
-    $('#employeGradeTable').DataTable({
+    $('#employeeGradeTable').DataTable({
         data: userData,
+
         columns: [
+            { title: "id", visible: false },
             { title: "Name" },
             { title: "Username" },
-            { title: "manager" },
+            { title: "manager" }
         ]
     });
 }

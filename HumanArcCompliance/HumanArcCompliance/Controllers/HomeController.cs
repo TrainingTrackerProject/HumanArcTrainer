@@ -95,6 +95,7 @@ namespace HumanArcCompliance.Controllers
             Queries query = new Queries();
             ViewModel vm = new ViewModel();
             UserViewModel vmUser = vm.userToModel(myUser);
+            vmUser.isHR = "true";
             session.setSessionVars(vmUser);
             query.checkExistingUser(myUser);
             return View(vmUser);

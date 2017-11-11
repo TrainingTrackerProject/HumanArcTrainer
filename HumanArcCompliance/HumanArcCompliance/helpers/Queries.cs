@@ -91,5 +91,67 @@ namespace HumanArcCompliance.helpers
             db.SaveChanges();
             return a.id;         
         }
+
+        public List<UserQuizQuestionAnswer> getAllUserQuizes(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            List<UserQuizQuestionAnswer> userQuizes = new List<UserQuizQuestionAnswer>();
+            userQuizes = db.UserQuizQuestionAnswers.Where(quiz => quiz.userId == id).ToList();
+            return userQuizes;
+        }
+
+        public List<Question> getQuestionsByQuiz(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Questions.Where(q => q.id == id).ToList();
+        }
+
+        public List<Answer> getAnswersByQuestion(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Answers.Where(a => a.id == id).ToList();
+        }
+
+        public User getUserById(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Users.First(u => u.id == id);
+        }
+
+        public List<Quize> getQuizesByGroupId(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Quizes.Where(q => q.groupId == id).ToList();
+        }
+        public Group getGroupByName(string name)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            try
+            {
+                return db.Groups.First(g => g.name == name);
+            }
+            catch (Exception e)
+            {
+                Group group = new Group();
+                return group;
+            }
+            
+        }
+
+        public UserQuizQuestionAnswer getQuizByUserIdQuizId(int userId, int quizId)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            try
+            {
+                return db.UserQuizQuestionAnswers.First(uq => uq.userId == userId && uq.quizId == quizId);
+            }
+            catch (Exception e)
+            {
+                UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                return uqqa;
+            }
+        }
+        
+
     }
 }

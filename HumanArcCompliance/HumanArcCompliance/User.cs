@@ -14,6 +14,12 @@ namespace HumanArcCompliance
     
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.UserQuizQuestionAnswers = new HashSet<UserQuizQuestionAnswer>();
+        }
+    
         public int id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
@@ -21,5 +27,8 @@ namespace HumanArcCompliance
         public string userGroups { get; set; }
         public string SAMAccountName { get; set; }
         public string manager { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserQuizQuestionAnswer> UserQuizQuestionAnswers { get; set; }
     }
 }

@@ -25,8 +25,40 @@ namespace HumanArcCompliance.Controllers
 
         public ActionResult GetAllUsers()
         {
+            List<ManageEmployeeViewModel> userQuizes = new List<ManageEmployeeViewModel>();
             Queries q = new Queries();
-            List<User> allUsers = q.getAllUsers();
+            List<User> Users = q.getAllUsers();
+            foreach(User user in Users)
+            {
+                ManageEmployeeViewModel userQuiz = new ManageEmployeeViewModel();
+                userQuiz.id = user.id;
+                userQuiz.firstName = user.firstName;
+                userQuiz.lastName = user.lastName;
+                userQuiz.email = user.email;
+                userQuiz.manager = user.manager;
+                userQuiz.SAMAccountName = user.SAMAccountName;
+                userQuiz.hasUngradedQuiz = false;
+                List<UserQuizQuestionAnswer> usersQuizes = q.getAllUserQuizes(user.id);
+                foreach(UserQuizQuestionAnswer uqqa in usersQuizes)
+                {
+                    if (!uqqa.isChecked)
+                    {
+                        userQuiz.hasUngradedQuiz = true;
+                    }
+                }
+                userQuizes.Add(userQuiz);
+            }
+            return Json(userQuizes, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllManagersUsers()
+        {
+            sessionStorage sessUser = new sessionStorage();
+            ADSearcher ad = new ADSearcher();
+            UserViewModel currentUser = new UserViewModel();
+            List<User> allUsers = new List<User>();
+            currentUser = sessUser.getSessionVars();
+            allUsers = ad.getDirectReports(currentUser);
             return Json(allUsers, JsonRequestBehavior.AllowGet);
         }
 
@@ -50,18 +82,7 @@ namespace HumanArcCompliance.Controllers
         //    }
         //    return RedirectToAction("Index", "Home");
         //}
-
-        public ActionResult GetAllManagersUsers()
-        {
-            sessionStorage sessUser = new sessionStorage();
-            ADSearcher ad = new ADSearcher();
-            UserViewModel currentUser = new UserViewModel();
-            List<User> allUsers = new List<User>();
-            currentUser = sessUser.getSessionVars();
-            allUsers = ad.getDirectReports(currentUser);
-            return Json(allUsers, JsonRequestBehavior.AllowGet);
-        }
-
+        //
         //public ActionResult EditTraining()
         //{
         //    if (checkUserAuth("hr"))
@@ -229,7 +250,7 @@ namespace HumanArcCompliance.Controllers
         {
             Queries query = new Queries();
             string[] groups = group.Split(',');
-            var result = JsonConvert.DeserializeObject<Quiz>(j);           
+            var result = JsonConvert.DeserializeObject<JQuiz>(j);           
             foreach(string g in groups)
             {
                 Quize quiz = new Quize();
@@ -259,13 +280,94 @@ namespace HumanArcCompliance.Controllers
                         ans.questionId = questionId;
                         query.addAnswer(ans);
                     }
-
                 }
             }
-            
-
             return Json("success", JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GetUserQuizes(string id)
+        {
+            Queries query = new Queries();
+            User user = query.getUserById(Convert.ToInt32(id));
+            List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
+            string[] groups = user.userGroups.Split(',');
+            foreach(string group in groups)
+            {
+                int groupId = query.getGroupByName(group).id;
+                List<Quize> quizesByGroup = query.getQuizesByGroupId(groupId);
+                foreach(Quize quiz in quizesByGroup)
+                {
+                    EmployeeQuizesViewModel employeeQuiz = new EmployeeQuizesViewModel();
+                    employeeQuiz.userId = user.id;
+                    employeeQuiz.firstName = user.firstName;
+                    employeeQuiz.lastName = user.lastName;
+                    employeeQuiz.quizId = quiz.id;
+                    employeeQuiz.quizTitle = quiz.title;
+                    employeeQuiz.isCompleted = false;
+                    employeeQuiz.isGraded = false;
+                    UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                    uqqa = query.getQuizByUserIdQuizId(user.id, quiz.id);
+                    if (uqqa.id != 0)
+                    {
+                        employeeQuiz.isCompleted = true;
+                        if (uqqa.isChecked)
+                        {
+                            employeeQuiz.isGraded = true;
+                        }
+                    }
 
+                    employeeQuizes.Add(employeeQuiz);
+                    
+                }
+            }
+            //List<UserQuizQuestionAnswer> userQuizes = query.getAllUserQuizes(Convert.ToInt32(id));
+            //List<JQuiz> quizes = new List<JQuiz>();
+            //foreach(UserQuizQuestionAnswer uqqa in userQuizes)
+            //{
+            //    //Database Quiz Object
+            //    Quize quiz = query.getQuiz(uqqa.quizId);
+            //    //JSON quiz objct
+            //    JQuiz jquiz = new JQuiz();
+            //    jquiz.title = quiz.title;
+            //    jquiz.description = quiz.description;
+
+            //    List<Question> questions = query.getQuestionsByQuiz(quiz.id);
+
+            //    foreach(Question question in questions)
+            //    {
+            //        //JSON quesiton
+            //        JQuestions jquestion = new JQuestions();
+            //        jquestion.text = question.questionText;
+            //        jquestion.type = question.questionType;
+
+            //        List<Answer> answers = query.getAnswersByQuestion(question.id);
+
+            //        foreach(Answer answer in answers)
+            //        {
+            //            JAnswers janswer = new JAnswers();
+            //            janswer.answerText = answer.answerText;
+            //            if (answer.isCorrect)
+            //            {
+            //                janswer.isCorrect = "true";
+            //            }
+            //            else
+            //            {
+            //                janswer.isCorrect = "false";
+            //            }
+            //            jquestion.answers.Add(janswer);
+
+            //        }
+            //        jquiz.questions.Add(jquestion);
+            //    }
+            //    quizes.Add(jquiz);
+            //}
+            return Json(employeeQuizes, JsonRequestBehavior.AllowGet);
+        }
+        
+        public ActionResult EmployeeQuizes(int id)
+        {
+            ViewBag.id = id;
+            return View();
         }
 
        
@@ -282,30 +384,23 @@ namespace HumanArcCompliance.Controllers
         public string Ans { get; set; }
     }
 
-    public class Answers
+    public class JAnswers
     {
         public string answerText { get; set; }
         public string isCorrect { get; set; }
     }
 
-    public class Questions
+    public class JQuestions
     {
         public string type { get; set; }
         public string text { get; set; }
-        public List<Answers> answers { get; set; }
+        public List<JAnswers> answers { get; set; }
     }
 
-    public class Quiz
+    public class JQuiz
     {
         public string title { get; set; }
         public string description { get; set; }
-        public List<Questions> questions { get; set; }
-
-
-    }
-
-    public class RootObject
-    {
-        public List<Quiz> result { get; set; }
+        public List<JQuestions> questions { get; set; }
     }
 }

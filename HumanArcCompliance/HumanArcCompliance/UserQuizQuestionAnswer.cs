@@ -18,11 +18,13 @@ namespace HumanArcCompliance
         public int quizId { get; set; }
         public int questionId { get; set; }
         public int answerId { get; set; }
-        public Nullable<bool> isChecked { get; set; }
+        public bool isChecked { get; set; }
         public Nullable<bool> isApproved { get; set; }
+        public int userId { get; set; }
     
         public virtual Answer Answer { get; set; }
         public virtual Question Question { get; set; }
         public virtual Quize Quize { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="c8280227a2e84cbb87dc13a11e122da4" Name="Diagram1">
         <EntityTypeShape EntityType="HumanArcModel.Answer" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="HumanArcModel.Group" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HumanArcModel.Group" Width="1.5" PointX="1.125" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.Question" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.Quize" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="HumanArcModel.UserQuizQuestionAnswer" Width="1.5" PointX="9.75" PointY="1" IsExpanded="true" />
@@ -17,6 +17,7 @@
         <AssociationConnector Association="HumanArcModel.FK__Questions__quizI__282DF8C2" ManuallyRouted="false" />
         <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__quest__2EDAF651" ManuallyRouted="false" />
         <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__quizI__2DE6D218" ManuallyRouted="false" />
+        <AssociationConnector Association="HumanArcModel.FK__UserQuizQ__userI__489AC854" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
