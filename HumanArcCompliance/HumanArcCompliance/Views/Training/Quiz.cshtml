@@ -1,8 +1,73 @@
 ﻿<h2>Quiz</h2>
 
-<script src="~/Scripts/Quiz.js"></script>
-
+<br />
+@*
 <div ng-app="Quizapp" ng-controller="QuizCtrl">
     <question-container ng-show="questionsvisible"></question-container>
-    <correct-container ng-show="!notvisible"></correct-container>
+    <correct-container ng-show="!notvisible"></correct-container>-->
+
+</div> *@
+
+<div class="row">
+    <div class="col-sm-4">
+        <label for="choices">Multiple Choice Question Title:</label>
+    </div>
 </div>
+<br />
+<div class="form-group row">
+    <div class="col-sm-1">
+        <label for="answerOne{{$index}}">Answer 1</label>
+        <input id="answerOne{{$index}}" type="radio" value="answerOne" checked name="multipleChoice{{$index}}" />
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-1">
+        <label for="answerTwo{{$index}}">Answer 2</label>
+        <input id="answerTwo{{$index}}" type="radio" value="answerTwo" name="multipleChoice{{$index}}" />
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-1">
+        <label for="answerThree{{$index}}">Answer 3</label>
+        <input id="answerThree{{$index}}" type="radio" value="answerThree" name="multipleChoice{{$index}}" />
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-1">
+        <label for="answerFour{{$index}}">Answer 4</label>
+        <input id="answerFour{{$index}}" type="radio" value="answerFour" name="multipleChoice{{$index}}" />
+    </div>
+</div>
+
+<br /><br />
+
+<div class="row">
+    <div class="col-sm-4">
+        <label for="choices">True/False Question Title:</label>
+    </div>
+</div>
+<br />
+<div class="form-group row">
+    <div class="col-sm-1">
+        <label for="trueAnswer{{$index}}">True</label>
+        <input id="trueAnswer{{$index}}" type="radio" value="trueAnswer" checked name="trueFalseQuestion{{$index}}" />
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-1">
+        <label for="falseAnswer{{$index}}">False</label>
+        <input id="falseAnswer{{$index}}" type="radio" value="falseAnswer" name="trueFalseQuestion{{$index}}" />
+    </div>
+</div>
+
+<br /><br />
+<div class="row">
+    <div class="col-sm-4">
+        <label for="choices">Short Answer Question Title:</label>
+    </div>
+</div>
+<div ng-show="content == 'shortAnswer'">
+    <label for="comment">Answer:</label>
+    <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>
+</div>
+<script src="~/Scripts/Quiz.js"></script>
