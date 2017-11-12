@@ -1,73 +1,79 @@
 ﻿<h2>Quiz</h2>
-
 <br />
-@*
-<div ng-app="Quizapp" ng-controller="QuizCtrl">
-    <question-container ng-show="questionsvisible"></question-container>
-    <correct-container ng-show="!notvisible"></correct-container>-->
 
-</div> *@
+<div ng-app="QuizApp" ng-controller="QuizCtrl">
+    <div ng-repeat="question in [1,2,3]"> <!--Number of questions in quiz. Get variable from Quiz.js. "question in allQuestions"-->
+        <!--Displays multiple choice questions-->
+        <div ng-if="true"> <!--If Question type = Multiple choice-->
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="choices">{{question}}. Multiple Choice Question Title:</label> 
+                    <!--When allQuestions exists, change {{question}} to {{allQuestions.indexOf(question)+1}}-->
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <input id="answerOne{{$index}}" type="radio" value="answerOne" checked name="multipleChoice{{$index}}" />
+                    <label for="answerOne{{$index}}">Answer 1</label> <!--Get multiple choice "answers" here-->
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <input id="answerTwo{{$index}}" type="radio" value="answerTwo" name="multipleChoice{{$index}}" />
+                    <label for="answerTwo{{$index}}">Answer 2</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <input id="answerThree{{$index}}" type="radio" value="answerThree" name="multipleChoice{{$index}}" />
+                    <label for="answerThree{{$index}}">Answer 3</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <input id="answerFour{{$index}}" type="radio" value="answerFour" name="multipleChoice{{$index}}" />
+                    <label for="answerFour{{$index}}">Answer 4</label>
+                </div>
+            </div>
+        </div>
+        <br /><br />
 
-<div class="row">
-    <div class="col-sm-4">
-        <label for="choices">Multiple Choice Question Title:</label>
-    </div>
-</div>
-<br />
-<div class="form-group row">
-    <div class="col-sm-1">
-        <label for="answerOne{{$index}}">Answer 1</label>
-        <input id="answerOne{{$index}}" type="radio" value="answerOne" checked name="multipleChoice{{$index}}" />
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-1">
-        <label for="answerTwo{{$index}}">Answer 2</label>
-        <input id="answerTwo{{$index}}" type="radio" value="answerTwo" name="multipleChoice{{$index}}" />
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-1">
-        <label for="answerThree{{$index}}">Answer 3</label>
-        <input id="answerThree{{$index}}" type="radio" value="answerThree" name="multipleChoice{{$index}}" />
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-1">
-        <label for="answerFour{{$index}}">Answer 4</label>
-        <input id="answerFour{{$index}}" type="radio" value="answerFour" name="multipleChoice{{$index}}" />
-    </div>
-</div>
+        <!--Displays true/false questions-->
+        <div ng-if="true"> <!--If Question type = True/False-->
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="choices">{{question}}. True/False Question Title:</label>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <input id="trueAnswer{{$index}}" type="radio" value="trueAnswer" checked name="trueFalseQuestion{{$index}}" />
+                    <label for="trueAnswer{{$index}}">True</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <input id="falseAnswer{{$index}}" type="radio" value="falseAnswer" name="trueFalseQuestion{{$index}}" />
+                    <label for="falseAnswer{{$index}}">False</label>
+                </div>
+            </div>
+        </div>
 
-<br /><br />
-
-<div class="row">
-    <div class="col-sm-4">
-        <label for="choices">True/False Question Title:</label>
+        <!--Displays short answer questions-->
+        <div ng-if="true"> <!--If Question type = Short Answer-->
+            <br /><br />
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="choices">{{question}}. Short Answer Question Title:</label>
+                </div>
+            </div>
+        <br />
+        <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>
+        </div>
+        <br />
     </div>
-</div>
-<br />
-<div class="form-group row">
-    <div class="col-sm-1">
-        <label for="trueAnswer{{$index}}">True</label>
-        <input id="trueAnswer{{$index}}" type="radio" value="trueAnswer" checked name="trueFalseQuestion{{$index}}" />
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-sm-1">
-        <label for="falseAnswer{{$index}}">False</label>
-        <input id="falseAnswer{{$index}}" type="radio" value="falseAnswer" name="trueFalseQuestion{{$index}}" />
-    </div>
-</div>
-
-<br /><br />
-<div class="row">
-    <div class="col-sm-4">
-        <label for="choices">Short Answer Question Title:</label>
-    </div>
-</div>
-<div ng-show="content == 'shortAnswer'">
-    <label for="comment">Answer:</label>
-    <textarea class="form-control" rows="5" id="shortAnswerQuestion"></textarea>
+    <button id="submitQuiz" type="submit" class="btn btn-primary pull-right resizeBtn">Submit</button>
 </div>
 <script src="~/Scripts/Quiz.js"></script>
