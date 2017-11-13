@@ -392,7 +392,11 @@ namespace HumanArcCompliance.Controllers
             }
             return Json(sending, JsonRequestBehavior.AllowGet);
         }
-
+        public void RemoveQuiz(string id)
+        {
+            Queries query = new Queries();
+            query.RemoveQuiz(Convert.ToInt32(id));
+        }
         public ActionResult GetQuizById(string id)
         {
             int quizId = Convert.ToInt32(id);

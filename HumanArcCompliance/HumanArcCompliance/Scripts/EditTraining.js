@@ -2,13 +2,13 @@
    created in the 'EditTraining.cshtml' page with data from the Quiz table. */
 $(document).ready(function () {
     var quizes = [];
-    var remove = "<input type= 'button' value= 'Remove' class='btn btn-primary' ng- click='removeRow(company.name)'/>";
+    
     $.ajax({
         url: '/Training/GetAllQuizes',
         type: 'GET',
         success: function (data, status) {
             $.each(data, function (index, value) {
-                quizes.push([value.title, value.description, remove])
+                quizes.push([value.title, value.description, "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"])
             });
             $('#trainingTable').DataTable({
                 data: quizes,
@@ -19,6 +19,28 @@ $(document).ready(function () {
                 ]
             });
         }
+    }).then(function () {
+        $('.remove').on('click', function () {
+            $('#trainingTable').DataTable()
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+
+            console.log($(this).attr("id"));
+            // Remove record
+            $.ajax({
+                method: 'post',
+                url: '/Training/RemoveQuiz',
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({ id: $(this).attr("id") }),
+                success: function (data, status) {
+                    alert("success");
+                }
+            }).then(function (response) {
+
+            });
+        });
     });
 });
 
