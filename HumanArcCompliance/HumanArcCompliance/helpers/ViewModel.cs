@@ -43,7 +43,7 @@ namespace HumanArcCompliance.helpers
             myUser.email = vmUser.email;
             myUser.SAMAccountName = vmUser.SAMAccountName;
             myUser.manager = vmUser.manager;
-            myUser.userGroups = vmUser.userGroups.ToString();
+            myUser.userGroups = string.Join(",", vmUser.userGroups);
             return myUser;
         }
     }
