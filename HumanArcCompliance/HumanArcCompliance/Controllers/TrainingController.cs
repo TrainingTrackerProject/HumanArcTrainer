@@ -43,10 +43,10 @@ namespace HumanArcCompliance.Controllers
                 List<UserQuizQuestionAnswer> usersQuizes = q.getAllUserQuizes(user.id);
                 foreach(UserQuizQuestionAnswer uqqa in usersQuizes)
                 {
-                    if ((bool)!uqqa.isChecked)
-                    {
-                        userQuiz.hasUngradedQuiz = true;
-                    }
+                    //if ((bool)!uqqa.isChecked)
+                    //{
+                    //    userQuiz.hasUngradedQuiz = true;
+                    //}
                 }
                 userQuizes.Add(userQuiz);
             }
