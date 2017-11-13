@@ -120,10 +120,15 @@ $(document).ready(function () {
             type: 'POST',
             url: '/Training/AddQuiz',
             data: {group:groups.toString(), j:JSON.stringify(json) }, //{group: groups.toString(), quiz: JSON.stringify(quiz), question: questions },
-            success: function(data, status) {
-                alert("success");
-            }
+            
         });
     });
 
 });
+
+
+$('#submitBtnMod').click(function () {
+    /* when the submit button in the modal is clicked, submit the form */
+    $('#formField').submit();
+});
+

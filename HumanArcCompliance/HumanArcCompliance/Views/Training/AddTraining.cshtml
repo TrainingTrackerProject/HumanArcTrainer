@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
 <h2>Add Quiz</h2>
-<form>
+<form id="formField">
     <div ng-app="addQuestionApp">
         <div class="row">
             <div class="col-md-8">
@@ -163,12 +163,31 @@
                     <br />
                     <input type="button" class="btn btn-info" ng-click="addNewChoice();" value="ADD QUESTION">
                     <br /><br />
+
+                    @*Modal for Submit confimation*@
+                    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    Confirm Submit
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to submit this quiz?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("editTraining", "Training")'">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <br /> <br />
                 <!--TODO-->
-                <button id="submit" type="submit" class="btn btn-primary pull-right resizeBtn">Submit Quiz</button>
-            </div>
+                <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
+                
         </div>
     </div>
 </form>

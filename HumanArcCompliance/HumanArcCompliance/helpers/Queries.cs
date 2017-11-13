@@ -158,5 +158,33 @@ namespace HumanArcCompliance.helpers
             return db.Quizes.ToList();
         }
 
+        public void RemoveQuiz(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            List<Question> Questions = db.Questions.Where(q => q.quizId == id).ToList();
+            foreach (Question question in Questions)
+            {
+
+                List<Answer> Answers = db.Answers.Where(q => q.questionId == question.id).ToList();
+                foreach (Answer answer in Answers)
+                {
+                  
+                    List<UserQuizQuestionAnswer> UserQuizzes = db.UserQuizQuestionAnswers.Where(q => q.answerId == answer.id).ToList();
+                    foreach (UserQuizQuestionAnswer uqqa in UserQuizzes)
+                    {
+                        db.UserQuizQuestionAnswers.Remove(db.UserQuizQuestionAnswers.First(u => u.id == uqqa.id));
+                        db.SaveChanges();
+                    }
+                    db.Answers.Remove(db.Answers.First(a => a.id == answer.id));
+                    db.SaveChanges();
+
+                }
+                db.Questions.Remove(db.Questions.First(q => q.id == question.id));
+                db.SaveChanges();
+            }
+            db.Quizes.Remove(db.Quizes.First(q => q.id == id));
+            db.SaveChanges();
+        }
+
     }
 }
