@@ -103,6 +103,11 @@ $(document).ready(function () {
                    answer2.isCorrect = 'true';
                 }
                 question.answers.push(answer2);
+            } else {
+                var answer = {
+                    isCorrect: 'false'
+                }
+                question.answers.push(answer);
             }
             if (questions == "") {
                 questions += JSON.stringify(question);

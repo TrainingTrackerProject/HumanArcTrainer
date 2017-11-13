@@ -381,7 +381,7 @@
       <DependentUpon>HumanArcEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="helpers\ADSearcher.cs" />
-    <Compile Include="helpers\deserialize.cs" />
+    <Compile Include="Models\AddQuizDeserializer.cs" />
     <Compile Include="helpers\Queries.cs" />
     <Compile Include="helpers\sessionStorage.cs" />
     <Compile Include="helpers\validateUser.cs" />
@@ -401,9 +401,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HumanArcEntities.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\addQuiz.cs" />
     <Compile Include="Models\EmployeeQuizesViewModel.cs" />
     <Compile Include="Models\ManageEmployeeViewModel.cs" />
+    <Compile Include="Models\QuizViewModel.cs" />
+    <Compile Include="Models\SubmitQuizDeserializer.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs">

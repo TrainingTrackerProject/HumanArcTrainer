@@ -6,7 +6,7 @@
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="questionId" Type="Int32" Nullable="false" />
-    <Property Name="answerText" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="answerText" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="isCorrect" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Question" Relationship="Self.FK__Answers__questio__2B0A656D" FromRole="Answers" ToRole="Questions" />
     <NavigationProperty Name="UserQuizQuestionAnswers" Relationship="Self.FK__UserQuizQ__answe__2FCF1A8A" FromRole="Answers" ToRole="UserQuizQuestionAnswers" />
@@ -59,6 +59,7 @@
     <NavigationProperty Name="Quize" Relationship="Self.FK__UserQuizQ__quizI__2DE6D218" FromRole="UserQuizQuestionAnswers" ToRole="Quizes" />
     <Property Name="userId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="User" Relationship="HumanArcModel.FK__UserQuizQ__userI__489AC854" FromRole="UserQuizQuestionAnswer" ToRole="User" />
+    <Property Name="text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="User">
     <Key>

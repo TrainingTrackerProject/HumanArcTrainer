@@ -103,13 +103,13 @@ namespace HumanArcCompliance.helpers
         public List<Question> getQuestionsByQuiz(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
-            return db.Questions.Where(q => q.id == id).ToList();
+            return db.Questions.Where(q => q.quizId == id).ToList();
         }
 
         public List<Answer> getAnswersByQuestion(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
-            return db.Answers.Where(a => a.id == id).ToList();
+            return db.Answers.Where(a => a.questionId == id).ToList();
         }
 
         public User getUserById(int id)
@@ -156,6 +156,31 @@ namespace HumanArcCompliance.helpers
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Quizes.ToList();
+        }
+
+        public bool submitQuiz(List<UserQuizQuestionAnswer> answers)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            try
+            {
+                foreach (UserQuizQuestionAnswer uqqa in answers)
+                {
+                    db.UserQuizQuestionAnswers.Add(uqqa);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public User getUserBySam(string sam)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Users.First(u => u.SAMAccountName == sam);
         }
 
     }

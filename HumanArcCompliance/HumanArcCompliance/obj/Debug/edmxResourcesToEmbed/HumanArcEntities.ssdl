@@ -6,7 +6,7 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="questionId" Type="int" Nullable="false" />
-    <Property Name="answerText" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="answerText" Type="varchar" MaxLength="500" />
     <Property Name="isCorrect" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Groups">
@@ -46,6 +46,7 @@
     <Property Name="answerId" Type="int" Nullable="false" />
     <Property Name="isChecked" Type="bit" />
     <Property Name="isApproved" Type="bit" />
+    <Property Name="text" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -59,7 +60,7 @@
     <Property Name="SAMAccountName" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="manager" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
-  <Association Name="FK__Answers__questio__45BE5BA9">
+  <Association Name="FK__Answers__questio__3CF40B7E">
     <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
     <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
     <ReferentialConstraint>
@@ -71,7 +72,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Questions__quizI__42E1EEFE">
+  <Association Name="FK__Questions__quizI__3A179ED3">
     <End Role="Quizes" Type="Self.Quizes" Multiplicity="1" />
     <End Role="Questions" Type="Self.Questions" Multiplicity="*" />
     <ReferentialConstraint>
@@ -83,7 +84,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Quizes__groupId__40058253">
+  <Association Name="FK__Quizes__groupId__373B3228">
     <End Role="Groups" Type="Self.Groups" Multiplicity="1" />
     <End Role="Quizes" Type="Self.Quizes" Multiplicity="*" />
     <ReferentialConstraint>
@@ -95,7 +96,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserQuizQ__answe__4B7734FF">
+  <Association Name="FK__UserQuizQ__answe__42ACE4D4">
     <End Role="Answers" Type="Self.Answers" Multiplicity="1" />
     <End Role="UserQuizQuestionAnswers" Type="Self.UserQuizQuestionAnswers" Multiplicity="*" />
     <ReferentialConstraint>
@@ -107,7 +108,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserQuizQ__quest__4A8310C6">
+  <Association Name="FK__UserQuizQ__quest__41B8C09B">
     <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
     <End Role="UserQuizQuestionAnswers" Type="Self.UserQuizQuestionAnswers" Multiplicity="*" />
     <ReferentialConstraint>
@@ -119,7 +120,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserQuizQ__quizI__498EEC8D">
+  <Association Name="FK__UserQuizQ__quizI__40C49C62">
     <End Role="Quizes" Type="Self.Quizes" Multiplicity="1" />
     <End Role="UserQuizQuestionAnswers" Type="Self.UserQuizQuestionAnswers" Multiplicity="*" />
     <ReferentialConstraint>
@@ -131,7 +132,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserQuizQ__userI__489AC854">
+  <Association Name="FK__UserQuizQ__userI__3FD07829">
     <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="UserQuizQuestionAnswers" Type="Self.UserQuizQuestionAnswers" Multiplicity="*" />
     <ReferentialConstraint>
@@ -150,31 +151,31 @@
     <EntitySet Name="Quizes" EntityType="Self.Quizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserQuizQuestionAnswers" EntityType="Self.UserQuizQuestionAnswers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__Answers__questio__45BE5BA9" Association="Self.FK__Answers__questio__45BE5BA9">
+    <AssociationSet Name="FK__Answers__questio__3CF40B7E" Association="Self.FK__Answers__questio__3CF40B7E">
       <End Role="Questions" EntitySet="Questions" />
       <End Role="Answers" EntitySet="Answers" />
     </AssociationSet>
-    <AssociationSet Name="FK__Questions__quizI__42E1EEFE" Association="Self.FK__Questions__quizI__42E1EEFE">
+    <AssociationSet Name="FK__Questions__quizI__3A179ED3" Association="Self.FK__Questions__quizI__3A179ED3">
       <End Role="Quizes" EntitySet="Quizes" />
       <End Role="Questions" EntitySet="Questions" />
     </AssociationSet>
-    <AssociationSet Name="FK__Quizes__groupId__40058253" Association="Self.FK__Quizes__groupId__40058253">
+    <AssociationSet Name="FK__Quizes__groupId__373B3228" Association="Self.FK__Quizes__groupId__373B3228">
       <End Role="Groups" EntitySet="Groups" />
       <End Role="Quizes" EntitySet="Quizes" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserQuizQ__answe__4B7734FF" Association="Self.FK__UserQuizQ__answe__4B7734FF">
+    <AssociationSet Name="FK__UserQuizQ__answe__42ACE4D4" Association="Self.FK__UserQuizQ__answe__42ACE4D4">
       <End Role="Answers" EntitySet="Answers" />
       <End Role="UserQuizQuestionAnswers" EntitySet="UserQuizQuestionAnswers" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserQuizQ__quest__4A8310C6" Association="Self.FK__UserQuizQ__quest__4A8310C6">
+    <AssociationSet Name="FK__UserQuizQ__quest__41B8C09B" Association="Self.FK__UserQuizQ__quest__41B8C09B">
       <End Role="Questions" EntitySet="Questions" />
       <End Role="UserQuizQuestionAnswers" EntitySet="UserQuizQuestionAnswers" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserQuizQ__quizI__498EEC8D" Association="Self.FK__UserQuizQ__quizI__498EEC8D">
+    <AssociationSet Name="FK__UserQuizQ__quizI__40C49C62" Association="Self.FK__UserQuizQ__quizI__40C49C62">
       <End Role="Quizes" EntitySet="Quizes" />
       <End Role="UserQuizQuestionAnswers" EntitySet="UserQuizQuestionAnswers" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserQuizQ__userI__489AC854" Association="Self.FK__UserQuizQ__userI__489AC854">
+    <AssociationSet Name="FK__UserQuizQ__userI__3FD07829" Association="Self.FK__UserQuizQ__userI__3FD07829">
       <End Role="Users" EntitySet="Users" />
       <End Role="UserQuizQuestionAnswers" EntitySet="UserQuizQuestionAnswers" />
     </AssociationSet>

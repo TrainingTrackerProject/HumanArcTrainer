@@ -100,3 +100,8 @@ VALUES (2, 'False', 1);
 select * from Quizes;
 select * from Questions;
 select * from Answers;
+
+--ALTER TABLE UserQuizQuestionAnswers ADD text varchar(max) null;
+alter table Answers alter column answerText varchar(500) null;
+
+select * from UserQuizQuestionAnswers;

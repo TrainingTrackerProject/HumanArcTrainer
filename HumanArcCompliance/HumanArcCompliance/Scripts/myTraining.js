@@ -44,13 +44,19 @@ $.ajax({
                 { title: "Title" }
             ]
         });
-        $('#needsGraded tbody tr').on('click', function () {
-            var data = $('#needsGraded').DataTable().row(this).data();
-            window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
-        });
-        $('#completed tbody tr').on('click', function () {
-            var data = $('#needsGraded').DataTable().row(this).data();
-            window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
+        //$('#needsGraded tbody tr').on('click', function () {
+        //    var data = $('#needsGraded').DataTable().row(this).data();
+        //    window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
+        //});
+        //$('#completed tbody tr').on('click', function () {
+        //    var data = $('#needsGraded').DataTable().row(this).data();
+        //    window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
+        //});
+        $('#notCompleted tbody tr').on('click', function () {
+            var data = $('#notCompleted').DataTable().row(this).data();
+            console.log(data[1]);
+
+            window.location.href = "/Training/Quiz/?id=" + data[1];
         });
     }
 });

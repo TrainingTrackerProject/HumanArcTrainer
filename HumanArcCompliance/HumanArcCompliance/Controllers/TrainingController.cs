@@ -10,6 +10,8 @@ using HumanArcCompliance.Models;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static HumanArcCompliance.Models.AddQuizDeserializer;
+using static HumanArcCompliance.Models.SubmitQuizDeserializer;
 
 namespace HumanArcCompliance.Controllers
 {
@@ -41,7 +43,7 @@ namespace HumanArcCompliance.Controllers
                 List<UserQuizQuestionAnswer> usersQuizes = q.getAllUserQuizes(user.id);
                 foreach(UserQuizQuestionAnswer uqqa in usersQuizes)
                 {
-                    if (!uqqa.isChecked)
+                    if ((bool)!uqqa.isChecked)
                     {
                         userQuiz.hasUngradedQuiz = true;
                     }
@@ -292,7 +294,7 @@ namespace HumanArcCompliance.Controllers
             Queries query = new Queries();
             sessionStorage session = new sessionStorage();
             ViewModel vm = new ViewModel();
-            User user = vm.modelToUser(session.getSessionVars());
+            User user = query.getUserBySam(vm.modelToUser(session.getSessionVars()).SAMAccountName);
             List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
             string[] groups = user.userGroups.Split(',');
             foreach (string group in groups)
@@ -314,10 +316,10 @@ namespace HumanArcCompliance.Controllers
                     if (uqqa.id != 0)
                     {
                         employeeQuiz.isCompleted = true;
-                        if (uqqa.isChecked)
-                        {
-                            employeeQuiz.isGraded = true;
-                        }
+                        //if ( (bool)uqqa.isChecked!=null && (bool)uqqa.isChecked)
+                        //{
+                        //    employeeQuiz.isGraded = true;
+                        //}
                     }
 
                     employeeQuizes.Add(employeeQuiz);
@@ -355,10 +357,10 @@ namespace HumanArcCompliance.Controllers
                     if (uqqa.id != 0)
                     {
                         employeeQuiz.isCompleted = true;
-                        if (uqqa.isChecked)
-                        {
-                            employeeQuiz.isGraded = true;
-                        }
+                        //if ((bool)uqqa.isChecked)
+                        //{
+                        //    employeeQuiz.isGraded = true;
+                        //}
                     }
 
                     employeeQuizes.Add(employeeQuiz);
@@ -397,43 +399,65 @@ namespace HumanArcCompliance.Controllers
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
 
-            JQuiz jquiz = new JQuiz();
-            jquiz.title = quiz.title;
-            jquiz.description = quiz.description;
-
+            QuizViewModel qvmQuiz = new QuizViewModel();
+            qvmQuiz.id = quizId;
+            qvmQuiz.title = quiz.title;
+            qvmQuiz.description = quiz.description;
+            qvmQuiz.questions = new List<QVMQuestion>();
             List<Question> questions = query.getQuestionsByQuiz(quiz.id);
 
             foreach(Question question in questions)
             {
-                JQuestions jquestion = new JQuestions();
-                jquestion.text = question.questionText;
-                jquestion.type = question.questionType;
-
+                QVMQuestion qvmQuestion = new QVMQuestion();
+                qvmQuestion.id = question.id;
+                qvmQuestion.text = question.questionText;
+                qvmQuestion.type = question.questionType;
+                qvmQuestion.answers = new List<QVMAnswer>();
                 List<Answer> answers = query.getAnswersByQuestion(question.id);
 
                 foreach (Answer answer in answers)
                 {
-                    JAnswers janswer = new JAnswers();
-                    janswer.answerText = answer.answerText;
-                    if (answer.isCorrect)
-                    {
-                        janswer.isCorrect = "true";
-                    }
-                    else
-                    {
-                        janswer.isCorrect = "false";
-                    }
-                    jquestion.answers.Add(janswer);
-
+                    QVMAnswer qvmAnswer = new QVMAnswer();
+                    qvmAnswer.id = answer.id;
+                    qvmAnswer.answerText = answer.answerText;
+                    qvmAnswer.isCorrect = answer.isCorrect;
+                    qvmQuestion.answers.Add(qvmAnswer);
                 }
-                jquiz.questions.Add(jquestion);
+                qvmQuiz.questions.Add(qvmQuestion);
             }
-            return Json(jquiz, JsonRequestBehavior.AllowGet);
+            return Json(qvmQuiz, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult SubmitQuiz(string data)
+        {
+            Queries query = new Queries();
+            sessionStorage session = new sessionStorage();
+            ViewModel vm = new ViewModel();
+            User user = query.getUserBySam(vm.modelToUser(session.getSessionVars()).SAMAccountName);
+            var result = JsonConvert.DeserializeObject<SubmitQuiz>(data);
+            List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
+            foreach(SubmitQuestions question in result.questions)
+            {
+                foreach(SubmitAnswers answer in question.answers)
+                {
+                    UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                    uqqa.quizId = result.id;
+                    uqqa.questionId = question.id;
+                    uqqa.answerId = answer.id;
+                    uqqa.userId = user.id;
+                    if (answer.text != null)
+                    {
+                        uqqa.text = answer.text;
+                    }
+                    uqqas.Add(uqqa);
+                }
+            }
+            query.submitQuiz(uqqas);
 
 
-
+            return Json("success", JsonRequestBehavior.AllowGet);
+        }
     }
     public class Questionsoptions
     {
@@ -445,23 +469,4 @@ namespace HumanArcCompliance.Controllers
         public string Ans { get; set; }
     }
 
-    public class JAnswers
-    {
-        public string answerText { get; set; }
-        public string isCorrect { get; set; }
-    }
-
-    public class JQuestions
-    {
-        public string type { get; set; }
-        public string text { get; set; }
-        public List<JAnswers> answers { get; set; }
-    }
-
-    public class JQuiz
-    {
-        public string title { get; set; }
-        public string description { get; set; }
-        public List<JQuestions> questions { get; set; }
-    }
 }
