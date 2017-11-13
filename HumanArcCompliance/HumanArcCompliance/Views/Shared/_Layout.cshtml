@@ -12,6 +12,7 @@
     @Styles.Render("~/Content/css")
 
 </head>
+@*This sets up the navigation to dislpay only items that each specific group should see.*@
 <body>
     @model HumanArcCompliance.Models.UserViewModel
     @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
@@ -29,21 +30,10 @@
                         <div class="navbar navbar-fixed-left">
                             <ul class="nav navbar-nav nav-pills nav-stacked">
                                 <li class="active navLink" style="text-align:center;"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                                @*This link is for manager and general employees*@
                                 <li class="navLink"><a href="@Url.Action("MyTraining","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
                                 <li class="navLink managers"><a href="@Url.Action("ManageEmployees", "Training")"><span class="glyphicon glyphicon-user"></span> Manage Employees</a></li>
                                 <li class="navLink humanResources"><a href="@Url.Action("editTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
-                                @*<li class="navLink humanResources"><a href="@Url.Action("gradeQuiz", "Training")"><span class="glyphicon glyphicon-book"></span> Grade Quizzes</a></li>*@
 
-                                @*This dropdown is for HR it is a more convient menu for them to access add and edit features*@
-                                @*<li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-book"></span> Training<span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li class=""><a href="@Url.Action("Training","Training")"><span class="glyphicon glyphicon-book"></span> View Training</a></li>
-                                        <li class=""><a href="@Url.Action("AddTraining","Training")"><span class="glyphicon glyphicon-plus"></span> Add Training</a></li>
-                                        <li class=""><a href="@Url.Action("EditTraining","Training")"><span class="glyphicon glyphicon-edit"></span> Edit Training</a></li>
-                                    </ul>
-                                </li>*@
                             </ul>
                         </div>
                     </div>
