@@ -73,40 +73,40 @@ namespace HumanArcCompliance.Controllers
 
         //group comment start
         // sean uncomment start
-        //public ActionResult ManageEmployees()
-        //{
-        //    if (checkUserAuth("manager"))
-        //    {
-        //        if (session.getSessionVars() != null)
-        //        {
-        //            return View(session.getSessionVars());
-        //        }
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
-        //
-        //public ActionResult EditTraining()
-        //{
-        //    if (checkUserAuth("hr"))
-        //    {
-        //        if (session.getSessionVars() != null)
-        //        {
-        //            return View(session.getSessionVars());
-        //        }
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
-        //public ActionResult AddTraining()
-        //{
-        //    if (checkUserAuth("hr"))
-        //    {
-        //        if (session.getSessionVars() != null)
-        //        {
-        //            return View(session.getSessionVars());
-        //        }
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
+        public ActionResult ManageEmployees()
+        {
+            if (checkUserAuth("manager"))
+            {
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult EditTraining()
+        {
+            if (checkUserAuth("hr"))
+            {
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult AddTraining()
+        {
+            if (checkUserAuth("hr"))
+            {
+                if (session.getSessionVars() != null)
+                {
+                    return View(session.getSessionVars());
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
         //group comment end
         //sean uncomment end
 
@@ -114,27 +114,27 @@ namespace HumanArcCompliance.Controllers
 
         // sean comment start
         // group uncomment start
-        public ActionResult ManageEmployees()
-        {
+        //public ActionResult ManageEmployees()
+        //{
 
-            //get employees 
-            return View(session.getSessionVars());
+        //    //get employees 
+        //    return View(session.getSessionVars());
 
-        }
-
-
-        public ActionResult EditTraining()
-        {
-            return View(session.getSessionVars());
+        //}
 
 
-        }
-        public ActionResult AddTraining()
-        {
+        //public ActionResult EditTraining()
+        //{
+        //    return View(session.getSessionVars());
 
-            return View(session.getSessionVars());
 
-        }
+        //}
+        //public ActionResult AddTraining()
+        //{
+
+        //    return View(session.getSessionVars());
+
+        //}
         // sean comment end
         //group uncomment end
 
@@ -182,45 +182,45 @@ namespace HumanArcCompliance.Controllers
 
         // group comment start
         //sean uncomment start
-        //public bool checkUserAuth(string type)
-        //{
-        //    String hr = (ConfigurationManager.AppSettings["hrGroup"]);
-        //    String manager = (ConfigurationManager.AppSettings["managers"]);
-        //    ADSearcher searcher = new ADSearcher();
-        //    UserPrincipal user = searcher.findCurrentUserName(Request);
-        //    using (var context = new PrincipalContext(ContextType.Domain))
-        //    {
-        //        if (type == "manager")
-        //        {
-        //            try
-        //            {
-        //                if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //            }
-        //        }
-        //        else if (type == "hr")
-        //        {
-        //            try
-        //            {
-        //                if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //            }
-        //        }
-        //    }
-        //    return true;
-        //}
+        public bool checkUserAuth(string type)
+        {
+            String hr = (ConfigurationManager.AppSettings["hrGroup"]);
+            String manager = (ConfigurationManager.AppSettings["managers"]);
+            ADSearcher searcher = new ADSearcher();
+            UserPrincipal user = searcher.findCurrentUserName(Request);
+            using (var context = new PrincipalContext(ContextType.Domain))
+            {
+                if (type == "manager")
+                {
+                    try
+                    {
+                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+                else if (type == "hr")
+                {
+                    try
+                    {
+                        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+            }
+            return true;
+        }
         // group comment end
         //sean uncomment end
 
