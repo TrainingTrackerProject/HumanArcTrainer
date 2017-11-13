@@ -482,12 +482,13 @@
     </Content>
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\Quiz.js" />
-    <Content Include="Scripts\trainingDataset.js" />
+    <Content Include="Scripts\myTraining.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\manageEmployees.js" />
     <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\updateTraining.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -530,6 +531,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Training\updateTraining.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

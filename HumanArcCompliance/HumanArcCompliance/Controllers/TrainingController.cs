@@ -138,8 +138,9 @@ namespace HumanArcCompliance.Controllers
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public ActionResult Quiz()
+        public ActionResult Quiz(int id)
         {
+            ViewBag.id = id;
             return View();
         }
         public JsonResult QuizQuestionAns()
@@ -284,11 +285,55 @@ namespace HumanArcCompliance.Controllers
             }
             return Json("success", JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult GetUserQuizes()
+        {
+            Queries query = new Queries();
+            sessionStorage session = new sessionStorage();
+            ViewModel vm = new ViewModel();
+            User user = vm.modelToUser(session.getSessionVars());
+            List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
+            string[] groups = user.userGroups.Split(',');
+            foreach (string group in groups)
+            {
+                int groupId = query.getGroupByName(group).id;
+                List<Quize> quizesByGroup = query.getQuizesByGroupId(groupId);
+                foreach (Quize quiz in quizesByGroup)
+                {
+                    EmployeeQuizesViewModel employeeQuiz = new EmployeeQuizesViewModel();
+                    employeeQuiz.userId = user.id;
+                    employeeQuiz.firstName = user.firstName;
+                    employeeQuiz.lastName = user.lastName;
+                    employeeQuiz.quizId = quiz.id;
+                    employeeQuiz.quizTitle = quiz.title;
+                    employeeQuiz.isCompleted = false;
+                    employeeQuiz.isGraded = false;
+                    UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                    uqqa = query.getQuizByUserIdQuizId(user.id, quiz.id);
+                    if (uqqa.id != 0)
+                    {
+                        employeeQuiz.isCompleted = true;
+                        if (uqqa.isChecked)
+                        {
+                            employeeQuiz.isGraded = true;
+                        }
+                    }
+
+                    employeeQuizes.Add(employeeQuiz);
+
+                }
+            }
+            return Json(employeeQuizes, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         [HttpPost]
         public ActionResult GetUserQuizes(string id)
         {
-            Queries query = new Queries();
-            User user = query.getUserById(Convert.ToInt32(id));
+            Queries query = new Queries();         
+            User user = query.getUserById(Convert.ToInt32(id));          
             List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
             string[] groups = user.userGroups.Split(',');
             foreach(string group in groups)
@@ -320,47 +365,7 @@ namespace HumanArcCompliance.Controllers
                     
                 }
             }
-            //List<UserQuizQuestionAnswer> userQuizes = query.getAllUserQuizes(Convert.ToInt32(id));
-            //List<JQuiz> quizes = new List<JQuiz>();
-            //foreach(UserQuizQuestionAnswer uqqa in userQuizes)
-            //{
-            //    //Database Quiz Object
-            //    Quize quiz = query.getQuiz(uqqa.quizId);
-            //    //JSON quiz objct
-            //    JQuiz jquiz = new JQuiz();
-            //    jquiz.title = quiz.title;
-            //    jquiz.description = quiz.description;
-
-            //    List<Question> questions = query.getQuestionsByQuiz(quiz.id);
-
-            //    foreach(Question question in questions)
-            //    {
-            //        //JSON quesiton
-            //        JQuestions jquestion = new JQuestions();
-            //        jquestion.text = question.questionText;
-            //        jquestion.type = question.questionType;
-
-            //        List<Answer> answers = query.getAnswersByQuestion(question.id);
-
-            //        foreach(Answer answer in answers)
-            //        {
-            //            JAnswers janswer = new JAnswers();
-            //            janswer.answerText = answer.answerText;
-            //            if (answer.isCorrect)
-            //            {
-            //                janswer.isCorrect = "true";
-            //            }
-            //            else
-            //            {
-            //                janswer.isCorrect = "false";
-            //            }
-            //            jquestion.answers.Add(janswer);
-
-            //        }
-            //        jquiz.questions.Add(jquestion);
-            //    }
-            //    quizes.Add(jquiz);
-            //}
+            
             return Json(employeeQuizes, JsonRequestBehavior.AllowGet);
         }
         
@@ -370,9 +375,65 @@ namespace HumanArcCompliance.Controllers
             return View();
         }
 
-       
+        public ActionResult GetAllQuizes()
+        {
+            Queries query = new Queries();
+            List<Quize> quizes = query.getAllQuizes();
+            List<Quize> sending = new List<Quize>();
+            foreach(Quize quiz in quizes)
+            {
+                Quize q = new Quize();
+                q.id = quiz.id;
+                q.title = quiz.title;
+                q.description = quiz.description;
+                sending.Add(q);
+            }
+            return Json(sending, JsonRequestBehavior.AllowGet);
+        }
 
-        
+        public ActionResult GetQuizById(string id)
+        {
+            int quizId = Convert.ToInt32(id);
+            Queries query = new Queries();
+            Quize quiz = query.getQuizById(quizId);
+
+            JQuiz jquiz = new JQuiz();
+            jquiz.title = quiz.title;
+            jquiz.description = quiz.description;
+
+            List<Question> questions = query.getQuestionsByQuiz(quiz.id);
+
+            foreach(Question question in questions)
+            {
+                JQuestions jquestion = new JQuestions();
+                jquestion.text = question.questionText;
+                jquestion.type = question.questionType;
+
+                List<Answer> answers = query.getAnswersByQuestion(question.id);
+
+                foreach (Answer answer in answers)
+                {
+                    JAnswers janswer = new JAnswers();
+                    janswer.answerText = answer.answerText;
+                    if (answer.isCorrect)
+                    {
+                        janswer.isCorrect = "true";
+                    }
+                    else
+                    {
+                        janswer.isCorrect = "false";
+                    }
+                    jquestion.answers.Add(janswer);
+
+                }
+                jquiz.questions.Add(jquestion);
+            }
+            return Json(jquiz, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
     }
     public class Questionsoptions
     {

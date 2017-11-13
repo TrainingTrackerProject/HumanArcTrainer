@@ -50,7 +50,7 @@ namespace HumanArcCompliance.helpers
             return db.Groups.ToList();
         }
 
-        public Quize getQuiz(int id)
+        public Quize getQuizById(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Quizes.Find(id);
@@ -152,6 +152,11 @@ namespace HumanArcCompliance.helpers
             }
         }
         
+        public List<Quize> getAllQuizes()
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Quizes.ToList();
+        }
 
     }
 }
