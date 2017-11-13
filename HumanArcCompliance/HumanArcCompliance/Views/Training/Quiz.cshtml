@@ -2,6 +2,8 @@
 <br />
 
 <div ng-app="QuizApp" ng-controller="QuizCtrl">
+    <!--Post quiz description up here-->
+    <!--Checks question type for each question in the quiz (allQuestions) and creates one every time-->
     <div ng-repeat="question in [1,2,3]"> <!--Number of questions in quiz. Get variable from Quiz.js. "question in allQuestions"-->
         <!--Displays multiple choice questions-->
         <div ng-if="true"> <!--If Question type = Multiple choice-->
