@@ -1,6 +1,6 @@
 ﻿@*This file holds the page where the ability to edit traning is. Users can look
-  at different trainig and either delete or edit exisitng traning. They can also  
-  They can also add training, which will reroute them to a new page to do so.*@
+  at different training and delete exisitng traning. They can also add training, 
+  which will reroute them to a new page to do so.*@
 @{
     ViewBag.Title = "Edit Training";
 }
@@ -8,21 +8,24 @@
 <div>
 	<h2>Training Table</h2>
 </div>
-
-<div class="form-group">
-	<div class="row">   
-	    <div class="table table-stripped">
-			@* creates table based off script *@
-            <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"> 
-            </table>
+<div ng-app="editTrainingApp" ng-controller="RemoveCtrl">
+    <div class="form-group">
+	    <div class="row">   
+            <div class="col-md-1"></div>
+	        <div class="col-md-10">
+			    @* creates table based off 'EditTraining.js' script *@
+                <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"></table>
+            </div>
+	        <div>
+                @* button placement to add a new training, goes to 'addTraining.cshtml' page *@ 
+                <input type="submit" value="Add A New Training" id="AddTrainingButton" 
+                       class="btn btn-primary" role="button" aria-disabled="false"
+                       onclick="location.href='@Url.Action("AddTraining", "Training")'"/>
+	        </div>
+            <div class="col-md-1"></div>
         </div>
-	    <div class ="col-md-10">
-            @* button placement to add a new training, goes to add training page *@ 
-            <input type="submit" value="Add A New Training" id="AddTrainingButton" 
-                   class="btn btn-primary" role="button" aria-disabled="false"
-                   onclick="location.href='@Url.Action("AddTraining", "Training")'"/>
-	    </div>
     </div>
 </div>
+
 <script src="~/Scripts/EditTraining.js"></script>
 

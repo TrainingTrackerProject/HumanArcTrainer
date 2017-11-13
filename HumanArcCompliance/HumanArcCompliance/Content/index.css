@@ -1,6 +1,4 @@
-﻿
-
-.linkPics {
+﻿.linkPics {
     width: 300px;
     height: 200px;
     border-radius: 25px;
@@ -54,16 +52,5 @@ h2 {
     .image:hover {
         transform: scale(1.1);
     }
-
-/*.image::after {
-        opacity: 0;
-
-        transition: opacity 0.3s ease-out;
-    }
-    .image:hover::after {
-        transform: scale(0.9);
-        transition: opacity 0.3s ease-out;
-        opacity: 1;
-    }*/
 
 
