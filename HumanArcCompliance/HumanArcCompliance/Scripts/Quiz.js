@@ -3,7 +3,44 @@
  */
 var app = angular.module('addQuestionApp', ['ngRoute']);
 var jsonData;
+
+//////////////////////////////////////////////////////////////
+//Change this json to real data later
+var json = {
+    title: 'my title',
+    description: 'myDesc',
+    allQuestions: [{
+        text: 'question1',
+        type: 'multipleChoice',
+        answers: [{
+            text: 'a1',
+            isCorrect: true
+        },
+        {
+            text: 'a2',
+            isCorrect: false
+        }
+        ]
+    },
+    {
+        text: 'question2',
+        type: 'multipleChoice',
+        answers: [{
+            text: 'a3',
+            isCorrect: true
+        },
+        {
+            text: 'a4',
+            isCorrect: false
+        }
+        ]
+    }
+    ]
+}
+/////////////////////////////////////////////////////////////
+
 app.controller('addQuizController', function ($scope, $http) {
+    $scope.json = json;
     $scope.name = "quiz"
     var groups = [];
     $http.get('/Training/GetAllGroups').then(function (data) {
@@ -63,7 +100,6 @@ app.controller('addQuizController', function ($scope, $http) {
             $('#testDiv').append(fullDiv);
         }
     });
-
 });
 
 app.controller('addQuestionController', function ($scope, $http) {
