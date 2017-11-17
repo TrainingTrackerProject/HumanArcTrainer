@@ -42,7 +42,7 @@ create table Questions(
 create table Answers(
 	id int identity primary key,
 	questionId int not null,
-	answerText varchar(500) not null,
+	answerText varchar(500) null,
 	isCorrect bit not null,
 	foreign key (questionId) references Questions(id)
 );
@@ -53,6 +53,7 @@ create table UserQuizQuestionAnswers(
 	quizId int not null,
 	questionId int not null,
 	answerId int not null,
+	text varchar(max) null,
 	isChecked bit,
 	isApproved bit,
 	foreign key (userId) references Users(id),
@@ -64,8 +65,9 @@ create table UserQuizQuestionAnswers(
 insert into Groups Values('HRGroup'),('managers'),('users'),('User');
 
 insert into Users(firstName,lastName, email, userGroups,SAMAccountName, manager) 
-values('Sean','Leroy','sleroy18@jcu.edu','Administrator, HRGroup','Administrator', 'Administrator');
-
+values('Sean','Leroy','sleroy18@jcu.edu','Administrator, HRGroup','Administrator', 'Administrator'),
+		('DoNotTestMe1F', 'DONotTestMe1L', 'DBTEST1@jcu.edu', 'managers,users','DoNotTest1','Administrator'),
+		('DoNotTestMe2F', 'DoNotTestMe2L', 'DBTEST2@jcu.edu', 'users', 'DoNotTest2','DoNotTest1');
 SET IDENTITY_INSERT Quizes ON;
 
 INSERT INTO Quizes (id,groupId, title, description)
@@ -100,8 +102,4 @@ VALUES (2, 'False', 1);
 select * from Quizes;
 select * from Questions;
 select * from Answers;
-
-ALTER TABLE UserQuizQuestionAnswers ADD text varchar(max) null;
-alter table Answers alter column answerText varchar(500) null;
-
 select * from UserQuizQuestionAnswers;

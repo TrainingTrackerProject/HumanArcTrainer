@@ -53,7 +53,11 @@ AKA:
 
 Controllers:
 
-	This folder contains the controllers we use to create operations that can be performed on the data. One is the 'HomeController.cs' which is used on the home page and sets up the application based on the access given to the user (so whether its an HR person, manager, or user). The other is 'TrainingController.cs' which is used on all the other webpages. There is documentation within the code that can explain to you what is going on in more detail.
+	This folder contains the controllers we use to create operations that can be performed on the data. 
+	One is the 'HomeController.cs' which is used on the home page and sets up the application based on 
+	the access given to the user (so whether its an HR person, manager, or user). The other is 'TrainingController.cs'
+	which is used on all the other webpages. There is documentation within the code that can explain to you what is 
+	going on in more detail.
 
 helpers:
 
