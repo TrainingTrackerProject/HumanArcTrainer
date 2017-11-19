@@ -9,7 +9,7 @@
             <!--If Question type = Multiple choice-->
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}.Multiple Choice Question Title:</label>
+                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <br />
@@ -44,14 +44,17 @@
 
         <!--Displays true/false questions-->
         <div ng-if="question.type == 'trueFalse'">
-            <!--If Question type = True/False-->
+            <!--If Question type = True/False-->   
+            
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. True/False Question Title:</label>
+                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <br />
-            <div class="form-group row">
+            <input ng-repeat="answer in question.answers" type="radio" class="form-control" value="{{answer.text}}" name="{{question.text}}">
+                {{question.text}}
+            @*<div class="form-group row">
                 <div class="col-sm-1">
                     <input id="trueAnswer" type="radio" value="trueAnswer" checked name="trueFalseQuestion" />
                     <label for="trueAnswer">True</label>
@@ -62,7 +65,8 @@
                     <input id="falseAnswer" type="radio" value="falseAnswer" name="trueFalseQuestion" />
                     <label for="falseAnswer">False</label>
                 </div>
-            </div>
+            </div>*@
+
         </div>
 
         <!--Displays short answer questions-->
@@ -71,7 +75,7 @@
             <br /><br />
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. Short Answer Question Title:</label>
+                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <br />
@@ -79,6 +83,23 @@
         </div>
         <br />
     </div>
-    <button id="submitQuiz" type="submit" class="btn btn-primary pull-right resizeBtn">Submit</button>
+    @*Modal for Submit confimation*@
+    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirm Submit
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to submit this quiz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
 </div>
 <script src="~/Scripts/Quiz.js"></script>
