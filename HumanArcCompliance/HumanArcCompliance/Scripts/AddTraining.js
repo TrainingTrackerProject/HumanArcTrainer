@@ -1,4 +1,6 @@
-﻿// This lets the HR member look for media files when "Browse" is clicked.
+﻿
+
+// This lets the HR member look for media files when "Browse" is clicked.
 $(document).on('click', '.browse', function () {
     var file = $(this).parent().parent().parent().find('.hide-file');
     file.trigger('click');
@@ -6,6 +8,7 @@ $(document).on('click', '.browse', function () {
 $(document).on('change', '.hide-file', function () {
     $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
 });
+
 
 // Allows HR to add multiple quiz questions
 
@@ -38,6 +41,21 @@ app.controller('addQuizController', function ($scope, $http) {
 });
 
 $(document).ready(function () {
+
+    var userData = {};
+
+    $('#questionTable').DataTable({
+        data: userData,
+        columns:
+        [
+            { title: "id", visible: false },
+            { title: "Question Type" },
+            { title: "Question Text" },
+            { title: "" },
+            { title: "" }
+        ]
+    });
+
     
     $('#submit').click(function () {
         var json;
