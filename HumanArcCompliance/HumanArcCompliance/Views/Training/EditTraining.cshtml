@@ -11,6 +11,7 @@
 <div ng-app="editTrainingApp" ng-controller="RemoveCtrl">
     <div class="form-group">
 	    <div class="row">   
+            <div class="col-md-1"></div>
 	        <div class="table table-stripped">
 			    @* creates table based off 'EditTraining.js' script *@
                 <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"></table>
@@ -21,6 +22,7 @@
                        class="btn btn-primary" role="button" aria-disabled="false"
                        onclick="location.href='@Url.Action("AddTraining", "Training")'"/>
 	        </div>
+            <div class="col-md-1"></div>
         </div>
     </div>
 </div>
