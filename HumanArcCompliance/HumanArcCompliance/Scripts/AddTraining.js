@@ -15,18 +15,12 @@ $(document).on('change', '.hide-file', function () {
 var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
-    $scope.choiceSet = { choices: [] };
-    $scope.quest = {};
-
-    $scope.choiceSet.choices = [];
-    $scope.addNewChoice = function () {
-        $scope.choiceSet.choices.push('');
-    };
-
-    $scope.removeChoice = function (z) {
-        //var lastItem = $scope.choiceSet.choices.length - 1;
-        $scope.choiceSet.choices.splice(z, 1);
-    };
+    $scope.quizData = {
+        title: '',
+        groups: [],
+        description: '',
+        media: ''
+    }
 
     var config = {
         headers: {

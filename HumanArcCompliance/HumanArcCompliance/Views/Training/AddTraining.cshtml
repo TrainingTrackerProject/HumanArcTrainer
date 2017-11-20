@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-8">
 
-                <div ng-controller="addQuizController">
+                <div ng-controller="addQuizController" ng-init="quizData">
                     <div class="form-group required">
                         <label class="control-label" for="trainingTitle">Title</label>
                         <input type="text" class="form-control" id="trainingTitle" placeholder="Enter Title" required>
@@ -45,8 +45,8 @@
                     </div>
                     @*This was the test button. Use it as an example*@
                     @*<button type="button" name="button" ng-click="addQuiz(sampleJSON)">hit here for test</button>*@
+                    <button id="saveQuizInfo" type="button" class="btn btn-info pull-right disabled">Save Quiz Info</button>
                 </div>
-                <button id="saveQuizInfo" type="button" class="btn btn-info pull-right disabled">Save Quiz Info</button>
                 <div style="clear:both"></div>
                 <hr />
 
