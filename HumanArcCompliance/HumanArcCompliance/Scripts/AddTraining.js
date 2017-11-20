@@ -12,7 +12,7 @@ $(document).on('change', '.hide-file', function () {
 
 // Allows HR to add multiple quiz questions
 
-var app = angular.module('addQuizApp', ['ngRoute']);
+var app = angular.module('addQuestionApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
     $scope.quizData = {
@@ -36,7 +36,12 @@ app.controller('addQuestionController', function ($scope, $http) {
 });
 
 app.controller('addQuizController', function ($scope, $http) {
+    $scope.enableAddQuestion = function () {
+        $scope.inactive = false;
+    } 
+
     $scope.name = "quiz"
+
     var groups = [];
     $http.get('/Training/GetAllGroups').then(function (data) {
         $.each(data.data, function (index, value) {
@@ -71,7 +76,9 @@ var sampleJSON = {
 
 $(document).ready(function () {
 
-    var userData = {};
+    $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
+
+    var userData = {}
 
     $('#questionTable').DataTable({
         data: userData,
