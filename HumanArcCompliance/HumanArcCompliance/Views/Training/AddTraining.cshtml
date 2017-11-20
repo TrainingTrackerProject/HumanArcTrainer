@@ -8,11 +8,10 @@
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
 <h2>Add Quiz</h2>
 
-    <div ng-app="addQuizApp">
+    <div ng-app="addQuestionApp">
         <div class="row">
             <div class="col-md-8">
 
-<<<<<<< HEAD
                 <div ng-app="addQuiz" ng-controller="addQuizController">
                     
                         <div class="form-group required">
@@ -32,28 +31,6 @@
                             <span style="color:red">Group applied is required.</span>
                         </div>
              
-=======
-                <div ng-controller="addQuizController">
-                    <div class="form-group required">
-                        <label class="control-label" for="trainingTitle">Title</label>
-                        <input type="text" class="form-control" id="trainingTitle" placeholder="Enter Title" required>
-                        <span style="color:red">The title is required.</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="trainingDesc">Description</label>
-                        <input type="text" class="form-control" id="trainingDesc" placeholder="Enter Description">
-                    </div>
-                    <div class="form-group required">
-                        <label class="control-label" for="groupApplied">Group(s) Applied To</label>
-                        <select multiple class="form-control" id="groupsApplied" required>
-                            @*<option>Training Administrators</option>
-                                <option>Leadership</option>
-                                <option>Users</option>*@
-                            <option id="{{group.id}}" ng-repeat="group in groups">{{group.name}}</option>
-                        </select>
-                        <span style="color:red">Group applied is required.</span>
-                    </div>
->>>>>>> 8eafad74bbf1a9be5e0262c3bea59b698436cad3
 
                     <div class="form-group">
                         <label for="uploadMedia">Upload Media File</label>
