@@ -7,7 +7,7 @@ var json = {
     title: 'my title',
     description: 'myDesc',
     allQuestions: [{
-        text: 'HERE IS qUeSTION 1',
+        text: 'This is question 1',
         type: 'multipleChoice',
         answers: [{
             text: 'a1',
@@ -27,7 +27,7 @@ var json = {
         }]
     },
     {
-        text: 'HERE IS qUeSTION 2',
+        text: 'This is question 2',
         type: 'trueFalse',
         answers: [{
             text: 'True',
@@ -39,7 +39,7 @@ var json = {
         }]
     },
     {
-        text: 'HERE IS qUeSTION 3',
+        text: 'This is question 3',
         type: 'shortAnswer'
     }
     ]
@@ -48,42 +48,8 @@ app.controller("QuizCtrl", function ($scope) {
     $scope.isArray = angular.isArray;
     $scope.json = json;
 })
-/*
-//////////////////////////////////////////////////////////////
-//Change this json to real data later
-var json = {
-    title: 'my title',
-    description: 'myDesc',
-    allQuestions: [{
-        text: 'question1',
-        type: 'multipleChoice',
-        answers: [{
-            text: 'a1',
-            isCorrect: true
-        },
-        {
-            text: 'a2',
-            isCorrect: false
-        }
-        ]
-    },
-    {
-        text: 'question2',
-        type: 'multipleChoice',
-        answers: [{
-            text: 'a3',
-            isCorrect: true
-        },
-        {
-            text: 'a4',
-            isCorrect: false
-        }
-        ]
-    }
-    ]
-}
-/////////////////////////////////////////////////////////////
 
+/*
 app.controller('QuizCtrl', function ($scope, $http) {
     $scope.json = json;
     $scope.name = "quiz"
