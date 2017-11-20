@@ -1,9 +1,91 @@
 ﻿/*
  * AngularJS code for the Quiz application, called on Quiz.cshtml.
  */
-var app = angular.module('addQuestionApp', ['ngRoute']);
-var jsonData;
-app.controller('addQuizController', function ($scope, $http) {
+
+app = angular.module("QuizApp", []);
+var json = {
+    title: 'my title',
+    description: 'myDesc',
+    allQuestions: [{
+        text: 'HERE IS qUeSTION 1',
+        type: 'multipleChoice',
+        answers: [{
+            text: 'a1',
+            isCorrect: true
+        },
+        {
+            text: 'a2',
+            isCorrect: false
+        },
+        {
+            text: 'a3',
+            isCorrect: false
+        },
+        {
+            text: 'a4',
+            isCorrect: false
+        }]
+    },
+    {
+        text: 'HERE IS qUeSTION 2',
+        type: 'trueFalse',
+        answers: [{
+            text: 'True',
+            isCorrect: true
+        },
+        {
+            text: 'False',
+            isCorrect: false
+        }]
+    },
+    {
+        text: 'HERE IS qUeSTION 3',
+        type: 'shortAnswer'
+    }
+    ]
+}
+app.controller("QuizCtrl", function ($scope) {
+    $scope.isArray = angular.isArray;
+    $scope.json = json;
+})
+/*
+//////////////////////////////////////////////////////////////
+//Change this json to real data later
+var json = {
+    title: 'my title',
+    description: 'myDesc',
+    allQuestions: [{
+        text: 'question1',
+        type: 'multipleChoice',
+        answers: [{
+            text: 'a1',
+            isCorrect: true
+        },
+        {
+            text: 'a2',
+            isCorrect: false
+        }
+        ]
+    },
+    {
+        text: 'question2',
+        type: 'multipleChoice',
+        answers: [{
+            text: 'a3',
+            isCorrect: true
+        },
+        {
+            text: 'a4',
+            isCorrect: false
+        }
+        ]
+    }
+    ]
+}
+/////////////////////////////////////////////////////////////
+
+app.controller('QuizCtrl', function ($scope, $http) {
+    $scope.json = json;
     $scope.name = "quiz"
     var groups = [];
     $http.get('/Training/GetAllGroups').then(function (data) {
@@ -63,7 +145,6 @@ app.controller('addQuizController', function ($scope, $http) {
             $('#testDiv').append(fullDiv);
         }
     });
-
 });
 
 app.controller('addQuestionController', function ($scope, $http) {
@@ -143,3 +224,4 @@ $(document).ready(function () {
         });
     });
 });
+*/
