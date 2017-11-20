@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title HumanArc Compliance</title>
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/css")
 
@@ -29,10 +29,10 @@
                     <div class="container-fluid">
                         <div class="navbar navbar-fixed-left">
                             <ul class="nav navbar-nav nav-pills nav-stacked">
-                                <li class="active navLink" style="text-align:center;"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                                <li class="active navLink"><a href="@Url.Action("Index","Home")"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                                 <li class="navLink"><a href="@Url.Action("MyTraining","Training")"><span class="glyphicon glyphicon-book"></span> Training</a></li>
                                 <li class="navLink managers"><a href="@Url.Action("ManageEmployees", "Training")"><span class="glyphicon glyphicon-user"></span> Manage Employees</a></li>
-                                <li class="navLink humanResources"><a href="@Url.Action("editTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Edit Training</a></li>
+                                <li class="navLink humanResources"><a href="@Url.Action("editTraining", "Training")"><span class="glyphicon glyphicon-book"></span> Manage Training</a></li>
 
                             </ul>
                         </div>

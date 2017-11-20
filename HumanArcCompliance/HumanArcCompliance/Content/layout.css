@@ -46,16 +46,10 @@ body {
 .navbar-fixed-left {
     border-radius: 0;
 }
-
     .navbar-fixed-left .navbar-nav > li {
         float: none; /* Cancel default li float: left */
     }
-
         /* On using dropdown menu (To right shift popuped) */
         .navbar-fixed-left .navbar-nav > li > .dropdown-menu {
             margin-top: -50px;
         }
-
-li a {
-    text-align: center;
-}
