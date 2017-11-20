@@ -12,7 +12,7 @@ $(document).on('change', '.hide-file', function () {
 
 // Allows HR to add multiple quiz questions
 
-var app = angular.module('addQuestionApp', ['ngRoute']);
+var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
     $scope.quizData = {
