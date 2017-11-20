@@ -15,13 +15,6 @@ $(document).on('change', '.hide-file', function () {
 var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
-    $scope.quizData = {
-        title: '',
-        groups: [],
-        description: '',
-        media: ''
-    }
-
     var config = {
         headers: {
             'Content-Type': 'application/json;'
@@ -36,7 +29,7 @@ app.controller('addQuestionController', function ($scope, $http) {
 });
 
 app.controller('addQuizController', function ($scope, $http) {
-    $scope.enableAddQuestion = function () {
+    function enableAddQuestion() {
         $scope.inactive = false;
     } 
 
@@ -56,6 +49,14 @@ app.controller('addQuizController', function ($scope, $http) {
         }
     }
 
+    //$scope.quizData = {
+    //    title: '',
+    //    groups: [],
+    //    description: '',
+    //    media: ''
+    //}
+    $scope.quizData = {}
+
     $scope.sampleJSON = {
         title: 'this is the test title3',
         description: 'this is the test description',
@@ -63,8 +64,10 @@ app.controller('addQuizController', function ($scope, $http) {
         groups: [1, 2]
     }
 
-    $scope.addQuiz = function (model) {
-        $http.post('/Training/AddQuiz', { quizData: JSON.stringify(model) }, config).then(function (success) {
+    $scope.addQuiz = function () {
+        console.log($scope.quizData);
+        enableAddQuestion();
+        $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
             alert(success);
         });    
     }

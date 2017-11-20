@@ -143,7 +143,16 @@ namespace HumanArcCompliance.helpers
             HumanArcEntities db = new HumanArcEntities();
             try
             {
-                return db.UserQuizQuestionAnswers.First(uq => uq.userId == userId && uq.quizId == quizId);
+                UserQuizQuestionAnswer uqqa = db.UserQuizQuestionAnswers.First(uq => uq.userId == userId && uq.quizId == quizId);
+                if(uqqa.isChecked == null)
+                {
+                    uqqa.isChecked = false;
+                }
+                if (uqqa.isApproved == null)
+                {
+                    uqqa.isApproved = false;
+                }
+                return uqqa;
             }
             catch (Exception e)
             {

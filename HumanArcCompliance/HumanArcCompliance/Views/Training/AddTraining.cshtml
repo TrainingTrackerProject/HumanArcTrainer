@@ -13,44 +13,43 @@
             <div class="col-md-8">
 
                 <div ng-controller="addQuizController" ng-init="quizData">
-                    <div class="form-group required">
-                        <label class="control-label" for="trainingTitle">Title</label>
-                        <input type="text" class="form-control" id="trainingTitle" ng-model="title" placeholder="Enter Title" required>
-                        <span style="color:red">The title is required.</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="trainingDesc">Description</label>
-                        <input type="text" class="form-control" id="trainingDesc" placeholder="Enter Description">
-                    </div>
-                    <div class="form-group required">
-                        <label class="control-label" for="groupApplied">Group(s) Applied To</label>
-                        <select multiple class="form-control" id="groupsApplied" ng-model="group" required>
-                            @*<option>Training Administrators</option>
-                                <option>Leadership</option>
-                                <option>Users</option>*@
-                            <option id="{{group.id}}" ng-repeat="group in groups">{{group.name}}</option>
-                        </select>
-                        <span style="color:red">Group applied is required.</span>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="uploadMedia">Upload Media File</label>
-                        <input type="file" name="uploadFile" class="hide-file">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Choose Media">
-                            <span class="input-group-btn">
-                                <button class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i>Browse</button>
-                            </span>
+                    <form name="quizForm" ng-submit="addQuiz">
+                        <div class="form-group required">
+                            <label class="control-label" for="trainingTitle">Title</label>
+                            <input type="text" class="form-control" id="trainingTitle" ng-model="quizData.title" placeholder="Enter Title" required>
+                            <span style="color:red">The title is required.</span>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="trainingDesc">Description</label>
+                            <input type="text" class="form-control" id="trainingDesc" ng-model="quizData.description" placeholder="Enter Description">
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="groupApplied">Group(s) Applied To</label>
+                            <select multiple class="form-control" id="groupsApplied" ng-model="quizData.groups" required>
+                                @*<option>Training Administrators</option>
+                    <option>Leadership</option>
+                    <option>Users</option>*@
+                                <option id="{{group.id}}" ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</option>
+                            </select>
+                            <span style="color:red">Group applied is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="uploadMedia">Media Link</label>
+                            <input type="text" name="uploadFile" class="hide-file" ng-model="quizData.media">
+                            @*<div class="input-group">
+                    <input type="text" class="form-control" placeholder="Media Link">
+                    <span class="input-group-btn">
+                        <button class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i>Browse</button>
+                    </span>
+                </div>*@
+                        </div>
 
-                    <button id="saveQuizInfo" type="button" class="btn btn-info pull-right" ng-disabled="!title || !group" ng-click="enableAddQuestion();">Save Quiz Info</button>
-               
-                    <div style="clear:both"></div>
-                    <hr />
-                    <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
+                        <button id="saveQuizInfo" type="submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups" ng-click="addQuiz();">Save Quiz Info</button>
 
+                        <div style="clear:both"></div>
+                        <hr />
+                        <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
+                    </form>
                 </div>
                 
                 
