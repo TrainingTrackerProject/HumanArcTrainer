@@ -88,80 +88,80 @@ namespace HumanArcCompliance.Controllers
         //group comment start
         //sean uncomment start
 
-        public ActionResult GetAllManagersUsers()
-        {
+        //public ActionResult GetAllManagersUsers()
+        //{
 
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
-            if (!val.checkUserAuth(vmUser, managers))
-            {
-                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }
-            ADSearcher ad = new ADSearcher();
-            List<User> allUsers = ad.getDirectReports(vmUser);
-            return Json(allUsers, JsonRequestBehavior.AllowGet);
-        }
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
+        //    {
+        //        if (!val.getUserCredentials(Request))
+        //        {
+        //            return RedirectToAction("Login", "Home");
+        //        }
+        //        vmUser = session.getSessionUser();
+        //    }
+        //    if (!val.checkUserAuth(vmUser, managers))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    ADSearcher ad = new ADSearcher();
+        //    List<User> allUsers = ad.getDirectReports(vmUser);
+        //    return Json(allUsers, JsonRequestBehavior.AllowGet);
+        //}
 
-        public ActionResult ManageEmployees()
-        {
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
-            if (!val.checkUserAuth(vmUser, managers))
-            {
-                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }
-            return View(vmUser);
-        }
+        //public ActionResult ManageEmployees()
+        //{
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
+        //    {
+        //        if (!val.getUserCredentials(Request))
+        //        {
+        //            return RedirectToAction("Login", "Home");
+        //        }
+        //        vmUser = session.getSessionUser();
+        //    }
+        //    if (!val.checkUserAuth(vmUser, managers))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    return View(vmUser);
+        //}
 
-        public ActionResult EditTraining()
-        {
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
-            if (!val.checkUserAuth(vmUser, hrGroup))
-            {
-                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }
-            return View(vmUser);
-        }
+        //public ActionResult EditTraining()
+        //{
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
+        //    {
+        //        if (!val.getUserCredentials(Request))
+        //        {
+        //            return RedirectToAction("Login", "Home");
+        //        }
+        //        vmUser = session.getSessionUser();
+        //    }
+        //    if (!val.checkUserAuth(vmUser, hrGroup))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    return View(vmUser);
+        //}
 
-        public ActionResult AddTraining()
-        {
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
-            if (!val.checkUserAuth(vmUser, hrGroup))
-            {
-                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }
-            return View(vmUser);
-        }
+        //public ActionResult AddTraining()
+        //{
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
+        //    {
+        //        if (!val.getUserCredentials(Request))
+        //        {
+        //            return RedirectToAction("Login", "Home");
+        //        }
+        //        vmUser = session.getSessionUser();
+        //    }
+        //    if (!val.checkUserAuth(vmUser, hrGroup))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    return View(vmUser);
+        //}
         //group comment end
         //sean uncomment end
 
@@ -169,20 +169,20 @@ namespace HumanArcCompliance.Controllers
 
         // sean comment start
         // group uncomment start
-        //public ActionResult ManageEmployees()
-        //{
-        //    return View(session.getSessionUser());
-        //}
+        public ActionResult ManageEmployees()
+        {
+            return View(session.getSessionUser());
+        }
 
-        //public ActionResult EditTraining()
-        //{
-        //    return View(session.getSessionUser());
-        //}
+        public ActionResult EditTraining()
+        {
+            return View(session.getSessionUser());
+        }
 
-        //public ActionResult AddTraining()
-        //{
-        //    return View(session.getSessionUser());
-        //}
+        public ActionResult AddTraining()
+        {
+            return View(session.getSessionUser());
+        }
         // sean comment end
         //group uncomment end
 

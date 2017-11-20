@@ -77,27 +77,27 @@ namespace HumanArcCompliance.Controllers
 
         //Sean Uncomment start
         //group comment start
-        public ActionResult Login(string username = "", string password = "")
-        {
-            if (username != "" && password != "")
-            {
-                using (var context = new PrincipalContext(ContextType.Domain))
-                {
-                    ADSearcher ad = new ADSearcher();
-                    if (ad.IsAuthenticated(username, password))
-                    {
-                        UserPrincipal user = ad.findSearchedUserName(username);
+        //public ActionResult Login(string username = "", string password = "")
+        //{
+        //    if (username != "" && password != "")
+        //    {
+        //        using (var context = new PrincipalContext(ContextType.Domain))
+        //        {
+        //            ADSearcher ad = new ADSearcher();
+        //            if (ad.IsAuthenticated(username, password))
+        //            {
+        //                UserPrincipal user = ad.findSearchedUserName(username);
 
-                        TempData["logonUser"] = ad.findByUserName(user);
-                        return RedirectToAction("Index", new { logonUser = "logonUser" });
-                    }
-                }
-                ViewBag.userMessage = "Access Denied Invalid Login Please Try Again";
-                return View();
-            }
-            ViewBag.userMessage = "Please Log In";
-            return View();
-        }
+        //                TempData["logonUser"] = ad.findByUserName(user);
+        //                return RedirectToAction("Index", new { logonUser = "logonUser" });
+        //            }
+        //        }
+        //        ViewBag.userMessage = "Access Denied Invalid Login Please Try Again";
+        //        return View();
+        //    }
+        //    ViewBag.userMessage = "Please Log In";
+        //    return View();
+        //}
 
         //group comment end
         //sean uncomment end
