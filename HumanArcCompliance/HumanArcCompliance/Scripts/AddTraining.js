@@ -1,6 +1,4 @@
-﻿
-
-// This lets the HR member look for media files when "Browse" is clicked.
+﻿// This lets the HR member look for media files when "Browse" is clicked.
 $(document).on('click', '.browse', function () {
     var file = $(this).parent().parent().parent().find('.hide-file');
     file.trigger('click');
@@ -12,7 +10,7 @@ $(document).on('change', '.hide-file', function () {
 
 // Allows HR to add multiple quiz questions
 
-var app = angular.module('addQuestionApp', ['ngRoute']);
+var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
     $scope.quizData = {
@@ -38,7 +36,7 @@ app.controller('addQuestionController', function ($scope, $http) {
 app.controller('addQuizController', function ($scope, $http) {
     $scope.enableAddQuestion = function () {
         $scope.inactive = false;
-    } 
+    }
 
     $scope.name = "quiz"
 
@@ -66,7 +64,7 @@ app.controller('addQuizController', function ($scope, $http) {
     $scope.addQuiz = function (model) {
         $http.post('/Training/AddQuiz', { quizData: JSON.stringify(model) }, config).then(function (success) {
             alert(success);
-        });    
+        });
     }
 });
 
@@ -92,7 +90,7 @@ $(document).ready(function () {
         ]
     });
 
-    
+
     $('#submit').click(function () {
         var json;
         var groups = [];
@@ -117,14 +115,14 @@ $(document).ready(function () {
                 text: document.getElementById('questionText' + index).value,
                 answers: []
             }
-            $('input:radio').each(function (i, value) {                
-                if (value.name == "content" + index) {                  
+            $('input:radio').each(function (i, value) {
+                if (value.name == "content" + index) {
                     if (value.checked) {
                         question.type = value.value;
                     }
                 }
             });
-            
+
             if (question.type == "multipleChoice") {
                 for (var i = 1; i < 5; i++) {
                     var answerid = 'choice' + i + index;
@@ -133,7 +131,7 @@ $(document).ready(function () {
                         answerText: document.getElementById(answerid).value,
                         isCorrect: 'false'
                     }
-                    if (document.getElementById(('is' + i) + index).checked){
+                    if (document.getElementById(('is' + i) + index).checked) {
                         answer.isCorrect = 'true';
                     }
                     question.answers.push(answer);
@@ -154,7 +152,7 @@ $(document).ready(function () {
                     isCorrect: 'false'
                 }
                 if (document.getElementById('falseAnswer' + index).checked) {
-                   answer2.isCorrect = 'true';
+                    answer2.isCorrect = 'true';
                 }
                 question.answers.push(answer2);
             } else {
@@ -178,7 +176,7 @@ $(document).ready(function () {
         $.ajax({
             type: 'POST',
             url: '/Training/AddQuiz',
-            data: {group:groups.toString(), j:JSON.stringify(json) }, //{group: groups.toString(), quiz: JSON.stringify(quiz), question: questions },
+            data: { group: groups.toString(), j: JSON.stringify(json) }, //{group: groups.toString(), quiz: JSON.stringify(quiz), question: questions },
         });
     });
 });
