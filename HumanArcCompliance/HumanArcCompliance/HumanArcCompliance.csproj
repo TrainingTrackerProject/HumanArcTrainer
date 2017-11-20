@@ -381,11 +381,10 @@
       <DependentUpon>HumanArcEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="helpers\ADSearcher.cs" />
-    <Compile Include="Models\AddQuizDeserializer.cs" />
+    <Compile Include="Models\Deserializers.cs" />
     <Compile Include="helpers\Queries.cs" />
     <Compile Include="helpers\sessionStorage.cs" />
-    <Compile Include="helpers\validateUser.cs" />
-    <Compile Include="helpers\ViewModel.cs" />
+    <Compile Include="helpers\validation.cs" />
     <Compile Include="HumanArcEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -404,6 +403,7 @@
     <Compile Include="Models\EmployeeQuizesViewModel.cs" />
     <Compile Include="Models\ManageEmployeeViewModel.cs" />
     <Compile Include="Models\QuizViewModel.cs" />
+    <Compile Include="Models\Serializers.cs" />
     <Compile Include="Models\SubmitQuizDeserializer.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

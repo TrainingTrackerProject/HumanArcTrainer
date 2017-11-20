@@ -65,9 +65,10 @@ create table UserQuizQuestionAnswers(
 insert into Groups Values('HRGroup'),('managers'),('users'),('User');
 
 insert into Users(firstName,lastName, email, userGroups,SAMAccountName, manager) 
-values('Sean','Leroy','sleroy18@jcu.edu','Administrator, HRGroup','Administrator', 'Administrator'),
+values('Sean','Leroy','sleroy18@jcu.edu','Administrator,HRGroup','Administrator', 'Administrator'),
 		('DoNotTestMe1F', 'DONotTestMe1L', 'DBTEST1@jcu.edu', 'managers,users','DoNotTest1','Administrator'),
 		('DoNotTestMe2F', 'DoNotTestMe2L', 'DBTEST2@jcu.edu', 'users', 'DoNotTest2','DoNotTest1');
+
 SET IDENTITY_INSERT Quizes ON;
 
 INSERT INTO Quizes (id,groupId, title, description)
@@ -99,6 +100,7 @@ VALUES (2, 'True', 0);
 INSERT INTO Answers (questionId, answerText, isCorrect)
 VALUES (2, 'False', 1);
 
+select * from Users;
 select * from Quizes;
 select * from Questions;
 select * from Answers;

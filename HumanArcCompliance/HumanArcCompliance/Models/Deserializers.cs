@@ -6,18 +6,20 @@ using System.Web;
 namespace HumanArcCompliance.Models
 {
     //used to parse information
-    public class AddQuizDeserializer
+    public class Deserializers
     {
         public class JAnswers
         {
+
             public string answerText { get; set; }
-            public string isCorrect { get; set; }
+            public bool isCorrect { get; set; }
         }
 
-        public class JQuestions
+        public class JQuestion
         {
-            public string type { get; set; }
-            public string text { get; set; }
+            public List<int> quizIds { get; set; }
+            public string questionType { get; set; }
+            public string questionText { get; set; } 
             public List<JAnswers> answers { get; set; }
         }
 
@@ -25,7 +27,8 @@ namespace HumanArcCompliance.Models
         {
             public string title { get; set; }
             public string description { get; set; }
-            public List<JQuestions> questions { get; set; }
+            public int[] groups { get; set; }
+            public string media { get; set; }
         }
     }
 }

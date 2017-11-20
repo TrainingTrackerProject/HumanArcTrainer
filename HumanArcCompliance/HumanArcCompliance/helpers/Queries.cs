@@ -165,6 +165,8 @@ namespace HumanArcCompliance.helpers
             {
                 foreach (UserQuizQuestionAnswer uqqa in answers)
                 {
+                    uqqa.isChecked = false;
+                    uqqa.isApproved = false;
                     db.UserQuizQuestionAnswers.Add(uqqa);
                     db.SaveChanges();
                 }
@@ -183,34 +185,46 @@ namespace HumanArcCompliance.helpers
             return db.Users.First(u => u.SAMAccountName == sam);
         }
 
-        public void RemoveQuiz(int id)
+        public bool RemoveQuiz(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             List<Question> Questions = db.Questions.Where(q => q.quizId == id).ToList();
-            foreach (Question question in Questions)
+            try
             {
-
-                List<Answer> Answers = db.Answers.Where(q => q.questionId == question.id).ToList();
-                foreach (Answer answer in Answers)
+                foreach (Question question in Questions)
                 {
-                  
-                    List<UserQuizQuestionAnswer> UserQuizzes = db.UserQuizQuestionAnswers.Where(q => q.answerId == answer.id).ToList();
-                    foreach (UserQuizQuestionAnswer uqqa in UserQuizzes)
-                    {
-                        db.UserQuizQuestionAnswers.Remove(db.UserQuizQuestionAnswers.First(u => u.id == uqqa.id));
-                        db.SaveChanges();
-                    }
-                    db.Answers.Remove(db.Answers.First(a => a.id == answer.id));
-                    db.SaveChanges();
 
+                    List<Answer> Answers = db.Answers.Where(q => q.questionId == question.id).ToList();
+                    foreach (Answer answer in Answers)
+                    {
+
+                        List<UserQuizQuestionAnswer> UserQuizzes = db.UserQuizQuestionAnswers.Where(q => q.answerId == answer.id).ToList();
+                        foreach (UserQuizQuestionAnswer uqqa in UserQuizzes)
+                        {
+                            db.UserQuizQuestionAnswers.Remove(db.UserQuizQuestionAnswers.First(u => u.id == uqqa.id));
+                            db.SaveChanges();
+                        }
+                        db.Answers.Remove(db.Answers.First(a => a.id == answer.id));
+                        db.SaveChanges();
+
+                    }
+                    db.Questions.Remove(db.Questions.First(q => q.id == question.id));
+                    db.SaveChanges();
                 }
-                db.Questions.Remove(db.Questions.First(q => q.id == question.id));
+                db.Quizes.Remove(db.Quizes.First(q => q.id == id));
                 db.SaveChanges();
+                return true;
             }
-            db.Quizes.Remove(db.Quizes.First(q => q.id == id));
-            db.SaveChanges();
+            catch(Exception e)
+            {
+                return false;
+            }
         }
 
-
+        public Group getGroupById(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Groups.First(g => g.id == id);
+        }
     }
 }

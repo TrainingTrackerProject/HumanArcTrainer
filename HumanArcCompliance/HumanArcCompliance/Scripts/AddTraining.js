@@ -24,6 +24,18 @@ app.controller('addQuestionController', function ($scope, $http) {
         //var lastItem = $scope.choiceSet.choices.length - 1;
         $scope.choiceSet.choices.splice(z, 1);
     };
+
+    var config = {
+        headers: {
+            'Content-Type': 'application/json;'
+        }
+    }
+
+    $scope.addQuestion = function () {
+        $http.post('/Training/AddQuizQuestionAnswers', { quizData: JSON.stringify(sampleJSON) }, config).then(function (success) {
+            alert(success);
+        });
+    }
 });
 
 app.controller('addQuizController', function ($scope, $http) {
@@ -35,7 +47,30 @@ app.controller('addQuizController', function ($scope, $http) {
         });
     });
     $scope.groups = groups;
+
+    var config = {
+        headers: {
+            'Content-Type': 'application/json;'
+        }
+    }
+
+    $scope.sampleJSON = {
+        title: 'this is the test title3',
+        description: 'this is the test description',
+        media: 'testing the media',
+        groups: [1, 2]
+    }
+
+    $scope.addQuiz = function (model) {
+        $http.post('/Training/AddQuiz', { quizData: JSON.stringify(model) }, config).then(function (success) {
+            alert(success);
+        });    
+    }
 });
+
+var sampleJSON = {
+    title: 'this is the test title'
+}
 
 $(document).ready(function () {
     

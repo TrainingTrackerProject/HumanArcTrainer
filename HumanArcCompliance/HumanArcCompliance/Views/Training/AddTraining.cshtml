@@ -11,7 +11,7 @@
     <div ng-app="addQuestionApp">
         <div class="row">
             <div class="col-md-8">
-                <div ng-app="addQuiz" ng-controller="addQuizController">
+                <div ng-app="addQuiz" ng-controller="addQuizController" ng-model="sampleJSON">
                     <div class="form-group">
                         <label for="trainingTitle">Title</label>
                         <input type="text" class="form-control" id="trainingTitle" placeholder="Enter Title">
@@ -36,10 +36,12 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Choose Media">
                             <span class="input-group-btn">
-                                <button class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+                                <button class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i>Browse</button>
                             </span>
                         </div>
                     </div>
+                    @*This was the test button. Use it as an example*@
+                    @*<button type="button" name="button" ng-click="addQuiz(sampleJSON)">hit here for test</button>*@
                 </div>
                 <h4>Add Quiz Questions</h4>
 
@@ -185,6 +187,7 @@
                 <br /> <br />
                 <!--TODO-->
                 <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
+            </div>
         </div>
     </div>
 </form>

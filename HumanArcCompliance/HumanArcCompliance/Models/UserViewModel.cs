@@ -15,15 +15,27 @@ namespace HumanArcCompliance.Models
         //email
         public String email { get; set; }
 
-        public String isHR { get; set; }
+        public bool isHR { get; set; }
 
-        public String isManager { get; set; }
+        public bool isManager { get; set; }
 
         public String SAMAccountName { get; set; }
 
         public String[] userGroups { get; set; }
 
         public String manager { get; set; }
+
+        public User modelToUser(UserViewModel vmUser)
+        {
+            User myUser = new User();
+            myUser.firstName = vmUser.firstName;
+            myUser.lastName = vmUser.lastName;
+            myUser.email = vmUser.email;
+            myUser.SAMAccountName = vmUser.SAMAccountName;
+            myUser.manager = vmUser.manager;
+            myUser.userGroups = string.Join(",", vmUser.userGroups);
+            return myUser;
+        }
     }
 
 }

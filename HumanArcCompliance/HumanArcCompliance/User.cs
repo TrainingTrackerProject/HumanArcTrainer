@@ -9,6 +9,7 @@
 
 namespace HumanArcCompliance
 {
+    using HumanArcCompliance.Models;
     using System;
     using System.Collections.Generic;
     
@@ -30,5 +31,33 @@ namespace HumanArcCompliance
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserQuizQuestionAnswer> UserQuizQuestionAnswers { get; set; }
+
+        public UserViewModel userToModel(User myUser)
+        {
+            validation validate = new validation();
+            UserViewModel vmUser = new UserViewModel();
+            vmUser.firstName = myUser.firstName;
+            vmUser.lastName = myUser.lastName;
+            vmUser.email = myUser.email;
+            vmUser.SAMAccountName = myUser.SAMAccountName;
+            vmUser.manager = myUser.manager;
+            vmUser.userGroups = myUser.userGroups.Split(',');
+            vmUser.isHR = false;
+            vmUser.isManager = false;
+            if (validate.validateHR(vmUser.userGroups))
+            {
+                vmUser.isHR = true;
+                vmUser.isManager = true;
+            }
+            else
+            {
+                if (validate.validateManager(vmUser.userGroups))
+                {
+                    vmUser.isManager = true;
+                }
+            }
+
+            return vmUser;
+        }
     }
 }
