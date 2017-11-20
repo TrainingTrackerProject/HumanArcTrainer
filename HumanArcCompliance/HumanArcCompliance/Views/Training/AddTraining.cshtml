@@ -13,25 +13,24 @@
             <div class="col-md-8">
 
                 <div ng-app="addQuiz" ng-controller="addQuizController">
-                    <div class="form-group required">
-                        <label class="control-label" for="trainingTitle">Title</label>
-                        <input type="text" class="form-control" id="trainingTitle" placeholder="Enter Title" required>
-                        <span style="color:red">The title is required.</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="trainingDesc">Description</label>
-                        <input type="text" class="form-control" id="trainingDesc" placeholder="Enter Description">
-                    </div>
-                    <div class="form-group required">
-                        <label class="control-label" for="groupApplied">Group(s) Applied To</label>
-                        <select multiple class="form-control" id="groupsApplied" required>
-                            @*<option>Training Administrators</option>
-                                <option>Leadership</option>
-                                <option>Users</option>*@
-                            <option id="{{group.id}}" ng-repeat="group in groups">{{group.name}}</option>
-                        </select>
-                        <span style="color:red">Group applied is required.</span>
-                    </div>
+                    
+                        <div class="form-group required">
+                            <label class="control-label" for="trainingTitle">Title</label>
+                            <input type="text" class="form-control" id="trainingTitle" ng-model="title" placeholder="Enter Title" required>
+                            <span style="color:red">The title is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingDesc">Description</label>
+                            <input type="text" class="form-control" id="trainingDesc" placeholder="Enter Description">
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="groupApplied">Group(s) Applied To</label>
+                            <select multiple class="form-control" id="groupsApplied" ng-model="group" required>
+                                <option id="{{group.id}}" ng-repeat="group in groups">{{group.name}}</option>
+                            </select>
+                            <span style="color:red">Group applied is required.</span>
+                        </div>
+             
 
                     <div class="form-group">
                         <label for="uploadMedia">Upload Media File</label>
@@ -43,13 +42,16 @@
                             </span>
                         </div>
                     </div>
-                    @*This was the test button. Use it as an example*@
-                    @*<button type="button" name="button" ng-click="addQuiz(sampleJSON)">hit here for test</button>*@
-                </div>
-                <button id="saveQuizInfo" type="button" class="btn btn-info pull-right disabled">Save Quiz Info</button>
-                <div style="clear:both"></div>
-                <hr />
+                    <button id="saveQuizInfo" type="button" class="btn btn-info pull-right" ng-disabled="!title || !group" ng-click="enableAddQuestion();">Save Quiz Info</button>
+                    <div style="clear:both"></div>
 
+                    <hr />
+
+                    <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
+
+                </div>
+                
+                
                 <!--Modal for adding quiz question-->
                 <div class="modal fade" id="questionModal" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-lg" role="document">
@@ -173,8 +175,7 @@
                 </div>
 
                 <br /> 
-                <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();">Add Quiz Question</button>
-                <br /><br />
+        
                 @*Modal for Submit confimation*@
                 <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

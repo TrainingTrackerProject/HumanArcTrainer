@@ -42,7 +42,12 @@ app.controller('addQuestionController', function ($scope, $http) {
 });
 
 app.controller('addQuizController', function ($scope, $http) {
+    $scope.enableAddQuestion = function () {
+        $scope.inactive = false;
+    } 
+
     $scope.name = "quiz"
+
     var groups = [];
     $http.get('/Training/GetAllGroups').then(function (data) {
         $.each(data.data, function (index, value) {
@@ -77,7 +82,9 @@ var sampleJSON = {
 
 $(document).ready(function () {
 
-    var userData = {};
+    $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
+
+    var userData = {}
 
     $('#questionTable').DataTable({
         data: userData,
