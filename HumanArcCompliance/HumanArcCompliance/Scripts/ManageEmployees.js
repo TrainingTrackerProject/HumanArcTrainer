@@ -12,7 +12,7 @@ $(document).ready(function () {
 });
 
 getAllUsers = function () {
-    if (document.getElementById("hrCheck").value == "true") {
+    if (document.getElementById("hrCheck").value == "True") {
         $.ajax({
             url: '/Training/GetAllUsers',
             type: 'GET',
