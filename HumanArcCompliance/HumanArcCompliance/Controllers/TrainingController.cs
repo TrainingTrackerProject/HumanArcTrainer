@@ -24,7 +24,7 @@ namespace HumanArcCompliance.Controllers
         String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
         public ActionResult MyTraining()
         {
-            if (session.getSessionUser() != null )
+            if (session.getSessionUser() != null)
             {
                 return View(session.getSessionUser());
             }
@@ -60,7 +60,7 @@ namespace HumanArcCompliance.Controllers
             List<ManageEmployeeViewModel> userQuizes = new List<ManageEmployeeViewModel>();
             Queries q = new Queries();
             List<User> Users = q.getAllUsers();
-            foreach(User user in Users)
+            foreach (User user in Users)
             {
                 ManageEmployeeViewModel userQuiz = new ManageEmployeeViewModel();
                 userQuiz.id = user.id;
@@ -71,7 +71,7 @@ namespace HumanArcCompliance.Controllers
                 userQuiz.SAMAccountName = user.SAMAccountName;
                 userQuiz.hasUngradedQuiz = false;
                 List<UserQuizQuestionAnswer> usersQuizes = q.getAllUserQuizes(user.id);
-                foreach(UserQuizQuestionAnswer uqqa in usersQuizes)
+                foreach (UserQuizQuestionAnswer uqqa in usersQuizes)
                 {
                     if ((bool)!uqqa.isChecked)
                     {
@@ -178,7 +178,10 @@ namespace HumanArcCompliance.Controllers
         {
             return View(session.getSessionUser());
         }
-
+        public ActionResult updateTraining()
+        {
+            return View(session.getSessionUser());
+        }
         public ActionResult AddTraining()
         {
             return View(session.getSessionUser());
@@ -204,45 +207,14 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "home", new { error = "Cannot Locate Quiz" });
             }
-            else if (!vmUser.userGroups.Contains(query.getGroupById(query.getQuizById(id).groupId).name)){
+            else if (!vmUser.userGroups.Contains(query.getGroupById(query.getQuizById(id).groupId).name))
+            {
                 return RedirectToAction("Index", "home", new { error = "Invalid Quiz" });
             }
             ViewBag.id = id;
             return View(vmUser);
         }
-        public JsonResult QuizQuestionAns()
-        {
-            List<Questionsoptions> obj = new List<Questionsoptions>();
-            obj.Add(new Questionsoptions
-            {
-                Question = "What is 12+20?",
-                OpA = "21",
-                OpB = "32",
-                OpC = "41",
-                OpD = "12",
-                Ans = "B"
-            });
-            obj.Add(new Questionsoptions
-            {
-                Question = "What is 12+12?",
-                OpA = "10",
-                OpB = "12",
-                OpC = "24",
-                OpD = "12",
-                Ans = "C"
-            });
-            obj.Add(new Questionsoptions
-            {
-                Question = "What is 12+24?",
-                OpA = "36",
-                OpB = "24",
-                OpC = "12",
-                OpD = "12",
-                Ans = "A"
-            });
-            return Json(obj, JsonRequestBehavior.AllowGet);
-        }
-        
+
         public ActionResult gradeQuiz()
         {
             UserViewModel vmUser = session.getSessionUser();
@@ -280,7 +252,7 @@ namespace HumanArcCompliance.Controllers
             List<Group> groups = new List<Group>();
             groups = q.getAllGroups();
             List<Group> sending = new List<Group>();
-            foreach(Group group in groups)
+            foreach (Group group in groups)
             {
                 Group g = new Group();
                 g.id = group.id;
@@ -309,7 +281,7 @@ namespace HumanArcCompliance.Controllers
             Queries query = new Queries();
             var result = JsonConvert.DeserializeObject<JQuiz>(quizData);
             List<int> quizIds = new List<int>();
-            foreach(int group in result.groups)
+            foreach (int group in result.groups)
             {
                 Quize quiz = new Quize();
                 quiz.groupId = Convert.ToInt32(group);
@@ -357,7 +329,7 @@ namespace HumanArcCompliance.Controllers
                     AddedAnswer AA = new AddedAnswer();
                     AA.id = query.addAnswer(answer);
                     AQ.answer.Add(AA);
-                }             
+                }
             }
             return Json(AQ, JsonRequestBehavior.AllowGet);
         }
@@ -425,15 +397,15 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
-            Queries query = new Queries();         
-            User user = query.getUserById(Convert.ToInt32(id));          
+            Queries query = new Queries();
+            User user = query.getUserById(Convert.ToInt32(id));
             List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
             string[] groups = user.userGroups.Split(',');
-            foreach(string group in groups)
+            foreach (string group in groups)
             {
                 int groupId = query.getGroupByName(group).id;
                 List<Quize> quizesByGroup = query.getQuizesByGroupId(groupId);
-                foreach(Quize quiz in quizesByGroup)
+                foreach (Quize quiz in quizesByGroup)
                 {
                     EmployeeQuizesViewModel employeeQuiz = new EmployeeQuizesViewModel();
                     employeeQuiz.userId = user.id;
@@ -455,13 +427,13 @@ namespace HumanArcCompliance.Controllers
                     }
 
                     employeeQuizes.Add(employeeQuiz);
-                    
+
                 }
             }
-            
+
             return Json(employeeQuizes, JsonRequestBehavior.AllowGet);
         }
-        
+
         public ActionResult EmployeeQuizes(int id)
         {
             UserViewModel vmUser = session.getSessionUser();
@@ -499,7 +471,7 @@ namespace HumanArcCompliance.Controllers
             Queries query = new Queries();
             List<Quize> quizes = query.getAllQuizes();
             List<Quize> sending = new List<Quize>();
-            foreach(Quize quiz in quizes)
+            foreach (Quize quiz in quizes)
             {
                 Quize q = new Quize();
                 q.id = quiz.id;
@@ -556,7 +528,7 @@ namespace HumanArcCompliance.Controllers
             qvmQuiz.questions = new List<QVMQuestion>();
             List<Question> questions = query.getQuestionsByQuiz(quiz.id);
 
-            foreach(Question question in questions)
+            foreach (Question question in questions)
             {
                 QVMQuestion qvmQuestion = new QVMQuestion();
                 qvmQuestion.id = question.id;
@@ -595,9 +567,9 @@ namespace HumanArcCompliance.Controllers
             User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
             var result = JsonConvert.DeserializeObject<SubmitQuiz>(data);
             List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
-            foreach(SubmitQuestions question in result.questions)
+            foreach (SubmitQuestions question in result.questions)
             {
-                foreach(SubmitAnswers answer in question.answers)
+                foreach (SubmitAnswers answer in question.answers)
                 {
                     UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
                     uqqa.quizId = result.id;
@@ -617,14 +589,4 @@ namespace HumanArcCompliance.Controllers
             return Json("success", JsonRequestBehavior.AllowGet);
         }
     }
-    public class Questionsoptions
-    {
-        public string Question { get; set; }
-        public string OpA { get; set; }
-        public string OpB { get; set; }
-        public string OpC { get; set; }
-        public string OpD { get; set; }
-        public string Ans { get; set; }
-    }
-
 }
