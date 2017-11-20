@@ -8,14 +8,14 @@
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
 <h2>Add Quiz</h2>
 
-    <div ng-app="addQuestionApp">
+    <div ng-app="addQuizApp">
         <div class="row">
             <div class="col-md-8">
 
                 <div ng-controller="addQuizController" ng-init="quizData">
                     <div class="form-group required">
                         <label class="control-label" for="trainingTitle">Title</label>
-                        <input type="text" class="form-control" id="trainingTitle" placeholder="Enter Title" required>
+                        <input type="text" class="form-control" id="trainingTitle" ng-model="title" placeholder="Enter Title" required>
                         <span style="color:red">The title is required.</span>
                     </div>
                     <div class="form-group">
@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group required">
                         <label class="control-label" for="groupApplied">Group(s) Applied To</label>
-                        <select multiple class="form-control" id="groupsApplied" required>
+                        <select multiple class="form-control" id="groupsApplied" ng-model="group" required>
                             @*<option>Training Administrators</option>
                                 <option>Leadership</option>
                                 <option>Users</option>*@
@@ -44,14 +44,11 @@
                             </span>
                         </div>
                     </div>
-                    @*This was the test button. Use it as an example*@
-                    @*<button type="button" name="button" ng-click="addQuiz(sampleJSON)">hit here for test</button>*@
-                    <button id="saveQuizInfo" type="button" class="btn btn-info pull-right disabled">Save Quiz Info</button>
-                </div>
-                <div style="clear:both"></div>
-                <hr />
 
-
+                    <button id="saveQuizInfo" type="button" class="btn btn-info pull-right" ng-disabled="!title || !group" ng-click="enableAddQuestion();">Save Quiz Info</button>
+               
+                    <div style="clear:both"></div>
+                    <hr />
                     <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
 
                 </div>
