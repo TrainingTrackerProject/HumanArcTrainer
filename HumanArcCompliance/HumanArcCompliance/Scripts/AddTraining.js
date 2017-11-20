@@ -15,6 +15,7 @@ $(document).on('change', '.hide-file', function () {
 var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
+
     var config = {
         headers: {
             'Content-Type': 'application/json;'

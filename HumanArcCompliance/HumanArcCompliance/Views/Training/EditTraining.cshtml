@@ -6,22 +6,21 @@
 }
 
 <div>
-	<h2>Training Table</h2>
+    <h2>Edit or Remove Exisiting Training</h2>
+    <h4>Review already existing training below by clicking on the edit button to edit, or the remove button to remove.</h4><br/><br/>
 </div>
 <div ng-app="editTrainingApp" ng-controller="RemoveCtrl">
     <div class="form-group">
 	    <div class="row">   
             <div class="col-md-1"></div>
-	        <div class="table table-stripped">
-			    @* creates table based off 'EditTraining.js' script *@
+            <div class="col-md-10">
+                @* creates table based off 'EditTraining.js' script *@
                 <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"></table>
-            </div>
-	        <div class ="col-md-10">
-                @* button placement to add a new training, goes to 'addTraining.cshtml' page *@ 
-                <input type="submit" value="Add A New Training" id="AddTrainingButton" 
+                @* button placement to add a new training, goes to 'addTraining.cshtml' page *@
+                <input type="submit" value="Add A New Training" id="AddTrainingButton"
                        class="btn btn-primary" role="button" aria-disabled="false"
-                       onclick="location.href='@Url.Action("AddTraining", "Training")'"/>
-	        </div>
+                       onclick="location.href='@Url.Action("AddTraining", "Training")'" />
+            </div>
             <div class="col-md-1"></div>
         </div>
     </div>
