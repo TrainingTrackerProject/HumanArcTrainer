@@ -6,6 +6,9 @@ app = angular.module("QuizApp", []);
 var json = {
     title: 'my title',
     description: 'myDesc',
+
+    //UNLIKE THE QUIZ.JS, THIS IS FOR THE USER'S QUIZ ANSWERS, NOT THE ACCEPTED ANSWERS
+    //THAT MEANS THAT ONE OF THEM HAS TO COME CHECKED. WHAT DO?
     allQuestions: [{
         text: 'This is question 1',
         type: 'multipleChoice',
