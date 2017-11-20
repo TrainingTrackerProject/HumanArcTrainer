@@ -1,7 +1,7 @@
-﻿<h2>Quiz</h2>
-<br />
-
-<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="json">
+﻿<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="json">
+    <h2>Quiz: {{json.title}}</h2>
+    <h4>{{json.description}}</h4>
+    <br />
     <div ng-repeat="question in json.allQuestions">
         <!--Displays multiple choice questions-->
         <div ng-if="question.type == 'multipleChoice'">
