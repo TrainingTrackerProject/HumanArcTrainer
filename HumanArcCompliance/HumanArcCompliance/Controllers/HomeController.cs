@@ -20,88 +20,52 @@ namespace HumanArcCompliance.Controllers
         /// checks if active directory is updated accouring to the last log entry 
         /// </summary>
         /// <param name="req"></param>
-        public ActionResult Index()
+        public ActionResult Index(string error = "")
         {
-            sessionStorage session = new sessionStorage();
-            if (session.getSessionVars() != null)
+            if (error != "")
             {
-                return View(session.getSessionVars());
+                ViewBag.errorMessage = error;
             }
 
+            sessionStorage session = new sessionStorage();
+            if (session.getSessionUser() != null)
+            {
+                return View(session.getSessionUser());
+            }
 
-            User myUser = new User();
-            String managers = (ConfigurationManager.AppSettings["managers"]);
-            String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
+            validation val = new validation();
 
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //Sean Uncomment Start
+            //Group Comment Start
 
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //group comment start
-            //sean uncomment start
-            //ApplicationDbContext will be user when a user logs in a new user entry is created for them
-
-            //ADSearcher ad = new ADSearcher();
-
-
-            //ViewModel vm = new ViewModel();
-            //UserViewModel vmUser = new UserViewModel(); 
-            //UserPrincipal user = ad.findCurrentUserName(Request);
-            //using (var context = new PrincipalContext(ContextType.Domain))
-
+            //if (val.getUserCredentials(Request))
             //{
-            //    try
-            //    {
-            //        myUser = ad.findByUserName(user);
-            //        vmUser = vm.userToModel(myUser);
-            //        if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hrGroup)))
-            //        {
-            //            vmUser.isHR = "true";
-            //            vmUser.isManager = "false";
-            //        }
-            //        else if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, managers)))
-            //        {
-            //            vmUser.isHR = "false";
-            //            vmUser.isManager = "true";
-
-            //        }
-            //        else
-            //        {
-            //            vmUser.isManager = "false";
-            //            vmUser.isHR = "false";
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e);
-            //        //***Not*** imlemented yet if user info fails to be pulled go to login page
-            //        return RedirectToAction("login", "LoginController");
-
-            //    }
+            //    return View(session.getSessionUser());
             //}
+            //return RedirectToAction("Login");
 
-            //group comment end
-            //sean uncomment end
+            //Sean Uncomment End
+            //Group Comment End
 
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //sean comment start
             //group uncomment start
-            validateUser validation = new validateUser();
-            ViewModel vm = new ViewModel();
-            myUser = validation.validate();
-            UserViewModel vmUser = vm.userToModel(myUser);
+
+            User myUser = new User();
+            myUser = val.validate();
+            UserViewModel vmUser = myUser.userToModel(myUser);
+            vmUser.isHR = true;
+            session.setSessionUser(vmUser);
+            return View(session.getSessionUser());
 
             //sean comment end
             //group uncomment end
 
 
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
 
-            Queries query = new Queries();
-            
-            vmUser.isHR = "true";
-            session.setSessionVars(vmUser);
-            query.checkExistingUser(myUser);
-            return View(vmUser);
         }
 
         public ActionResult Login()
@@ -138,7 +102,7 @@ namespace HumanArcCompliance.Controllers
         //group comment end
         //sean uncomment end
 
-        // /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
 }

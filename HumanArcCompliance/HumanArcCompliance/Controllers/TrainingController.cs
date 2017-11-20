@@ -10,21 +10,53 @@ using HumanArcCompliance.Models;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static HumanArcCompliance.Models.AddQuizDeserializer;
+using static HumanArcCompliance.Models.Deserializers;
 using static HumanArcCompliance.Models.SubmitQuizDeserializer;
+using static HumanArcCompliance.Models.Serializers;
 
 namespace HumanArcCompliance.Controllers
 {
     public class TrainingController : Controller
     {
         sessionStorage session = new sessionStorage();
+        validation val = new validation();
+        String managers = (ConfigurationManager.AppSettings["managers"]);
+        String hrGroup = (ConfigurationManager.AppSettings["HRGroup"]);
         public ActionResult MyTraining()
         {
-            return View(session.getSessionVars());
+            if (session.getSessionUser() != null )
+            {
+                return View(session.getSessionUser());
+            }
+            else
+            {
+                if (val.getUserCredentials(Request))
+                {
+                    return View(session.getSessionUser());
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+            }
         }
 
         public ActionResult GetAllUsers()
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+
             List<ManageEmployeeViewModel> userQuizes = new List<ManageEmployeeViewModel>();
             Queries q = new Queries();
             List<User> Users = q.getAllUsers();
@@ -51,59 +83,84 @@ namespace HumanArcCompliance.Controllers
             return Json(userQuizes, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAllManagersUsers()
-        {
-            sessionStorage sessUser = new sessionStorage();
-            ADSearcher ad = new ADSearcher();
-            UserViewModel currentUser = new UserViewModel();
-            List<User> allUsers = new List<User>();
-            currentUser = sessUser.getSessionVars();
-            allUsers = ad.getDirectReports(currentUser);
-            return Json(allUsers, JsonRequestBehavior.AllowGet);
-        }
-
-        //public ActionResult AddQuiz()
-        //{
-        //    HumanArcEntities dbContext = new HumanArcEntities();
-
-        //}
-        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //group comment start
-        // sean uncomment start
+        //sean uncomment start
+
+        //public ActionResult GetAllManagersUsers()
+        //{
+
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
+        //    {
+        //        if (!val.getUserCredentials(Request))
+        //        {
+        //            return RedirectToAction("Login", "Home");
+        //        }
+        //        vmUser = session.getSessionUser();
+        //    }
+        //    if (!val.checkUserAuth(vmUser, managers))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    ADSearcher ad = new ADSearcher();
+        //    List<User> allUsers = ad.getDirectReports(vmUser);
+        //    return Json(allUsers, JsonRequestBehavior.AllowGet);
+        //}
+
         //public ActionResult ManageEmployees()
         //{
-        //    if (checkUserAuth("manager"))
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
         //    {
-        //        if (session.getSessionVars() != null)
+        //        if (!val.getUserCredentials(Request))
         //        {
-        //            return View(session.getSessionVars());
+        //            return RedirectToAction("Login", "Home");
         //        }
+        //        vmUser = session.getSessionUser();
         //    }
-        //    return RedirectToAction("Index", "Home");
+        //    if (!val.checkUserAuth(vmUser, managers))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    return View(vmUser);
         //}
 
         //public ActionResult EditTraining()
         //{
-        //    if (checkUserAuth("hr"))
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
         //    {
-        //        if (session.getSessionVars() != null)
+        //        if (!val.getUserCredentials(Request))
         //        {
-        //            return View(session.getSessionVars());
+        //            return RedirectToAction("Login", "Home");
         //        }
+        //        vmUser = session.getSessionUser();
         //    }
-        //    return RedirectToAction("Index", "Home");
+        //    if (!val.checkUserAuth(vmUser, hrGroup))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    return View(vmUser);
         //}
+
         //public ActionResult AddTraining()
         //{
-        //    if (checkUserAuth("hr"))
+        //    UserViewModel vmUser = session.getSessionUser();
+        //    if (vmUser == null)
         //    {
-        //        if (session.getSessionVars() != null)
+        //        if (!val.getUserCredentials(Request))
         //        {
-        //            return View(session.getSessionVars());
+        //            return RedirectToAction("Login", "Home");
         //        }
+        //        vmUser = session.getSessionUser();
         //    }
-        //    return RedirectToAction("Index", "Home");
+        //    if (!val.checkUserAuth(vmUser, hrGroup))
+        //    {
+        //        return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+        //    }
+        //    return View(vmUser);
         //}
         //group comment end
         //sean uncomment end
@@ -114,34 +171,44 @@ namespace HumanArcCompliance.Controllers
         // group uncomment start
         public ActionResult ManageEmployees()
         {
-
-            //get employees 
-            return View(session.getSessionVars());
-
+            return View(session.getSessionUser());
         }
-
 
         public ActionResult EditTraining()
         {
-            return View(session.getSessionVars());
-
-
+            return View(session.getSessionUser());
         }
+
         public ActionResult AddTraining()
         {
-
-            return View(session.getSessionVars());
-
+            return View(session.getSessionUser());
         }
         // sean comment end
         //group uncomment end
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public ActionResult Quiz(int id)
+        public ActionResult Quiz(int id = 0)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            Queries query = new Queries();
+            if (id == 0)
+            {
+                return RedirectToAction("Index", "home", new { error = "Cannot Locate Quiz" });
+            }
+            else if (!vmUser.userGroups.Contains(query.getGroupById(query.getQuizById(id).groupId).name)){
+                return RedirectToAction("Index", "home", new { error = "Invalid Quiz" });
+            }
             ViewBag.id = id;
-            return View();
+            return View(vmUser);
         }
         public JsonResult QuizQuestionAns()
         {
@@ -175,63 +242,40 @@ namespace HumanArcCompliance.Controllers
             });
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
-
-        /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // group comment start
-        //sean uncomment start
-        //public bool checkUserAuth(string type)
-        //{
-        //    String hr = (ConfigurationManager.AppSettings["hrGroup"]);
-        //    String manager = (ConfigurationManager.AppSettings["managers"]);
-        //    ADSearcher searcher = new ADSearcher();
-        //    UserPrincipal user = searcher.findCurrentUserName(Request);
-        //    using (var context = new PrincipalContext(ContextType.Domain))
-        //    {
-        //        if (type == "manager")
-        //        {
-        //            try
-        //            {
-        //                if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)) || user.IsMemberOf(GroupPrincipal.FindByIdentity(context, manager)))
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //            }
-        //        }
-        //        else if (type == "hr")
-        //        {
-        //            try
-        //            {
-        //                if (user.IsMemberOf(GroupPrincipal.FindByIdentity(context, hr)))
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //            }
-        //        }
-        //    }
-        //    return true;
-        //}
-        // group comment end
-        //sean uncomment end
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        
         public ActionResult gradeQuiz()
         {
-            return View(session.getSessionVars());
-
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            return View(vmUser);
         }
 
         public ActionResult GetAllGroups()
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             Queries q = new Queries();
             List<Group> groups = new List<Group>();
             groups = q.getAllGroups();
@@ -247,52 +291,91 @@ namespace HumanArcCompliance.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddQuiz(string group, string j)// string quiz, string question)
+        public ActionResult AddQuiz(string quizData)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             Queries query = new Queries();
-            string[] groups = group.Split(',');
-            var result = JsonConvert.DeserializeObject<JQuiz>(j);           
-            foreach(string g in groups)
+            var result = JsonConvert.DeserializeObject<JQuiz>(quizData);
+            List<int> quizIds = new List<int>();
+            foreach(int group in result.groups)
             {
                 Quize quiz = new Quize();
-                quiz.description = result.description;
+                quiz.groupId = Convert.ToInt32(group);
                 quiz.title = result.title;
-                quiz.groupId = Convert.ToInt32(g);
-                int quizId = query.addQuiz(quiz);
-                foreach (var question in result.questions)
-                {
-                    Question q = new Question();
-                    q.questionType = question.type;
-                    q.questionText = question.text;
-                    q.quizId = quizId;
-                    int questionId = query.addQuestion(q);
-                    foreach (var answer in question.answers)
-                    {
-                        Answer ans = new Answer();
-                        ans.answerText = answer.answerText;
-                        if (answer.isCorrect == "false")
-                        {
-                            ans.isCorrect = false;
-                        }
-                        else
-                        {
-                            ans.isCorrect = true;
-                        }
-                        ans.questionId = questionId;
-                        query.addAnswer(ans);
-                    }
-                }
+                quiz.description = result.description;
+                quiz.media = result.media;
+                quizIds.Add(query.addQuiz(quiz));
             }
-            return Json("success", JsonRequestBehavior.AllowGet);
+            return Json(quizIds, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AddQuizQuestionAnswers(string questionData)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            var result = JsonConvert.DeserializeObject<JQuestion>(questionData);
+            Question question = new Question();
+            question.questionText = result.questionText;
+            question.questionType = result.questionType;
+            Queries query = new Queries();
+            List<AddedQuestion> questions = new List<AddedQuestion>();
+            AddedQuestion AQ = new AddedQuestion();
+            foreach (int quizId in result.quizIds)
+            {
+                question.quizId = quizId;
+                AQ.id = query.addQuestion(question);
+                foreach (JAnswers jAnswer in result.answers)
+                {
+                    Answer answer = new Answer();
+                    answer.questionId = AQ.id;
+                    answer.answerText = jAnswer.answerText;
+                    answer.isCorrect = jAnswer.isCorrect;
+
+                    AddedAnswer AA = new AddedAnswer();
+                    AA.id = query.addAnswer(answer);
+                    AQ.answer.Add(AA);
+                }             
+            }
+            return Json(AQ, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult GetUserQuizes()
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
             Queries query = new Queries();
-            sessionStorage session = new sessionStorage();
-            ViewModel vm = new ViewModel();
-            User user = query.getUserBySam(vm.modelToUser(session.getSessionVars()).SAMAccountName);
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
             List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
             string[] groups = user.userGroups.Split(',');
             foreach (string group in groups)
@@ -314,24 +397,34 @@ namespace HumanArcCompliance.Controllers
                     if (uqqa.id != 0)
                     {
                         employeeQuiz.isCompleted = true;
-                        //if ( (bool)uqqa.isChecked!=null && (bool)uqqa.isChecked)
-                        //{
-                        //    employeeQuiz.isGraded = true;
-                        //}
+                        if (uqqa.isChecked != false && (bool)uqqa.isChecked)
+                        {
+                            employeeQuiz.isGraded = true;
+                        }
                     }
-
                     employeeQuizes.Add(employeeQuiz);
-
                 }
             }
             return Json(employeeQuizes, JsonRequestBehavior.AllowGet);
         }
 
 
-
         [HttpPost]
         public ActionResult GetUserQuizes(string id)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, managers))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             Queries query = new Queries();         
             User user = query.getUserById(Convert.ToInt32(id));          
             List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
@@ -355,10 +448,10 @@ namespace HumanArcCompliance.Controllers
                     if (uqqa.id != 0)
                     {
                         employeeQuiz.isCompleted = true;
-                        //if ((bool)uqqa.isChecked)
-                        //{
-                        //    employeeQuiz.isGraded = true;
-                        //}
+                        if ((bool)uqqa.isChecked)
+                        {
+                            employeeQuiz.isGraded = true;
+                        }
                     }
 
                     employeeQuizes.Add(employeeQuiz);
@@ -371,12 +464,38 @@ namespace HumanArcCompliance.Controllers
         
         public ActionResult EmployeeQuizes(int id)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, managers))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             ViewBag.id = id;
             return View();
         }
 
         public ActionResult GetAllQuizes()
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             Queries query = new Queries();
             List<Quize> quizes = query.getAllQuizes();
             List<Quize> sending = new List<Quize>();
@@ -390,13 +509,42 @@ namespace HumanArcCompliance.Controllers
             }
             return Json(sending, JsonRequestBehavior.AllowGet);
         }
-        public void RemoveQuiz(string id)
+
+        public ActionResult RemoveQuiz(string id)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             Queries query = new Queries();
-            query.RemoveQuiz(Convert.ToInt32(id));
+            if (query.RemoveQuiz(Convert.ToInt32(id)))
+            {
+                return Json("success");
+            }
+            return Json("Failed");
         }
+
         public ActionResult GetQuizById(string id)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+
             int quizId = Convert.ToInt32(id);
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
@@ -433,10 +581,18 @@ namespace HumanArcCompliance.Controllers
         [HttpPost]
         public ActionResult SubmitQuiz(string data)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+
             Queries query = new Queries();
-            sessionStorage session = new sessionStorage();
-            ViewModel vm = new ViewModel();
-            User user = query.getUserBySam(vm.modelToUser(session.getSessionVars()).SAMAccountName);
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
             var result = JsonConvert.DeserializeObject<SubmitQuiz>(data);
             List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
             foreach(SubmitQuestions question in result.questions)
