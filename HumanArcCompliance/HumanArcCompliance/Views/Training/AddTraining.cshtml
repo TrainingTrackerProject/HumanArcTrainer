@@ -44,17 +44,33 @@
                 </div>*@
                         </div>
 
-                        <button id="saveQuizInfo" type="submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups" ng-click="addQuiz();">Save Quiz Info</button>
+                        <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups">Save Quiz Info</button>
 
                         <div style="clear:both"></div>
                         <hr />
                         <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
                     </form>
+
+                    @*Modal for Save Quiz confimation*@
+                    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    Confirm Submit
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to save this quiz?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button id="submit" type="submit" class="btn btn-success success" ng-click="addQuiz();">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 
-                
-
-
 
             <!--Modal for adding quiz question-->
             <div class="modal fade" id="questionModal" tabindex="-1" role="dialog">
@@ -179,23 +195,7 @@
 
             <br />
 
-            @*Modal for Submit confimation*@
-            <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            Confirm Submit
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to submit this quiz?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("editTraining", "Training")'">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
 
 
             <br /> <br />
