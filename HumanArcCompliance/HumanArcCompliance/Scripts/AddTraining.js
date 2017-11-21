@@ -16,6 +16,18 @@ var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
 
+    $scope.questionData = {}
+
+    $scope.jsonQuestion = {
+        questionText: $scope.questionData.title,
+        questionType: $scope.questionData.questionType,
+        answers : []
+    }
+
+    for (var key in $scope.questionData.answers) {
+        jsonQuestion.push($scope.questionData.answers[key]);
+    }
+
     var config = {
         headers: {
             'Content-Type': 'application/json;'
@@ -58,7 +70,7 @@ app.controller('addQuizController', function ($scope, $http) {
     //}
     $scope.quizData = {}
 
-    $scope.sampleJSON = {
+    $scope.jsonData = {
         title: 'this is the test title3',
         description: 'this is the test description',
         media: 'testing the media',

@@ -103,7 +103,7 @@
                                                     <div class="form-group row">
                                                         <label for="labelA" class="col-sm-2 col-form-label">Choice A:</label>
                                                         <div class="col-sm-6">
-                                                            <input ng-model="questionData.answers.answerText" name="myInput" type="text" class="form-control" id="choice1" ng-required="questionData.questionType=='multipleChoice'" placeholder="Enter Choice A">
+                                                            <input ng-model="questionData.answers.1.answerText" name="myInput" type="text" class="form-control" id="choice1" ng-required="questionData.questionType=='multipleChoice'" placeholder="Enter Choice A">
                                                         </div>
                                                         <div class="col-sm-1">
                                                             <input checked ng-model="questionData.answers.answerText.isCorrect" type="radio" name="correctAnswer" id="is1" />
@@ -171,6 +171,9 @@
                                     <button id="saveQuestion" type="submit" class="btn btn-info" ng-disabled="!questionForm.$valid">Save</button>
 
                                 </form>
+                                <pre ng-bind="questionData | json"></pre>
+                                <pre ng-bind="jsonQuestion | json"></pre>
+
                             </div>
                         </div>
                     </div>
