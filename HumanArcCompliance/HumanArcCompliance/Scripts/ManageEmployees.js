@@ -12,7 +12,7 @@ $(document).ready(function () {
 });
 
 getAllUsers = function () {
-    if (document.getElementById("hrCheck").value == "true") {
+    if (document.getElementById("hrCheck").value == "True") {
         $.ajax({
             url: '/Training/GetAllUsers',
             type: 'GET',
@@ -40,7 +40,7 @@ getAllUsers = function () {
 }
 
 fillDataTable = function (users) {
-    if (document.getElementById("hrCheck").value == "true") {
+    if (document.getElementById("hrCheck").value == "True") {
         $.each(users, function (index, value) {
             if (value.hasUngradedQuiz) {
                 userData.push([value.id, value.firstName + " " + value.lastName, value.SAMAccountName, value.manager, '<span class="glyphicon glyphicon-time"></span>']);
