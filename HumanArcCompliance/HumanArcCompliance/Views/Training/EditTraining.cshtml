@@ -24,6 +24,25 @@
             <div class="col-md-1"></div>
         </div>
     </div>
+
+    @*Modal for Remove Quiz confimation*@
+    <div class="modal fade" id="confirmRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirm Remove
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove this quiz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="removeQuizBtn" class="btn btn-success success">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="~/Scripts/EditTraining.js"></script>
