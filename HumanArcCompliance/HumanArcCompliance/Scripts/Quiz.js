@@ -2,6 +2,63 @@
  * AngularJS code for the Quiz application, called on Quiz.cshtml.
  */
 
+//Dataset for To Do list for My Training
+
+//Need: title, description, allQuestions {text, type, answers[text, isCorrect]}
+
+app = angular.module("QuizApp", []);
+
+app.controller("QuizCtrl", function ($scope) {
+    $scope.isArray = angular.isArray;
+    $scope.json = json;
+})
+
+$(document).ready(function () {
+    var quizes = [];
+
+    $.ajax({
+        url: '/Training/GetAllQuizes',
+        type: 'GET',
+        success: function (data, status) {
+            $.each(data, function (index, value) {
+                quizes.push([value.title, value.description, "<input type='button' value='Edit' class='btn btn-primary edit'/>" + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"])
+            });
+            $('#trainingTable').DataTable({
+                data: quizes,
+                columns: [
+                    { title: "Title" },
+                    { title: "Description" },
+                    { title: "Edit or Remove Training" }
+                ]
+            });
+        }
+    }).then(function () {
+        $('.remove').on('click', function () {
+            $('#trainingTable').DataTable()
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+
+            console.log($(this).attr("id"));
+            // Remove record
+            $.ajax({
+                method: 'post',
+                url: '/Training/RemoveQuiz',
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({ id: $(this).attr("id") }),
+                success: function (data, status) {
+                    alert("success");
+                }
+            }).then(function (response) {
+
+            });
+        });
+    });
+});
+
+
+/*
 app = angular.module("QuizApp", []);
 var json = {
     title: 'my title',
@@ -47,4 +104,4 @@ var json = {
 app.controller("QuizCtrl", function ($scope) {
     $scope.isArray = angular.isArray;
     $scope.json = json;
-})
+})*/
