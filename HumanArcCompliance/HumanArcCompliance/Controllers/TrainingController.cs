@@ -288,6 +288,9 @@ namespace HumanArcCompliance.Controllers
                 quiz.title = result.title;
                 quiz.description = result.description;
                 quiz.media = result.media;
+                quiz.startDate = result.startDate;
+                quiz.preferDate = result.preferDate;
+                quiz.expiredDate = result.expiredDate;
                 quizIds.Add(query.addQuiz(quiz));
             }
             return Json(quizIds, JsonRequestBehavior.AllowGet);
