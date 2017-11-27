@@ -4,10 +4,11 @@
   only visual depending on the users access (employee, manager, or hr).*@
 
 <link rel="stylesheet" type="text/css" href="~/Content/index.css" />
+
 @*Header*@
 <h2>@ViewBag.errorMessage</h2>
 <div class="jumbotron">
-    <h2>Home</h2>
+    <h2>Welcome, {ADD IN USER NAME HERE}!</h2>
     <p class="lead">Welcome to the Human Arc Compliance website. This site 
 		provides you with the required compliance training. 
 	</p>
@@ -17,7 +18,7 @@
   The same functionality works in regards to the layout navigation on all pages.*@
 <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-3">
+    <div class="col-md-3" data-toggle="tooltip" title="Go here to take quizzes or check on any trainings assigned to you.">
         <div class="image">
             <a href="@Url.Action("MyTraining","Training")">
                 <img class="linkPics" src="~/Content/Images/training.png" alt="Training">
@@ -30,7 +31,7 @@
         </div>
     </div>  
     <div class="col-md-2"></div>
-    <div class="col-md-3">
+    <div class="col-md-3" data-toggle="tooltip" title="Go here to check on your employees' training statuses. As an HR, you can grade ungraded user quizzes here.">
         <div class="image managers">
             <a href="@Url.Action("ManageEmployees","Training")">
                 <img class="linkPics" src="~/Content/Images/manage.png" alt="Manage">
@@ -47,14 +48,14 @@
 <br/>
 <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-3">
+    <div class="col-md-3" data-toggle="tooltip" title="Go here to Edit or Remove existing trainings or add new trainings.">>
         <div class="image humanResources">
             <a href="@Url.Action("EditTraining","Training")">
                 <img class="linkPics" src="~/Content/Images/addEditDelete.jpg" alt="Training">
             </a>
             <div class="row banner" style="">
                 <div class="col-md-12">
-                    <h2 class=""> Edit Training</h2>
+                    <h2 class=""> Manage Training</h2>
                 </div>
             </div>
         </div>
