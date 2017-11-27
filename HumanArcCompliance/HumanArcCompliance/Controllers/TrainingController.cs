@@ -481,39 +481,7 @@ namespace HumanArcCompliance.Controllers
             }
             return Json(sending, JsonRequestBehavior.AllowGet);
         }
-
-        ///////////////////////////////////////////////////
-        /*
-         * YO LOOK HERE THIS IS IMPORTANT
-         * Have to push quiz id here as argument to match with specific quiz
-         */
-        ///////////////////////////////////////////////////
-        public ActionResult GetTakenQuiz()
-        {
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
-            Queries query = new Queries();
-            List<Quize> quizes = query.getAllQuizes();
-            List<Quize> sending = new List<Quize>();
-            foreach (Quize quiz in quizes)
-            {
-                Quize q = new Quize()
-                {
-                    id = quiz.id,
-                    title = quiz.title,
-                    description = quiz.description
-                };
-                sending.Add(q);
-            }
-            return Json(sending, JsonRequestBehavior.AllowGet);
-        }
+        
         public ActionResult RemoveQuiz(string id)
         {
             UserViewModel vmUser = session.getSessionUser();
