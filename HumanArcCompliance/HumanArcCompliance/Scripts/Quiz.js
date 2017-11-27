@@ -5,12 +5,14 @@
 //Dataset for To Do list for My Training
 
 //Need: title, description, allQuestions {text, type, answers[text, isCorrect]}
+var id = '@ViewBag.id'
+alert(id);
 
 var app = angular.module('QuizApp', []);
 app.controller('QuizCtrl', function ($scope, $http) {
-    $http.get('/Training/GetTakenQuiz').then(function (response) {
-        $scope.allQuestions = response.data;
-        alert($scope.allQuestions);
+    $http.get('/Training/GetQuizById/'+('#quizId').val()).then(function (response) {
+        $scope.quiz = response.data;
+        alert($scope.quiz);
     });
 });
 
