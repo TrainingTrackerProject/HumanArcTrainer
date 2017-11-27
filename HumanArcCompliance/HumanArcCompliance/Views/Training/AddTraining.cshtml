@@ -44,11 +44,17 @@
                 </div>*@
                         </div>
 
+                        <p>
+                            <label>Start Date</label>
+                            <input type="text" id="startDatePicker">
+                        </p>
+
                         <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups">Save Quiz Info</button>
 
                         <div style="clear:both"></div>
                         <hr />
                         <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
+                        
                     </form>
 
                     @*Modal for Save Quiz confimation*@
@@ -211,6 +217,10 @@
 <table id="questionTable"></table>
 
 
-
+<script>
+    $(function () {
+        $("#startDatePicker").datepicker();
+    });
+</script>
 
 <script type="text/javascript" src="~/Scripts/addTraining.js"></script>

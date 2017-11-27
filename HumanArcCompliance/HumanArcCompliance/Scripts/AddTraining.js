@@ -91,6 +91,7 @@ var sampleJSON = {
 }
 
 $(document).ready(function () {
+    //$("#startDatePicker").datepicker();
 
     $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
 
