@@ -104,9 +104,10 @@ app.controller('addQuizController', function ($scope, $http) {
     $scope.addQuiz = function () {
         console.log($scope.quizData);
         enableAddQuestion();
+        $("#confirm-submit").modal('hide');
         $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
             alert(success);
-        });    
+        }); 
     }
 });
 

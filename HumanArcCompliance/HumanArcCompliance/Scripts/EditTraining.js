@@ -21,25 +21,29 @@ $(document).ready(function () {
         }
     }).then(function () {
         $('.remove').on('click', function () {
-            $('#trainingTable').DataTable()
-                .row($(this).parents('tr'))
-                .remove()
-                .draw();
+            $("#confirmRemove").modal('show');  
+        });
+        $('.removeQuizBtn').on('click', function () {
+            $("#confirmRemove").modal('hide');
+            //$('#trainingTable').DataTable()
+            //    .row($(this).parents('tr'))
+            //    .remove()
+            //    .draw();
 
-            console.log($(this).attr("id"));
-            // Remove record
-            $.ajax({
-                method: 'post',
-                url: '/Training/RemoveQuiz',
-                contentType: "application/json",
-                dataType: "json",
-                data: JSON.stringify({ id: $(this).attr("id") }),
-                success: function (data, status) {
-                    alert("success");
-                }
-            }).then(function (response) {
+            //console.log($(this).attr("id"));
+            //// Remove record
+            //$.ajax({
+            //    method: 'post',
+            //    url: '/Training/RemoveQuiz',
+            //    contentType: "application/json",
+            //    dataType: "json",
+            //    data: JSON.stringify({ id: $(this).attr("id") }),
+            //    success: function (data, status) {
+            //        alert("success");
+            //    }
+            //}).then(function (response) {
 
-            });
+            //});
         });
     });
 });
