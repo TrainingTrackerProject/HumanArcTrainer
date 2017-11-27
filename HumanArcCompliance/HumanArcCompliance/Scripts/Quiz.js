@@ -6,6 +6,15 @@
 
 //Need: title, description, allQuestions {text, type, answers[text, isCorrect]}
 
+var app = angular.module('QuizApp', []);
+app.controller('QuizCtrl', function ($scope, $http) {
+    $http.get('/Training/GetTakenQuiz').then(function (response) {
+        $scope.allQuestions = response.data;
+        alert($scope.allQuestions);
+    });
+});
+
+/*
 app = angular.module("QuizApp", []);
 
 app.controller("QuizCtrl", function ($scope) {
@@ -56,7 +65,7 @@ $(document).ready(function () {
         });
     });
 });
-
+*/
 
 /*
 app = angular.module("QuizApp", []);

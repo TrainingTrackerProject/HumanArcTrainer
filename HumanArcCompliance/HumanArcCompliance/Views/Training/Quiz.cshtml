@@ -2,7 +2,7 @@
     <h2>Quiz: {{json.title}}</h2>
     <h4>{{json.description}}</h4>
     <br />
-    <div ng-repeat="question in json.allQuestions">
+    <div ng-repeat="question in allQuestions">
         <!--Displays multiple choice questions-->
         <div ng-if="question.type == 'multipleChoice'">
             <!--If Question type = Multiple choice-->
