@@ -235,5 +235,36 @@ namespace HumanArcCompliance.helpers
             HumanArcEntities db = new HumanArcEntities();
             return db.Groups.First(g => g.id == id);
         }
+
+        public bool getQuizByTitle(string title)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            Quize quiz = new Quize();
+            try
+            {
+                quiz = db.Quizes.First(q => q.title == title);
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
+            if(quiz.title == "")
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public List<Quize> getUniqueQuizes()
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            List<Quize> returnedList = new List<Quize>();
+            foreach(List<Quize> quizList in db.Quizes.GroupBy(q => q.title).ToList())
+            {
+                returnedList.Add(quizList[0]);
+            }
+            return returnedList;
+        }
     }
 }
