@@ -1,4 +1,8 @@
-﻿<div hidden id="employeeId" value="@ViewBag.id">@ViewBag.id</div>
+﻿@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
+<div hidden id="employeeId" value="@ViewBag.id">@ViewBag.id</div>
 <script type="text/javascript" src="~/Scripts/employeeQuizes.js"></script>
 
 <h1>Needs Grading</h1>

@@ -484,6 +484,8 @@ namespace HumanArcCompliance.Controllers
                 q.id = quiz.id;
                 q.title = quiz.title;
                 q.description = quiz.description;
+                q.startDate = quiz.startDate;
+                q.expiredDate = quiz.expiredDate;
                 sending.Add(q);
             }
             return Json(sending, JsonRequestBehavior.AllowGet);

@@ -4,7 +4,10 @@
     about the quiz including:  Title, Description, Groups Applied To, Media File associated with quiz, and
     the actually quiz questions and answers.  Once submitted, the quiz will be saved into the database.
 *@
-
+@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
 <link rel="stylesheet" type="text/css" href="~/Content/datepicker.css" />
 

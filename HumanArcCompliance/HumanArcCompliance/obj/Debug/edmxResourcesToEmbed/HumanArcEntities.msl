@@ -32,6 +32,9 @@
     <EntitySetMapping Name="Quizes">
       <EntityTypeMapping TypeName="HumanArcModel.Quize">
         <MappingFragment StoreEntitySet="Quizes">
+          <ScalarProperty Name="expiredDate" ColumnName="expiredDate" />
+          <ScalarProperty Name="preferDate" ColumnName="preferDate" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="groupId" ColumnName="groupId" />
           <ScalarProperty Name="title" ColumnName="title" />

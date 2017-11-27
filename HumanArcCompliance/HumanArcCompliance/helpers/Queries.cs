@@ -260,10 +260,11 @@ namespace HumanArcCompliance.helpers
         {
             HumanArcEntities db = new HumanArcEntities();
             List<Quize> returnedList = new List<Quize>();
-            foreach(List<Quize> quizList in db.Quizes.GroupBy(q => q.title).ToList())
-            {
-                returnedList.Add(quizList[0]);
-            }
+            var result = db.Quizes.GroupBy(q => q.title).ToList();
+            //foreach (List<Quize> quizList in db.Quizes.GroupBy(q => q.title).ToList())
+            //{
+            //    returnedList.Add(quizList[0]);
+            //}
             return returnedList;
         }
     }

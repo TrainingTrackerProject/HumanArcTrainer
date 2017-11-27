@@ -43,6 +43,9 @@
     <NavigationProperty Name="Group" Relationship="Self.FK__Quizes__groupId__25518C17" FromRole="Quizes" ToRole="Groups" />
     <NavigationProperty Name="Questions" Relationship="Self.FK__Questions__quizI__282DF8C2" FromRole="Quizes" ToRole="Questions" />
     <NavigationProperty Name="UserQuizQuestionAnswers" Relationship="Self.FK__UserQuizQ__quizI__2DE6D218" FromRole="Quizes" ToRole="UserQuizQuestionAnswers" />
+    <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="preferDate" Type="DateTime" Precision="0" />
+    <Property Name="expiredDate" Type="DateTime" Nullable="false" Precision="0" />
   </EntityType>
   <EntityType Name="UserQuizQuestionAnswer">
     <Key>

@@ -1,5 +1,8 @@
 ﻿<!--View page for the My Training page, where you can see all your To Do Trainings and Completed Trainings-->
-
+@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
 <link rel="stylesheet" type="text/css" href="~/Content/myTraining.css" />
 <h2>John Doe</h2>
     <div class="row">
