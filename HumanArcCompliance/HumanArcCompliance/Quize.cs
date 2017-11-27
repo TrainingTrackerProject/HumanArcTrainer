@@ -26,6 +26,9 @@ namespace HumanArcCompliance
         public string title { get; set; }
         public string description { get; set; }
         public string media { get; set; }
+        public System.DateTime startDate { get; set; }
+        public Nullable<System.DateTime> preferDate { get; set; }
+        public System.DateTime expiredDate { get; set; }
     
         public virtual Group Group { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
