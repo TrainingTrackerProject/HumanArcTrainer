@@ -104,9 +104,10 @@ app.controller('addQuizController', function ($scope, $http) {
     $scope.addQuiz = function () {
         console.log($scope.quizData);
         enableAddQuestion();
+        $("#confirm-submit").modal('hide');
         $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
             alert(success);
-        });    
+        }); 
     }
 });
 
@@ -140,7 +141,10 @@ $(document).ready(function () {
         var quiz = {
             title: '',
             description: '',
-            media: ''
+            media: '',
+            startDate: '',
+            preferDate: '',
+            expiredDate: ''
         }
         var questions = "";
         var answers = [];
@@ -148,7 +152,10 @@ $(document).ready(function () {
         event.preventDefault();
         quiz.title = $('#trainingTitle').val();
         quiz.description = $('#trainingDesc').val();
-        //var media = ;
+        quiz.media = $('#mediaFile').val();
+        quiz.startDate = $('#startDate').val();
+        quiz.preferDate = $('#preferredDate').val();
+        quiz.expiredDate = $('#expirationDate').val();
         $('#groupsApplied > option:selected').each(function (index, value) {
             groups.push(value.id);
         });
