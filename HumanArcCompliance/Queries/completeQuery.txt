@@ -36,3 +36,13 @@ VALUES (7, 'False', 1);
 
 INSERT INTO Answers (questionId, answerText, isCorrect)
 VALUES (8, '2 + 2 quals 4 because math', 0);
+
+
+
+ALTER TABLE Quizes
+ADD startDate date;
+ALTER TABLE Quizes
+ADD preferDate date;
+ALTER TABLE Quizes
+ADD expiredDate date;
+
