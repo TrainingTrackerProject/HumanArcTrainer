@@ -6,6 +6,9 @@
 *@
 
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/datepicker.css" />
+
+
 <h2>Add Quiz</h2>
 
 <div ng-app="addQuizApp">
@@ -44,19 +47,26 @@
                 </div>*@
                         </div>
 
-                        <div class="form-group">
-                            <label>Start Date</label>
-                            <input type="text" id="startDatePicker">
-                        </div>
+                        <div id="sandbox-container">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Start Date</label>
+                                <div class="col-sm-6">
+                                    <input id="startDate" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Preferred Date</label>
+                                <div class="col-sm-6">
+                                    <input id="preferredDate" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Expiration Date</label>
+                                <div class="col-sm-6">
+                                    <input id="expirationDate" type="text" class="form-control" />
+                                </div>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Preferred Date</label>
-                            <input type="text" id="preferredDatePicker" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Expiration Date</label>
-                            <input type="text" id="expiredDatePicker" />
                         </div>
 
                         <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups">Save Quiz Info</button>
@@ -227,4 +237,6 @@
 <table id="questionTable"></table>
 
 
+<script type="text/javascript" src="~/Scripts/datepicker.js"></script>
 <script type="text/javascript" src="~/Scripts/addTraining.js"></script>
+
