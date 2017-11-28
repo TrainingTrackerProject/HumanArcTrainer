@@ -280,6 +280,10 @@ namespace HumanArcCompliance.Controllers
             }
             Queries query = new Queries();
             var result = JsonConvert.DeserializeObject<JQuiz>(quizData);
+            if (query.getQuizByTitle(result.title))
+            {
+                return Json("Duplicate Title", JsonRequestBehavior.AllowGet);
+            }
             List<int> quizIds = new List<int>();
             foreach (int group in result.groups)
             {
@@ -472,7 +476,7 @@ namespace HumanArcCompliance.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
             Queries query = new Queries();
-            List<Quize> quizes = query.getAllQuizes();
+            List<Quize> quizes = query.getUniqueQuizes();
             List<Quize> sending = new List<Quize>();
             foreach (Quize quiz in quizes)
             {
@@ -480,6 +484,8 @@ namespace HumanArcCompliance.Controllers
                 q.id = quiz.id;
                 q.title = quiz.title;
                 q.description = quiz.description;
+                q.startDate = quiz.startDate;
+                q.expiredDate = quiz.expiredDate;
                 sending.Add(q);
             }
             return Json(sending, JsonRequestBehavior.AllowGet);

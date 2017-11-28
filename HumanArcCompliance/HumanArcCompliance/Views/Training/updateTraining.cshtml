@@ -1,4 +1,8 @@
-﻿<h2>Update Quiz</h2>
+﻿@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
+<h2>Update Quiz</h2>
 <form>
     <div ng-app="updateQuestionApp">
         <div class="row">

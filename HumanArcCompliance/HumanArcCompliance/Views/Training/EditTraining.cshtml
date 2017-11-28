@@ -4,7 +4,10 @@
 @{
     ViewBag.Title = "Edit Training";
 }
-
+@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
 <div>
     <h2>Edit or Remove Exisiting Training</h2>
     <h4>Review already existing training below by clicking on the edit button to edit, or the remove button to remove.</h4><br/><br/>

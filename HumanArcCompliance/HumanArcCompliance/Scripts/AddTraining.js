@@ -92,6 +92,7 @@ app.controller('addQuizController', function ($scope, $http) {
     //    description: '',
     //    media: ''
     //}
+
     $scope.quizData = {}
 
     $scope.jsonData = {
@@ -135,100 +136,100 @@ $(document).ready(function () {
     });
 
     
-    $('#submit').click(function () {
-        var json;
-        var groups = [];
-        var quiz = {
-            title: '',
-            description: '',
-            media: '',
-            startDate: '',
-            preferDate: '',
-            expiredDate: ''
-        }
-        var questions = "";
-        var answers = [];
-        var q = [];
-        event.preventDefault();
-        quiz.title = $('#trainingTitle').val();
-        quiz.description = $('#trainingDesc').val();
-        quiz.media = $('#mediaFile').val();
-        quiz.startDate = $('#startDate').val();
-        quiz.preferDate = $('#preferredDate').val();
-        quiz.expiredDate = $('#expirationDate').val();
-        $('#groupsApplied > option:selected').each(function (index, value) {
-            groups.push(value.id);
-        });
-        var questionForm = $('#questions > fieldset').each(function (index, value) {
-            var question = {
-                type: '',
-                text: document.getElementById('questionText' + index).value,
-                answers: []
-            }
-            $('input:radio').each(function (i, value) {                
-                if (value.name == "content" + index) {                  
-                    if (value.checked) {
-                        question.type = value.value;
-                    }
-                }
-            });
+    //$('#submit').click(function () {
+    //    var json;
+    //    var groups = [];
+    //    var quiz = {
+    //        title: '',
+    //        description: '',
+    //        media: '',
+    //        startDate: '',
+    //        preferDate: '',
+    //        expiredDate: ''
+    //    }
+    //    var questions = "";
+    //    var answers = [];
+    //    var q = [];
+    //    event.preventDefault();
+    //    quiz.title = $('#trainingTitle').val();
+    //    quiz.description = $('#trainingDesc').val();
+    //    quiz.media = $('#mediaFile').val();
+    //    quiz.startDate = $('#startDate').val();
+    //    quiz.preferDate = $('#preferredDate').val();
+    //    quiz.expiredDate = $('#expirationDate').val();
+    //    $('#groupsApplied > option:selected').each(function (index, value) {
+    //        groups.push(value.id);
+    //    });
+    //    var questionForm = $('#questions > fieldset').each(function (index, value) {
+    //        var question = {
+    //            type: '',
+    //            text: document.getElementById('questionText' + index).value,
+    //            answers: []
+    //        }
+    //        $('input:radio').each(function (i, value) {                
+    //            if (value.name == "content" + index) {                  
+    //                if (value.checked) {
+    //                    question.type = value.value;
+    //                }
+    //            }
+    //        });
             
-            if (question.type == "multipleChoice") {
-                for (var i = 1; i < 5; i++) {
-                    var answerid = 'choice' + i + index;
-                    var answer = {
-                        //id: index,
-                        answerText: document.getElementById(answerid).value,
-                        isCorrect: 'false'
-                    }
-                    if (document.getElementById(('is' + i) + index).checked){
-                        answer.isCorrect = 'true';
-                    }
-                    question.answers.push(answer);
-                }
-            } else if (question.type == "trueFalse") {
-                var answer1 = {
-                    //id: index,
-                    answerText: 'true',
-                    isCorrect: 'false'
-                }
-                if (document.getElementById('trueAnswer' + index).checked) {
-                    answer1.isCorrect = 'true';
-                }
-                question.answers.push(answer1);
-                var answer2 = {
-                    //id: index,
-                    answerText: 'false',
-                    isCorrect: 'false'
-                }
-                if (document.getElementById('falseAnswer' + index).checked) {
-                   answer2.isCorrect = 'true';
-                }
-                question.answers.push(answer2);
-            } else {
-                var answer = {
-                    isCorrect: 'false'
-                }
-                question.answers.push(answer);
-            }
-            if (questions == "") {
-                questions += JSON.stringify(question);
-            } else {
-                questions += "|" + JSON.stringify(question);
-            }
-            q.push(question);
-            json = {
-                title: quiz.title,
-                description: quiz.description,
-                questions: q
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: '/Training/AddQuiz',
-            data: {group:groups.toString(), j:JSON.stringify(json) }, //{group: groups.toString(), quiz: JSON.stringify(quiz), question: questions },
-        });
-    });
+    //        if (question.type == "multipleChoice") {
+    //            for (var i = 1; i < 5; i++) {
+    //                var answerid = 'choice' + i + index;
+    //                var answer = {
+    //                    //id: index,
+    //                    answerText: document.getElementById(answerid).value,
+    //                    isCorrect: 'false'
+    //                }
+    //                if (document.getElementById(('is' + i) + index).checked){
+    //                    answer.isCorrect = 'true';
+    //                }
+    //                question.answers.push(answer);
+    //            }
+    //        } else if (question.type == "trueFalse") {
+    //            var answer1 = {
+    //                //id: index,
+    //                answerText: 'true',
+    //                isCorrect: 'false'
+    //            }
+    //            if (document.getElementById('trueAnswer' + index).checked) {
+    //                answer1.isCorrect = 'true';
+    //            }
+    //            question.answers.push(answer1);
+    //            var answer2 = {
+    //                //id: index,
+    //                answerText: 'false',
+    //                isCorrect: 'false'
+    //            }
+    //            if (document.getElementById('falseAnswer' + index).checked) {
+    //               answer2.isCorrect = 'true';
+    //            }
+    //            question.answers.push(answer2);
+    //        } else {
+    //            var answer = {
+    //                isCorrect: 'false'
+    //            }
+    //            question.answers.push(answer);
+    //        }
+    //        if (questions == "") {
+    //            questions += JSON.stringify(question);
+    //        } else {
+    //            questions += "|" + JSON.stringify(question);
+    //        }
+    //        q.push(question);
+    //        json = {
+    //            title: quiz.title,
+    //            description: quiz.description,
+    //            questions: q
+    //        }
+    //    });
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: '/Training/AddQuiz',
+    //        data: {group:groups.toString(), j:JSON.stringify(json) }, //{group: groups.toString(), quiz: JSON.stringify(quiz), question: questions },
+    //    });
+    //});
 });
 $('#submitBtnMod').click(function () {
     /* when the submit button in the modal is clicked, submit the form */

@@ -1,4 +1,8 @@
-﻿<link rel="stylesheet" type="text/css" href="~/Content/manageEmployees.css" />
+﻿@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
+<link rel="stylesheet" type="text/css" href="~/Content/manageEmployees.css" />
 <h1>This is the Employee Training page for Managers</h1>
 
 @*<div class="row">
