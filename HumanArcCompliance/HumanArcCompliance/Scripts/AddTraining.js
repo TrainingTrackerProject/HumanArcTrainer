@@ -115,6 +115,7 @@ app.controller('addQuestionController', function ($scope, $http) {
     }
 
     $scope.addQuestion = function () {
+        $("#questionModal").modal('hide');
         $http.post('/Training/AddQuizQuestionAnswers', { title: document.getElementById("trainingTitle").value,  questionData: JSON.stringify(sentJson) }, config).then(function (res) {
             console.log(res);
             var type;
@@ -193,26 +194,26 @@ $(document).ready(function () {
     var id;
     var row;
     $("body").on("click", ".remove", function () {
-        $("#confirmRemove").modal('show');
-        //id = $(this).attr("id");
-        //row = $(this);
+        var table = $('#questionTable').DataTable();
+        id = table.row($(this).parent()).data()[0];
+        row = $(this).parent();
+        $("#confirmQuestionRemove").modal('show');
     });
 
     $('#removeQuestionBtn').on('click', function () {
         $("#confirmRemove").modal('hide');
         $('#trainingTable').DataTable()
-            .row(row.parents('tr'))
+            .row(row)
             .remove()
             .draw();
 
-        console.log($(this).attr("id"));
         // Remove record
         $.ajax({
             method: 'post',
-            url: '/Training/RemoveQuiz',
+            url: '/Training/RemoveQuestion',
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ id: id }),
+            data: JSON.stringify({ id: JSON.stringify(id) }),
             success: function (data, status) {
                 alert("success");
             }

@@ -293,8 +293,8 @@ namespace HumanArcCompliance.Controllers
                 quiz.description = result.description;
                 quiz.media = result.media;
                 quiz.startDate = result.startDate;
-                quiz.preferDate = result.preferDate;
-                quiz.expiredDate = result.expiredDate;
+                quiz.preferDate = result.preferredDate;
+                quiz.expiredDate = result.expirationDate;
                 quizIds.Add(query.addQuiz(quiz));
             }
             return Json(quizIds, JsonRequestBehavior.AllowGet);
@@ -596,6 +596,12 @@ namespace HumanArcCompliance.Controllers
 
 
             return Json("success", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult RemoveQuestion(string id)
+        {           
+            var result = JsonConvert.DeserializeObject<List<string>>(id);
+            return Json(JsonRequestBehavior.AllowGet);
         }
     }
 }

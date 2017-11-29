@@ -30,8 +30,8 @@ namespace HumanArcCompliance.Models
             public int[] groups { get; set; }
             public string media { get; set; }
             public System.DateTime startDate { get; set; }
-            public Nullable<System.DateTime> preferDate { get; set; }
-            public System.DateTime expiredDate { get; set; }
+            public Nullable<System.DateTime> preferredDate { get; set; }
+            public System.DateTime expirationDate { get; set; }
         }
     }
 }
