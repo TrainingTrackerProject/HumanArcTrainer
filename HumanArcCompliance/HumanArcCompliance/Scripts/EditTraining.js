@@ -20,34 +20,37 @@ $(document).ready(function () {
             });
         }
     }).then(function () {
-        var id;
-        var row;
-        $('.remove').on('click', function () {
-            $("#confirmRemove").modal('show');  
-            id = $(this).attr("id");
-            row = $(this);
+        
         });
-        $('#removeQuizBtn').on('click', function () {
-            $("#confirmRemove").modal('hide');
-            $('#trainingTable').DataTable()
-                .row(row.parents('tr'))
-                .remove()
-                .draw();
 
-            console.log($(this).attr("id"));
-            // Remove record
-            $.ajax({
-                method: 'post',
-                url: '/Training/RemoveQuiz',
-                contentType: "application/json",
-                dataType: "json",
-                data: JSON.stringify({ id: id }),
-                success: function (data, status) {
-                    alert("success");
-                }
-            }).then(function (response) {
 
-            });
+    var id;
+    var row;
+    $("body").on("click", ".remove", function () {
+        $("#confirmRemove").modal('show');
+        id = $(this).attr("id");
+        row = $(this);
+    });
+
+    $('#removeQuizBtn').on('click', function () {
+        $("#confirmRemove").modal('hide');
+        $('#trainingTable').DataTable()
+            .row(row.parents('tr'))
+            .remove()
+            .draw();
+
+        console.log($(this).attr("id"));
+        // Remove record
+        $.ajax({
+            method: 'post',
+            url: '/Training/RemoveQuiz',
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({ id: id }),
+            success: function (data, status) {
+            }
+        }).then(function (response) {
+
         });
     });
 });

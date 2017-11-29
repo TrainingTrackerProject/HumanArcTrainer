@@ -14,10 +14,7 @@
 </head>
 @*This sets up the navigation to dislpay only items that each specific group should see.*@
 <body>
-    @model HumanArcCompliance.Models.UserViewModel
-    @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
-    @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
-    @Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
+    
     <div id="fullBody" class="container-fluid" style="display:none;">
         <div id="header">
             <a id="logo" href="@Url.Action("Index", "Home")"></a>

@@ -280,7 +280,7 @@ namespace HumanArcCompliance.Controllers
             }
             Queries query = new Queries();
             var result = JsonConvert.DeserializeObject<JQuiz>(quizData);
-            if (query.getQuizByTitle(result.title))
+            if (query.getQuizByTitle(result.title).Count!=0)
             {
                 return Json("Duplicate Title", JsonRequestBehavior.AllowGet);
             }
@@ -300,7 +300,7 @@ namespace HumanArcCompliance.Controllers
             return Json(quizIds, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AddQuizQuestionAnswers(string questionData)
+        public ActionResult AddQuizQuestionAnswers(string title, string questionData)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -319,26 +319,26 @@ namespace HumanArcCompliance.Controllers
             Question question = new Question();
             question.questionText = result.questionText;
             question.questionType = result.questionType;
+
             Queries query = new Queries();
-            List<AddedQuestion> questions = new List<AddedQuestion>();
-            AddedQuestion AQ = new AddedQuestion();
-            foreach (int quizId in result.quizIds)
+
+            List<Quize> quizes = query.getQuizByTitle(title);
+            List<int> questionIds = new List<int>();
+            foreach (Quize quiz in quizes)
             {
-                question.quizId = quizId;
-                AQ.id = query.addQuestion(question);
+                question.quizId = quiz.id;
+                int questionId = query.addQuestion(question);
+                questionIds.Add(questionId);
                 foreach (JAnswers jAnswer in result.answers)
                 {
                     Answer answer = new Answer();
-                    answer.questionId = AQ.id;
+                    answer.questionId = questionId;
                     answer.answerText = jAnswer.answerText;
                     answer.isCorrect = jAnswer.isCorrect;
-
-                    AddedAnswer AA = new AddedAnswer();
-                    AA.id = query.addAnswer(answer);
-                    AQ.answer.Add(AA);
+                    query.addAnswer(answer);
                 }
             }
-            return Json(AQ, JsonRequestBehavior.AllowGet);
+            return Json(questionIds, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

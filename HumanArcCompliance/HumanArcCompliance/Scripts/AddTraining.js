@@ -34,22 +34,78 @@ $(document).on('change', '.hide-file', function () {
 });
 
 
-// Allows HR to add multiple quiz questions
-
 var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http) {
 
     $scope.questionData = {}
 
-    $scope.jsonQuestion = {
-        questionText: $scope.questionData.title,
-        questionType: $scope.questionData.questionType,
-        answers : []
-    }
+    $scope.mcAnswers = [
+        answer1 = {
+            text: '',
+            isCorrect: false
+        },
+        answer2 = {
+            text: '',
+            isCorrect: false
+        },
+        answer3 = {
+            text: '',
+            isCorrect: false
+        },
+        answer4 = {
+            text: '',
+            isCorrect: false
+        }
+    ];
 
-    for (var key in $scope.questionData.answers) {
-        jsonQuestion.push($scope.questionData.answers[key]);
+    $scope.tfAnswers = [
+        answer1 = {
+            text: 'True',
+            isCorrect: false
+        },
+        answer2 = {
+            text: 'False',
+            isCorrect: false
+        }
+    ]
+
+    var sentJson = {
+        questionText: '',
+        questionType: '',
+        answers: []
+    };
+
+    $scope.isCorrect = '';
+
+    $scope.setCorrectAnswer = function () {
+        sentJson.questionText = $scope.questionData.questionText;
+        sentJson.questionType = $scope.questionData.questionType;
+        if ($scope.questionData.questionType == 'multipleChoice') {
+            if ($scope.isCorrect == 'answer1') {
+                $scope.mcAnswers[0].isCorrect = true;
+            }
+            else if ($scope.isCorrect == 'answer2') {
+                $scope.mcAnswers[1].isCorrect = true;
+            }
+            else if ($scope.isCorrect == 'answer3') {
+                $scope.mcAnswers[2].isCorrect = true;
+            }
+            else {
+                $scope.mcAnswers[3].isCorrect = true;
+            }
+            sentJson.answers = $scope.mcAnswers;
+        }
+        else if ($scope.questionData.questionType == 'trueFalse') {
+            if ($scope.isCorrect == 'answer1') {
+                $scope.tfAnswers[0].isCorrect = true;
+            }
+            else if ($scope.isCorrect == 'answer2') {
+                $scope.tfAnswers[1].isCorrect = true;
+            }
+            sentJson.answers = $scope.tfAnswers;
+        }
+        $scope.addQuestion();
     }
 
     var config = {
@@ -59,8 +115,21 @@ app.controller('addQuestionController', function ($scope, $http) {
     }
 
     $scope.addQuestion = function () {
-        $http.post('/Training/AddQuizQuestionAnswers', { quizData: JSON.stringify(sampleJSON) }, config).then(function (success) {
-            alert(success);
+        $http.post('/Training/AddQuizQuestionAnswers', { title: document.getElementById("trainingTitle").value,  questionData: JSON.stringify(sentJson) }, config).then(function (res) {
+            console.log(res);
+            var type;
+            if ($scope.questionData.questionType == 'trueFalse') {
+                type = "True/False";
+            }
+            else if ($scope.questionData.questionType == "multipleChoice") {
+                type = "Multiple Choice";
+            }
+            else {
+                type = "Short Answer"
+            }
+            var row = [JSON.stringify(res.data), type, $scope.questionData.questionText, 'edit button', "<button class='btn btn-default remove'>remove</button>"];
+            var table = $('#questionTable').DataTable();
+            table.row.add(row).draw();
         });
     }
 });
@@ -86,21 +155,7 @@ app.controller('addQuizController', function ($scope, $http) {
         }
     }
 
-    //$scope.quizData = {
-    //    title: '',
-    //    groups: [],
-    //    description: '',
-    //    media: ''
-    //}
-
     $scope.quizData = {}
-
-    $scope.jsonData = {
-        title: 'this is the test title3',
-        description: 'this is the test description',
-        media: 'testing the media',
-        groups: [1, 2]
-    }
 
     $scope.addQuiz = function () {
         console.log($scope.quizData);
@@ -108,7 +163,7 @@ app.controller('addQuizController', function ($scope, $http) {
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
         $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
-            alert(success);
+            //alert(success);
         }); 
     }
 });
@@ -134,6 +189,36 @@ $(document).ready(function () {
             { title: "" },
             { title: "" }
         ]
+    });
+    var id;
+    var row;
+    $("body").on("click", ".remove", function () {
+        $("#confirmRemove").modal('show');
+        //id = $(this).attr("id");
+        //row = $(this);
+    });
+
+    $('#removeQuestionBtn').on('click', function () {
+        $("#confirmRemove").modal('hide');
+        $('#trainingTable').DataTable()
+            .row(row.parents('tr'))
+            .remove()
+            .draw();
+
+        console.log($(this).attr("id"));
+        // Remove record
+        $.ajax({
+            method: 'post',
+            url: '/Training/RemoveQuiz',
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({ id: id }),
+            success: function (data, status) {
+                alert("success");
+            }
+        }).then(function (response) {
+
+        });
     });
 
     

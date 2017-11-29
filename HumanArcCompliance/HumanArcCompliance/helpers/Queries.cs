@@ -197,37 +197,39 @@ namespace HumanArcCompliance.helpers
         public bool RemoveQuiz(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
-            List<Question> Questions = db.Questions.Where(q => q.quizId == id).ToList();
-            try
+            Quize chosenQuiz = db.Quizes.First(q => q.id == id);
+            List<Quize> quizes = db.Quizes.Where(q => q.title == chosenQuiz.title).ToList();
+            foreach(Quize quiz in quizes)
             {
-                foreach (Question question in Questions)
+                List<Question> Questions = db.Questions.Where(quest => quest.quizId == quiz.id).ToList();
+                try
                 {
-
-                    List<Answer> Answers = db.Answers.Where(q => q.questionId == question.id).ToList();
-                    foreach (Answer answer in Answers)
+                    foreach (Question question in Questions)
                     {
-
-                        List<UserQuizQuestionAnswer> UserQuizzes = db.UserQuizQuestionAnswers.Where(q => q.answerId == answer.id).ToList();
-                        foreach (UserQuizQuestionAnswer uqqa in UserQuizzes)
+                        List<Answer> Answers = db.Answers.Where(ans => ans.questionId == question.id).ToList();
+                        foreach (Answer answer in Answers)
                         {
-                            db.UserQuizQuestionAnswers.Remove(db.UserQuizQuestionAnswers.First(u => u.id == uqqa.id));
+                            List<UserQuizQuestionAnswer> UserQuizzes = db.UserQuizQuestionAnswers.Where(uqqa => uqqa.answerId == answer.id).ToList();
+                            foreach (UserQuizQuestionAnswer uqqa in UserQuizzes)
+                            {
+                                db.UserQuizQuestionAnswers.Remove(db.UserQuizQuestionAnswers.First(u => u.id == uqqa.id));
+                                db.SaveChanges();
+                            }
+                            db.Answers.Remove(db.Answers.First(ans => ans.id == answer.id));
                             db.SaveChanges();
                         }
-                        db.Answers.Remove(db.Answers.First(a => a.id == answer.id));
+                        db.Questions.Remove(db.Questions.First(quest => quest.id == question.id));
                         db.SaveChanges();
-
                     }
-                    db.Questions.Remove(db.Questions.First(q => q.id == question.id));
+                    db.Quizes.Remove(db.Quizes.First(q => q.id == quiz.id));
                     db.SaveChanges();
                 }
-                db.Quizes.Remove(db.Quizes.First(q => q.id == id));
-                db.SaveChanges();
-                return true;
+                catch (Exception e)
+                {
+                    return false;
+                }
             }
-            catch(Exception e)
-            {
-                return false;
-            }
+            return true;
         }
 
         public Group getGroupById(int id)
@@ -236,24 +238,20 @@ namespace HumanArcCompliance.helpers
             return db.Groups.First(g => g.id == id);
         }
 
-        public bool getQuizByTitle(string title)
+        public List<Quize> getQuizByTitle(string title)
         {
             HumanArcEntities db = new HumanArcEntities();
             Quize quiz = new Quize();
             try
             {
-                quiz = db.Quizes.First(q => q.title == title);
+                List<Quize> quizes = db.Quizes.Where(q => q.title == title).ToList();
+                return quizes;
             }
             catch(Exception e)
             {
-                return false;
+                List<Quize> quizes = new List<Quize>();
+                return quizes;
             }
-
-            if(quiz.title == "")
-            {
-                return false;
-            }
-            return true;
         }
 
         public List<Quize> getUniqueQuizes()
@@ -261,10 +259,11 @@ namespace HumanArcCompliance.helpers
             HumanArcEntities db = new HumanArcEntities();
             List<Quize> returnedList = new List<Quize>();
             var result = db.Quizes.GroupBy(q => q.title).ToList();
-            //foreach (List<Quize> quizList in db.Quizes.GroupBy(q => q.title).ToList())
-            //{
-            //    returnedList.Add(quizList[0]);
-            //}
+            foreach (var list in db.Quizes.GroupBy(q => q.title).ToList())
+            {
+                var quizList = list.ToList();
+                returnedList.Add((Quize)quizList[0]);
+            }
             return returnedList;
         }
     }
