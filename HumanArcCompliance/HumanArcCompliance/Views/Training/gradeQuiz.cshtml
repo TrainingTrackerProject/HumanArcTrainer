@@ -2,17 +2,18 @@
 @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
 @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
 @Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
-<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="json">
-    <h2>Quiz: {{json.title}}</h2> <!--Need user name here-->
-    <h4>{{json.description}}</h4>
+@*CHECK THIS NG-INIT*@
+<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="userQuiz">
+    <h2>Quiz: {{userQuiz.title}}</h2> <!--Need user name here-->
+    <h4>{{userQuiz.description}}</h4>
 
     <br />
-    <div ng-repeat="question in json.allQuestions">
+    <div ng-repeat="question in userQuiz.questions">
         <!--Displays multiple choice questions-->
         <div ng-if="question.type == 'multipleChoice'">
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
+                    <label for="choices">{{userQuiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <div ng-repeat="answer in question.answers">
@@ -29,7 +30,7 @@
         <div ng-if="question.type == 'trueFalse'">
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
+                    <label for="choices">{{userQuiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <div ng-repeat="answer in question.answers">
@@ -40,7 +41,7 @@
         <div ng-if="question.type == 'shortAnswer'">
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
+                    <label for="choices">{{userQuiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <!--This should be the user's answer-->
@@ -52,36 +53,5 @@
         </div>
         <br />
     </div>
-    @*Modal for Submit confimation*@
-    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    Confirm Submit
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to submit this quiz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
 </div>
 <script src="~/Scripts/gradeQuiz.js"></script>
-
-@*<link rel="stylesheet" type="text/css" href="~/Content/manageEmployees.css" />
-    <h1>Grade Quizzes</h1>
-    <div class="row">
-        <div class="col-md-1"></div>
-
-        <div class="col-md-10">
-            <table id="employeeGradeTable" class="display" cellspacing="0" style="width:100%;"></table>
-        </div>
-        <div class="col-md-1"></div>
-    </div>
-
-    <script src="~/Scripts/gradingQuiz.js"></script>*@

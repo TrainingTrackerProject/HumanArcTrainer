@@ -2,16 +2,34 @@
  * AngularJS code for the Quiz application, called on Quiz.cshtml.
  */
 
-//Dataset for To Do list for My Training
-
-//Need: title, description, allQuestions {text, type, answers[text, isCorrect]}
-var app = angular.module('QuizApp', []);
+//Stores the JSON data in quiz
+var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
     $http.get('/Training/GetQuizById/'+('#quizId').val()).then(function (response) {
         $scope.quiz = response.data;
         alert($scope.quiz);
     });
 });
+
+
+/*
+ * TODO: use some kind of $http.post to submit to the database. Looks like this:
+ * var app = angular.module('myApp',[]);
+    app.controller('bookController',function($scope,$http){
+    $scope.insertData=function(){
+    $http.post("insert.php", {
+		'bname':$scope.bname,
+		'bauthor':$scope.bauthor,
+		'bprice':$scope.bprice,
+		'blanguage':$scope.blanguage})
+
+    .success(function(data,status,headers,config){
+    console.log("Data Inserted Successfully");
+    });
+    }
+   });
+ */
+
 
 /*
 app = angular.module("QuizApp", []);
