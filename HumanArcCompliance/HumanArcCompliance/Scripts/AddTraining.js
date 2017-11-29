@@ -1,4 +1,4 @@
-﻿var quizId;
+﻿var quizId = 0;
 
 //This displays the datepicker
 $('#sandbox-container input').datepicker({
@@ -150,10 +150,10 @@ app.controller('addQuizController', function ($scope, $http) {
     } 
 
     $('#quizForm').on('change', function () {
-        if (quizId !== null && savedForm !== $scope.quizData) {
+        if (quizId !== 0 && savedForm !== $scope.quizData) {
             disableAddQuestion();
         } 
-        else if (quizId !== null && savedForm == $scope.quizData) {
+        else if (quizId !== 0 && savedForm == $scope.quizData) {
             enableAddQuestion();
         }
     })
