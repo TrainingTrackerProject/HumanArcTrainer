@@ -207,13 +207,15 @@ $(document).ready(function () {
             .remove()
             .draw();
 
+        console.log(id);
+
         // Remove record
         $.ajax({
             method: 'post',
             url: '/Training/RemoveQuestion',
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ id: JSON.stringify(id) }),
+            data: JSON.stringify({ ids: JSON.stringify(id) }),
             success: function (data, status) {
                 alert("success");
             }

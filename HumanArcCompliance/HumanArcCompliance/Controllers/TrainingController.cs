@@ -598,9 +598,14 @@ namespace HumanArcCompliance.Controllers
             return Json("success", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult RemoveQuestion(string id)
+        public ActionResult RemoveQuestion(string[] ids)
         {           
-            var result = JsonConvert.DeserializeObject<List<string>>(id);
+          //var result = JsonConvert.DeserializeObject<string>(id);
+          //foreach(string s in ids)
+          //  {
+          //      string[] id = ids.split()
+
+          //  }
             return Json(JsonRequestBehavior.AllowGet);
         }
     }
