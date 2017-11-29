@@ -1,4 +1,6 @@
-﻿//This displays the datepicker
+﻿var quizId;
+
+//This displays the datepicker
 $('#sandbox-container input').datepicker({
     autoclose: true
 });
@@ -136,9 +138,25 @@ app.controller('addQuestionController', function ($scope, $http) {
 });
 
 app.controller('addQuizController', function ($scope, $http) {
+    var savedForm;
+    $scope.inactive = true;
+
     function enableAddQuestion() {
         $scope.inactive = false;
     } 
+
+    function disableAddQuestion() {
+        $scope.inactive = true;
+    } 
+
+    $('#quizForm').on('change', function () {
+        if (quizId !== null && savedForm !== $scope.quizData) {
+            disableAddQuestion();
+        } 
+        else if (quizId !== null && savedForm == $scope.quizData) {
+            enableAddQuestion();
+        }
+    })
 
     $scope.name = "quiz"
 
@@ -159,14 +177,66 @@ app.controller('addQuizController', function ($scope, $http) {
     $scope.quizData = {}
 
     $scope.addQuiz = function () {
-        console.log($scope.quizData);
+        savedForm = angular.copy($scope.quizData);
+        console.log(savedForm)
         enableAddQuestion();
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
-        $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
-            //alert(success);
-        }); 
+        $('#saveQuizInfo').attr('disabled', 'disabled');
+        $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
+            quizId = res.data[0];
+        });
+        console.log(savedForm)
+    };
+
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd
     }
+
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = mm + '/' + dd + '/' + yyyy;
+    //console.log(today)
+
+    //compare dates
+
+    var startDate = $("#startDate").val();
+    var preferredDate = $("#preferredDate").val();
+    var expirationDate = $("#expirationDate").val();
+
+    var s = new Date(startDate);
+    var t = new Date(today);
+    var p = new Date(preferredDate);
+    var e = new Date(expirationDate);
+
+    if (s < t) {
+        document.getElementById('startWarning').innerHTML = "Start date must be on or after today's date"
+    }
+
+    if (p < s) {
+        document.getElementById('preferredWarning').innerHTML = "Preferred date must be after start date"
+    }
+
+    if (e < p) {
+        document.getElementById('expirationWarning').innerHTML = "Expiration date must be after preferred date"
+    }
+
+    //$scope.quizData.startDate = startDate;
+    //$scope.quizData.preferredDate = preferredDate;
+    //$scope.quizData.expirationDate = expirationDate;
+
+    console.log(startDate)
+    console.log(preferredDate)
+    console.log(expirationDate)
+
 });
 
 var sampleJSON = {
@@ -174,10 +244,11 @@ var sampleJSON = {
 }
 
 $(document).ready(function () {
-    $("#startDatePicker, #preferredDatePicker, #expiredDatePicker").datepicker();
 
     $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
 
+    
+    
     var userData = {}
 
     $('#questionTable').DataTable({
