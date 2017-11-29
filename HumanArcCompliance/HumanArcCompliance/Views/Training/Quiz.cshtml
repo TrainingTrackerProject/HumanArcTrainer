@@ -9,7 +9,6 @@
     <div ng-repeat="question in allQuestions">
         <!--Displays multiple choice questions-->
         <div ng-if="question.type == 'multipleChoice'">
-            <!--If Question type = Multiple choice-->
             <div class="row">
                 <div class="col-sm-4">
                     <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
@@ -22,7 +21,6 @@
 
         <!--Displays true/false questions-->
         <div ng-if="question.type == 'trueFalse'">
-            <!--If Question type = True/False-->   
             <div class="row">
                 <div class="col-sm-4">
                     <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
@@ -35,7 +33,6 @@
 
         <!--Displays short answer questions-->
         <div ng-if="question.type == 'shortAnswer'">
-            <!--If Question type = Short Answer-->
             <div class="row">
                 <div class="col-sm-4">
                     <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>

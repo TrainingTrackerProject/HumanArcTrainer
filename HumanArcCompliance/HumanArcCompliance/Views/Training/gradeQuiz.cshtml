@@ -45,14 +45,10 @@
             </div>
             <!--This should be the user's answer-->
             <h4>User Answer:</h4>
-            <textarea rows="5" class="form-control" id="shortAnswerQuestion" readonly></textarea>
-            <br />
-            <!--This should be the accepted answer-->
-            <h4>Accepted Answer:</h4>
             <textarea rows="5" class="form-control" id="shortAnswerQuestion" readonly>{{question.answers[0].text}}</textarea>
+            <br />
 
             <!--TODO: Need buttons for marking as correct or incorrect.-->
-
         </div>
         <br />
     </div>
@@ -75,7 +71,7 @@
     </div>
     <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
 </div>
-<script src="~/Scripts/gradingQuiz.js"></script>
+<script src="~/Scripts/gradeQuiz.js"></script>
 
 @*<link rel="stylesheet" type="text/css" href="~/Content/manageEmployees.css" />
     <h1>Grade Quizzes</h1>
