@@ -164,8 +164,56 @@ app.controller('addQuizController', function ($scope, $http) {
         $('#trainingTitle').attr('disabled', 'disabled');
         $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
             //alert(success);
-        }); 
+        });
+    };
+
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd
     }
+
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = mm + '/' + dd + '/' + yyyy;
+    //console.log(today)
+
+    //compare dates
+
+    var startDate = $("#startDate").val();
+    var preferredDate = $("#preferredDate").val();
+    var expirationDate = $("#expirationDate").val();
+
+    var s = new Date(startDate);
+    var t = new Date(today);
+    var p = new Date(preferredDate);
+    var e = new Date(expirationDate);
+
+    if (s < t) {
+        document.getElementById('startWarning').innerHTML = "Start date must be on or after today's date"
+    }
+
+    if (p < s) {
+        document.getElementById('preferredWarning').innerHTML = "Preferred date must be after start date"
+    }
+    if (e < p) {
+        document.getElementById('expirationWarning').innerHTML = "Expiration date must be after preferred date"
+    }
+
+    //$scope.quizData.startDate = startDate;
+    //$scope.quizData.preferredDate = preferredDate;
+    //$scope.quizData.expirationDate = expirationDate;
+
+    console.log(startDate)
+    console.log(preferredDate)
+    console.log(expirationDate)
+
 });
 
 var sampleJSON = {
@@ -173,10 +221,10 @@ var sampleJSON = {
 }
 
 $(document).ready(function () {
-    $("#startDatePicker, #preferredDatePicker, #expiredDatePicker").datepicker();
 
     $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
 
+    
     var userData = {}
 
     $('#questionTable').DataTable({
