@@ -34,5 +34,10 @@ namespace HumanArcCompliance.Models
             public System.DateTime expirationDate { get; set; }
 
         }
+
+        public class JIds
+        {
+            public string[] ids { get; set; }
+        }
     }
 }

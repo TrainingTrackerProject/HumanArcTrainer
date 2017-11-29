@@ -1,4 +1,4 @@
-﻿var quizId;
+﻿var quizId = 0;
 
 //This displays the datepicker
 $('#sandbox-container input').datepicker({
@@ -150,10 +150,10 @@ app.controller('addQuizController', function ($scope, $http) {
     } 
 
     $('#quizForm').on('change', function () {
-        if (quizId !== null && savedForm !== $scope.quizData) {
+        if (quizId !== 0 && savedForm !== $scope.quizData) {
             disableAddQuestion();
         } 
-        else if (quizId !== null && savedForm == $scope.quizData) {
+        else if (quizId !== 0 && savedForm == $scope.quizData) {
             enableAddQuestion();
         }
     })
@@ -278,13 +278,15 @@ $(document).ready(function () {
             .remove()
             .draw();
 
+        console.log(id);
+
         // Remove record
         $.ajax({
             method: 'post',
             url: '/Training/RemoveQuestion',
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ id: JSON.stringify(id) }),
+            data: JSON.stringify({ ids: JSON.stringify(id) }),
             success: function (data, status) {
                 alert("success");
             }
