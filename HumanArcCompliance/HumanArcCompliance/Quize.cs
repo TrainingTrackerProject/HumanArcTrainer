@@ -27,7 +27,7 @@ namespace HumanArcCompliance
         public string description { get; set; }
         public string media { get; set; }
         public System.DateTime startDate { get; set; }
-        public Nullable<System.DateTime> preferDate { get; set; }
+        public System.DateTime preferDate { get; set; }
         public System.DateTime expiredDate { get; set; }
     
         public virtual Group Group { get; set; }

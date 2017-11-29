@@ -8,7 +8,7 @@ $(document).ready(function () {
         type: 'GET',
         success: function (data, status) {
             $.each(data, function (index, value) {
-                quizes.push([value.title, value.description, "<input type='button' value='Edit' class='btn btn-primary edit'/>" + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"])
+                quizes.push([value.title, value.description, "<input type='button' value='Edit' class='btn btn-primary edit' id='" + value.id + "'/>" + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"])
             });
             $('#trainingTable').DataTable({
                 data: quizes,
@@ -23,6 +23,9 @@ $(document).ready(function () {
         
         });
 
+    $("body").on("click", ".edit", function () {
+        location.href = 'updateTraining'
+    });
 
     var id;
     var row;
