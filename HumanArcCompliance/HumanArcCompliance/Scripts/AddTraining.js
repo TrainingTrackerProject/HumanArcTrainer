@@ -1,4 +1,6 @@
-﻿//This displays the datepicker
+﻿var quizId;
+
+//This displays the datepicker
 $('#sandbox-container input').datepicker({
     autoclose: true
 });
@@ -136,9 +138,25 @@ app.controller('addQuestionController', function ($scope, $http) {
 });
 
 app.controller('addQuizController', function ($scope, $http) {
+    var savedForm;
+    $scope.inactive = true;
+
     function enableAddQuestion() {
         $scope.inactive = false;
     } 
+
+    function disableAddQuestion() {
+        $scope.inactive = true;
+    } 
+
+    $('#quizForm').on('change', function () {
+        if (quizId !== null && savedForm !== $scope.quizData) {
+            disableAddQuestion();
+        } 
+        else if (quizId !== null && savedForm == $scope.quizData) {
+            enableAddQuestion();
+        }
+    })
 
     $scope.name = "quiz"
 
@@ -159,13 +177,16 @@ app.controller('addQuizController', function ($scope, $http) {
     $scope.quizData = {}
 
     $scope.addQuiz = function () {
-        console.log($scope.quizData);
+        savedForm = angular.copy($scope.quizData);
+        console.log(savedForm)
         enableAddQuestion();
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
-        $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (success) {
-            //alert(success);
+        $('#saveQuizInfo').attr('disabled', 'disabled');
+        $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
+            quizId = res.data[0];
         });
+        console.log(savedForm)
     };
 
 
@@ -203,6 +224,7 @@ app.controller('addQuizController', function ($scope, $http) {
     if (p < s) {
         document.getElementById('preferredWarning').innerHTML = "Preferred date must be after start date"
     }
+
     if (e < p) {
         document.getElementById('expirationWarning').innerHTML = "Expiration date must be after preferred date"
     }
@@ -225,6 +247,7 @@ $(document).ready(function () {
 
     $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
 
+    
     
     var userData = {}
 

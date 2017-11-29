@@ -20,7 +20,7 @@
                 <div ng-controller="addQuizController" ng-init="quizData">
 
                     
-                    <form name="quizForm" ng-submit="addQuiz">
+                    <form id="quizForm" name="quizForm" ng-submit="addQuiz">
                         <div class="form-group required">
                             <label class="control-label" for="trainingTitle">Title</label>
                             <input type="text" class="form-control" id="trainingTitle" ng-model="quizData.title" placeholder="Enter Title" required>
@@ -92,7 +92,7 @@
 
                         </div>
 
-                        <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups || !quizData.startDate || !quizData.preferredDate || !quizData.expirationDate">Save Quiz Info</button>
+                        <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups || !quizData.startDate || !quizData.preferredDate || !quizData.expirationDate || !inactive">Save Quiz Info</button>
 
                         <div style="clear:both"></div>
                         <hr />
