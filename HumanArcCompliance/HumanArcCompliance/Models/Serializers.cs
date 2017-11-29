@@ -10,7 +10,7 @@ namespace HumanArcCompliance.Models
         public class AddedQuestion
         {
             public int id { get; set; }
-            public List<AddedAnswer> answer { get; set; }
+            public List<int> answers { get; set; }
         }
 
         public class AddedAnswer

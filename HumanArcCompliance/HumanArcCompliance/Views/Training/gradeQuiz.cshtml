@@ -1,4 +1,8 @@
-﻿<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="json">
+﻿@model HumanArcCompliance.Models.UserViewModel
+@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
+@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
+<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="json">
     <h2>Quiz: {{json.title}}</h2> <!--Need user name here-->
     <h4>{{json.description}}</h4>
 
