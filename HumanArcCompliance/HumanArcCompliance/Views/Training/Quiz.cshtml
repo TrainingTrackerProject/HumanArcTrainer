@@ -2,17 +2,16 @@
 @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
 @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
 @Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
-<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="json">
-    <h2>Quiz: {{json.title}}</h2>
-    <h4>{{json.description}}</h4>
+<div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
+    <h2>Quiz: {{quiz.title}}</h2>
+    <h4>{{quiz.description}}</h4>
     <br />
-    <div ng-repeat="question in allQuestions">
+    <div ng-repeat="question in questions">
         <!--Displays multiple choice questions-->
         <div ng-if="question.type == 'multipleChoice'">
-            <!--If Question type = Multiple choice-->
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
+                    <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <div ng-repeat="answer in question.answers">
@@ -22,10 +21,9 @@
 
         <!--Displays true/false questions-->
         <div ng-if="question.type == 'trueFalse'">
-            <!--If Question type = True/False-->   
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
+                    <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <div ng-repeat="answer in question.answers">
@@ -35,16 +33,17 @@
 
         <!--Displays short answer questions-->
         <div ng-if="question.type == 'shortAnswer'">
-            <!--If Question type = Short Answer-->
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="choices">{{json.allQuestions.indexOf(question)+1}}. {{question.text}}</label>
+                    <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
             <textarea rows="5" class="form-control" id="shortAnswerQuestion"></textarea>
         </div>
         <br />
     </div>
+
+    @*TODO Submit user answers*@
     @*Modal for Submit confimation*@
     <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
