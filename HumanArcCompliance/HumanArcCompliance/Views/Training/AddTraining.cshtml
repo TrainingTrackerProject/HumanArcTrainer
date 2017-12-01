@@ -33,6 +33,7 @@
                         <div class="form-group required">
                             <label class="control-label" for="groupApplied">Group(s) Applied To</label>
                             <select multiple class="form-control quizFormInfo" id="groupsApplied" ng-model="quizData.groups" ng-change="setGroups()" required>
+
                                 @*<option>Training Administrators</option>
                     <option>Leadership</option>
                     <option>Users</option>*@
@@ -57,7 +58,7 @@
                                 <label class="col-sm-3 col-form-label control-label">Start Date</label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
-                                        <input id="startDate" name="startDate" type="text" class="form-control quizFormInfo" ng-model="quizData.startDate" required />
+                                        <input id="startDate" name="startDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.startDate" required />
                                         <label class="input-group-addon btn" for="startDate">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </label>    
@@ -69,7 +70,7 @@
                                 <label class="col-sm-3 col-form-label control-label">Preferred Date</label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
-                                        <input id="preferredDate" name="preferredDate" type="text" class="form-control quizFormInfo" ng-model="quizData.preferredDate" ng-disabled="!quizData.startDate" required/>
+                                        <input id="preferredDate" name="preferredDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.preferredDate" ng-disabled="!quizData.startDate" required/>
                                         <label class="input-group-addon btn" for="preferredDate">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </label>
@@ -81,7 +82,7 @@
                                 <label class="col-sm-3 col-form-label control-label">Expiration Date</label>
                                 <div class="col-sm-6">
                                     <div class="input-group">
-                                        <input id="expirationDate" name="expirationDate" type="text" class="form-control quizFormInfo"  ng-model="quizData.expirationDate" ng-disabled="!quizData.startDate || !quizData.preferredDate" required />
+                                        <input id="expirationDate" name="expirationDate" type="text" class="form-control quizFormInfo dateInfo"  ng-model="quizData.expirationDate" ng-disabled="!quizData.startDate || !quizData.preferredDate" required />
                                         <label class="input-group-addon btn" for="expirationDate">
                                             <i class="glyphicon glyphicon-calendar"></i>
                                         </label>
@@ -273,4 +274,6 @@
 
 <script type="text/javascript" src="~/Scripts/datepicker.js"></script>
 <script type="text/javascript" src="~/Scripts/addTraining.js"></script>
+
+
 
