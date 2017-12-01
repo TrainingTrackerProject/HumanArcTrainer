@@ -118,7 +118,7 @@ app.controller('addQuestionController', function ($scope, $http) {
 
     $scope.addQuestion = function () {
         $("#questionModal").modal('hide');
-        $http.post('/Training/AddQuizQuestionAnswers', { title: document.getElementById("trainingTitle").value,  questionData: JSON.stringify(sentJson) }, config).then(function (res) {
+        $http.post('/Training/AddQuizQuestionAnswers', { title: document.getElementById("trainingTitle").value, questionData: JSON.stringify(sentJson) }, config).then(function (res) {
             console.log(res);
             var type;
             if ($scope.questionData.questionType == 'trueFalse') {
@@ -137,26 +137,47 @@ app.controller('addQuestionController', function ($scope, $http) {
     }
 });
 
-app.controller('addQuizController', function ($scope, $http) {
-    var savedForm;
+app.controller('addQuizController', function ($scope, $http, $timeout) {
+    $scope.savedForm;
     $scope.inactive = true;
+    $scope.quizData = {}
 
     function enableAddQuestion() {
-        $scope.inactive = false;
-    } 
+       $scope.inactive = false;
+    }
 
     function disableAddQuestion() {
         $scope.inactive = true;
-    } 
+    }
 
-    $('#quizForm').on('change', function () {
-        if (quizId !== 0 && savedForm !== $scope.quizData) {
-            disableAddQuestion();
-        } 
-        else if (quizId !== 0 && savedForm == $scope.quizData) {
-            enableAddQuestion();
-        }
-    })
+    $scope.setGroups = function () {
+        
+            console.log($scope.quizData.groups);
+    }
+
+    $('.quizFormInfo').on('change keyup paste', function () {
+        var saved = '';
+        var current = '';
+        $timeout(function () {
+            saved = JSON.stringify($scope.savedForm);
+            current = JSON.stringify($scope.quizData);
+            if (quizId !== 0 && saved != current) {
+                $scope.$apply(function () {
+                    $scope.inactive = true;
+                });
+            }
+            else if (quizId !== 0 && saved == current) {
+                $scope.$apply(function () {
+                    $scope.inactive = false;
+                });
+            }
+        },0
+
+        )
+
+    });
+
+   
 
     $scope.name = "quiz"
 
@@ -174,19 +195,25 @@ app.controller('addQuizController', function ($scope, $http) {
         }
     }
 
-    $scope.quizData = {}
 
     $scope.addQuiz = function () {
-        savedForm = angular.copy($scope.quizData);
-        console.log(savedForm)
+        $scope.savedForm = angular.copy($scope.quizData);
+        console.log($scope.savedForm)
         enableAddQuestion();
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
-        $('#saveQuizInfo').attr('disabled', 'disabled');
-        $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
-            quizId = res.data[0];
-        });
-        console.log(savedForm)
+        //$('#saveQuizInfo').attr('disabled', 'disabled');
+        if (quizId != 0) {
+            $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
+
+            });
+        }
+        else {
+            $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
+                quizId = res.data[0];
+            });
+        }
+        
     };
 
 
@@ -247,8 +274,8 @@ $(document).ready(function () {
 
     $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
 
-    
-    
+
+
     var userData = {}
 
     $('#questionTable').DataTable({
@@ -266,36 +293,46 @@ $(document).ready(function () {
     var row;
     $("body").on("click", ".remove", function () {
         var table = $('#questionTable').DataTable();
-        id = table.row($(this).parent()).data()[0];
+        id = JSON.parse(table.row($(this).parent()).data()[0]);
         row = $(this).parent();
         $("#confirmQuestionRemove").modal('show');
     });
 
     $('#removeQuestionBtn').on('click', function () {
-        $("#confirmRemove").modal('hide');
-        $('#trainingTable').DataTable()
-            .row(row)
-            .remove()
-            .draw();
-
-        console.log(id);
-
-        // Remove record
+        var ids = {
+            ids: id
+        }
         $.ajax({
             method: 'post',
             url: '/Training/RemoveQuestion',
-            contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ ids: JSON.stringify(id) }),
-            success: function (data, status) {
-                alert("success");
+            contentType: 'application/json',
+            data: JSON.stringify({ ids: JSON.stringify(ids) }),
+            success: function (res, status) {
+                console.log(res);
+                if (res == true) {
+                    console.log("Successfully Deleted Question")
+                    removeQuestionFromTable();
+                }
+                else {
+                    console.log("There was an error deleting the question");
+                }
             }
         }).then(function (response) {
-
+            $("#confirmQuestionRemove").modal('hide');
         });
     });
 
-    
+    function removeQuestionFromTable() {
+        $('#questionTable').DataTable()
+            .row(row)
+            .remove()
+            .draw();
+    }
+
+
+
+
     //$('#submit').click(function () {
     //    var json;
     //    var groups = [];
@@ -333,7 +370,7 @@ $(document).ready(function () {
     //                }
     //            }
     //        });
-            
+
     //        if (question.type == "multipleChoice") {
     //            for (var i = 1; i < 5; i++) {
     //                var answerid = 'choice' + i + index;

@@ -18,7 +18,7 @@
         <div class="col-md-8">
 
                 <div ng-controller="addQuizController" ng-init="quizData">
-
+                    <pre ng-bind="quizData"></pre>
                     
                     <form id="quizForm" name="quizForm" ng-submit="addQuiz">
                         <div class="form-group required">
@@ -26,13 +26,13 @@
                             <input type="text" class="form-control quizFormInfo" id="trainingTitle" ng-model="quizData.title" placeholder="Enter Title" required>
                             
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ng-init="quizData.description=''">
                             <label for="trainingDesc">Description</label>
                             <input type="text" class="form-control quizFormInfo" id="trainingDesc" ng-model="quizData.description" placeholder="Enter Description">
                         </div>
                         <div class="form-group required">
                             <label class="control-label" for="groupApplied">Group(s) Applied To</label>
-                            <select multiple class="form-control quizFormInfo id="groupsApplied" ng-model="quizData.groups" required>
+                            <select multiple class="form-control quizFormInfo" id="groupsApplied" ng-model="quizData.groups" ng-change="setGroups()" required>
                                 @*<option>Training Administrators</option>
                     <option>Leadership</option>
                     <option>Users</option>*@
@@ -40,7 +40,7 @@
                             </select>
                             
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ng-init="quizData.media=''">
                             <label for="uploadMedia">Media Link</label>
                             <input id="mediaFile" type="text" name="uploadFile" class="form-control quizFormInfo" ng-model="quizData.media" placeholder="Enter Media Link">
                             @*<div class="input-group">
