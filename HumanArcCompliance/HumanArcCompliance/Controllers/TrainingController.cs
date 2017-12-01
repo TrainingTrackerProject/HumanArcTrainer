@@ -379,6 +379,45 @@ namespace HumanArcCompliance.Controllers
             return Json(questionIds, JsonRequestBehavior.AllowGet);
         }
 
+        //////////////YO LOOK HERE. THIS IS TODO COPY-PASTED OVER. FIX IT, JAE.
+        //////////FOR USERQUIZQUESTIONANSWERS YOU NEED: userId, quizId, questionId, answerId, text, isChecked, isApproved
+        public ActionResult AddUserQuizQuestionAnswers(string title, string questionData)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            var result = JsonConvert.DeserializeObject<JQuestion>(questionData);
+            Question question = new Question();
+            question.questionText = result.questionText;
+            question.questionType = result.questionType;
+
+            Queries query = new Queries();
+
+            List<Quize> quizes = query.getQuizByTitle(title);
+            List<int> questionIds = new List<int>();
+            foreach (Quize quiz in quizes)
+            {
+                question.quizId = quiz.id;
+                int questionId = query.addQuestion(question);
+                questionIds.Add(questionId);
+                foreach (JAnswers jAnswer in result.answers)
+                {
+                    Answer answer = new Answer();
+                    answer.questionId = questionId;
+                    answer.answerText = jAnswer.answerText;
+                    answer.isCorrect = jAnswer.isCorrect;
+                    query.addAnswer(answer);
+                }
+            }
+            return Json(questionIds, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult GetUserQuizes()
         {
