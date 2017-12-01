@@ -193,7 +193,7 @@ app.controller('addQuizController', function ($scope, $http) {
 
     var today = new Date();
     var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
+    var mm = today.getMonth() + 1; //January is 0
     var yyyy = today.getFullYear();
 
     if (dd < 10) {
@@ -205,41 +205,64 @@ app.controller('addQuizController', function ($scope, $http) {
     }
 
     today = mm + '/' + dd + '/' + yyyy;
-    //console.log(today)
-
+    
+    var t = Date.parse(today);
     //compare dates
 
-    var startDate = $("#startDate").val();
-    var preferredDate = $("#preferredDate").val();
-    var expirationDate = $("#expirationDate").val();
-
-    var s = new Date(startDate);
-    var t = new Date(today);
-    var p = new Date(preferredDate);
-    var e = new Date(expirationDate);
+   
 
     $('.dateInfo').on('change keyup', function () {
-        startDateCheck();
-        preferredDateCheck();
-        expirationDateCheck();
+        var startDate = $("#startDate").val();
+        var preferredDate = $("#preferredDate").val();
+        var expirationDate = $("#expirationDate").val();
+
+        var s = Date.parse(startDate);
+        
+        var p = Date.parse(preferredDate);
+        var e = Date.parse(expirationDate);
+        startDateCheck(s);
+        preferredDateCheck(p,s);
+        expirationDateCheck(e,p);
     })
 
-    function startDateCheck() {
-        if (s < t) {
+    var t1 = Date.parse("12/23/2017");
+    var t2 = Date.now();
+ 
+    //alert(t1 > t2)
+
+    function startDateCheck(s) {
+        if (Number.isInteger(s) && s < t) {
             document.getElementById('startWarning').innerHTML = "Start date must be on or after today's date"
+            $("#startDate").val("");
+        }
+        else if (Number.isInteger(s)) {
+            document.getElementById('startWarning').innerHTML = ""
         }
     }
 
-    function preferredDateCheck() {
-        if (p < s || startDate == null) {
-            //make pref null?
-            document.getElementById('preferredWarning').innerHTML = "Preferred date must be after start date"
+    function preferredDateCheck(p, s) {
+        if (!Number.isInteger(s)) {
+            $("#preferredDate").val("");
+        }
+        if (Number.isInteger(p) && p < s && Number.isInteger(s)) {
+            document.getElementById('preferredWarning').innerHTML = "Preferred date must be after start date" 
+            $("#preferredDate").val("");
+        }
+        else if (Number.isInteger(p)) {
+            document.getElementById('preferredWarning').innerHTML = ""
         }
     }
 
-    function expirationDateCheck() {
-        if (e < p || preferredDate == null) {
+    function expirationDateCheck(e, p) {
+        if (!Number.isInteger(p)) {
+            $("#expirationDate").val("");
+        }
+        if (Number.isInteger(e) && e < p && Number.isInteger(p)) {
             document.getElementById('expirationWarning').innerHTML = "Expiration date must be after preferred date"
+            $("#expirationDate").val("");
+        }
+        else if (Number.isInteger(e)) {
+            document.getElementById('expirationWarning').innerHTML = ""
         }
     }
    
