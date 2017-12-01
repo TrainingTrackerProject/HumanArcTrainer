@@ -232,6 +232,31 @@ namespace HumanArcCompliance.helpers
             return true;
         }
 
+        /// <summary>
+        /// This methods removes a question and all associated answers. There is no check for UQQAs because this can only be done before the start date of the quiz.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool RemoveQuestion(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            List<Answer> Answers = db.Answers.Where(ans => ans.questionId == id).ToList();
+            try
+            {
+                foreach (Answer answer in Answers)
+                {
+                    db.Answers.Remove(db.Answers.First(ans => ans.id == answer.id));
+                }
+                db.Questions.Remove(db.Questions.First(quest => quest.id == id));
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public Group getGroupById(int id)
         {
             HumanArcEntities db = new HumanArcEntities();

@@ -300,6 +300,44 @@ namespace HumanArcCompliance.Controllers
             return Json(quizIds, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult UpdateQuiz(string quizData)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            Queries query = new Queries();
+            var result = JsonConvert.DeserializeObject<JQuiz>(quizData);
+            if (query.getQuizByTitle(result.title).Count != 0)
+            {
+                return Json("Duplicate Title", JsonRequestBehavior.AllowGet);
+            }
+            List<int> quizIds = new List<int>();
+            foreach (int group in result.groups)
+            {
+                Quize quiz = new Quize();
+                quiz.groupId = Convert.ToInt32(group);
+                quiz.title = result.title;
+                quiz.description = result.description;
+                quiz.media = result.media;
+                quiz.startDate = result.startDate;
+                quiz.preferDate = result.preferredDate;
+                quiz.expiredDate = result.expirationDate;
+                quizIds.Add(query.addQuiz(quiz));
+            }
+            return Json(quizIds, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult AddQuizQuestionAnswers(string title, string questionData)
         {
             UserViewModel vmUser = session.getSessionUser();
@@ -314,6 +352,45 @@ namespace HumanArcCompliance.Controllers
             if (!val.checkUserAuth(vmUser, hrGroup))
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            var result = JsonConvert.DeserializeObject<JQuestion>(questionData);
+            Question question = new Question();
+            question.questionText = result.questionText;
+            question.questionType = result.questionType;
+
+            Queries query = new Queries();
+
+            List<Quize> quizes = query.getQuizByTitle(title);
+            List<int> questionIds = new List<int>();
+            foreach (Quize quiz in quizes)
+            {
+                question.quizId = quiz.id;
+                int questionId = query.addQuestion(question);
+                questionIds.Add(questionId);
+                foreach (JAnswers jAnswer in result.answers)
+                {
+                    Answer answer = new Answer();
+                    answer.questionId = questionId;
+                    answer.answerText = jAnswer.answerText;
+                    answer.isCorrect = jAnswer.isCorrect;
+                    query.addAnswer(answer);
+                }
+            }
+            return Json(questionIds, JsonRequestBehavior.AllowGet);
+        }
+
+        //////////////YO LOOK HERE. THIS IS TODO COPY-PASTED OVER. FIX IT, JAE.
+        //////////FOR USERQUIZQUESTIONANSWERS YOU NEED: userId, quizId, questionId, answerId, text, isChecked, isApproved
+        public ActionResult AddUserQuizQuestionAnswers(string title, string questionData)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
             }
             var result = JsonConvert.DeserializeObject<JQuestion>(questionData);
             Question question = new Question();
@@ -598,15 +675,25 @@ namespace HumanArcCompliance.Controllers
             return Json("success", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult RemoveQuestion(string[] ids)
-        {           
-          //var result = JsonConvert.DeserializeObject<string>(id);
-          //foreach(string s in ids)
-          //  {
-          //      string[] id = ids.split()
-
-          //  }
-            return Json(JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public ActionResult RemoveQuestion(string ids)
+        {
+            try
+            {
+                var result = JsonConvert.DeserializeObject<JIds>(ids);
+                Queries query = new Queries();
+                
+                foreach (int i in result.ids)
+                {
+                    query.RemoveQuestion(i);
+                }
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception e)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+          
         }
     }
 }

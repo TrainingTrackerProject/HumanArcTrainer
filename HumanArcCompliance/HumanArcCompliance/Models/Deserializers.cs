@@ -37,7 +37,7 @@ namespace HumanArcCompliance.Models
 
         public class JIds
         {
-            public string[] ids { get; set; }
+            public int[] ids { get; set; }
         }
     }
 }
