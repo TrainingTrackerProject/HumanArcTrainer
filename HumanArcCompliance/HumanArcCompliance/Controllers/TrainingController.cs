@@ -127,7 +127,7 @@ namespace HumanArcCompliance.Controllers
         //    return View(vmUser);
         //}
 
-        //public ActionResult EditTraining()
+        //public ActionResult AllTraining()
         //{
         //    UserViewModel vmUser = session.getSessionUser();
         //    if (vmUser == null)
@@ -174,7 +174,7 @@ namespace HumanArcCompliance.Controllers
             return View(session.getSessionUser());
         }
 
-        public ActionResult EditTraining()
+        public ActionResult AllTraining()
         {
             return View(session.getSessionUser());
         }

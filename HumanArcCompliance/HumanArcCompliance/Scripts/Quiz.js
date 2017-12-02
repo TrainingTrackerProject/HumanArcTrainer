@@ -7,10 +7,12 @@ var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
     //Gets Quiz information
     ///currently broken
-    $http.get('/Training/GetQuizById/' + ('#quizId').val()).then(function (response) {
-        $scope.quiz = response.data;
-        alert($scope.quiz);
-    });
+
+    //now obsolete
+    //$http.get('/Training/GetQuizById/' + ('#quizId').val()).then(function (response) {
+    //    $scope.quiz = response.data;
+    //    alert($scope.quiz);
+    //});
 
     //Submits user quiz information
     ///Complete JSON to be sent to server

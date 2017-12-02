@@ -1,7 +1,17 @@
-﻿@model HumanArcCompliance.Models.UserViewModel
+﻿@model HumanArcCompliance.Models.UserQuizViewModel
 @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
 @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
-@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
+<!--For Jae: this is the example of how you can use the model with angular-->
+<!--If you made Hidden elements for each of the properties you should be able to target them in the controller-->
+<!-- there may be a better way to do this for example:-->
+<!--since the model uses a list within a list (see the UserQuizViewModel object) there is a way to iterate over the list -->
+<!--using Razor syntax (this is the code like above using the 'at' opperator) and then defining the directives on the-->
+<!--element specifically you should be able to target the element in the $scope. Once there we can send the answers over-->
+<!-- to the controller using ajax...... I would reccomend looking up 'iterating over lists in aps.net razor' -->
+@Html.HiddenFor(m => m.title, new { id = "title"})
+@Html.HiddenFor(m => m.description, new { id = "description" })
+@Html.HiddenFor(m => m.media, new { id = "media" })
+
 <div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
     <h2>Quiz: {{quiz.title}}</h2>
     <h4>{{quiz.description}}</h4>

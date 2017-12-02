@@ -13,10 +13,10 @@ namespace HumanArcCompliance.Models
         public int id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
-        public List<QVMQuestion> questions { get; set; }
+        public List<QuizVMQuestion> questions { get; set; }
     }
 
-    public class QVMQuestion
+    public class QuizVMQuestion
     {
         public int id { get; set; }
         public string text { get; set; }

@@ -1,52 +1,10 @@
-﻿@*This file holds the page where the ability to edit traning is. Users can look
-  at different training and delete exisitng traning. They can also add training, 
-  which will reroute them to a new page to do so.*@
-@{
-    ViewBag.Title = "Edit Training";
-}
-@model HumanArcCompliance.Models.UserViewModel
-@Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
-@Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
-@Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
-<div>
-    <h2>Edit or Remove Exisiting Training</h2>
-    <h4>Review already existing training below by clicking on the edit button to edit, or the remove button to remove.</h4><br/><br/>
-</div>
-<div ng-app="editTrainingApp" ng-controller="RemoveCtrl">
-    <div class="form-group">
-	    <div class="row">   
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                @* creates table based off 'EditTraining.js' script *@
-                <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"></table>
-                @* button placement to add a new training, goes to 'addTraining.cshtml' page *@
-                <input type="submit" value="Add A New Training" id="AddTrainingButton"
-                       class="btn btn-primary" role="button" aria-disabled="false"
-                       onclick="location.href='@Url.Action("AddTraining", "Training")'" />
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-    </div>
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
 
-    @*Modal for Remove Quiz confimation*@
-    <div class="modal fade" id="confirmRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    Confirm Remove
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to remove this quiz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="removeQuizBtn" class="btn btn-success success">Remove</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script src="~/Scripts/EditTraining.js"></script>
-
+</body>
+</html>

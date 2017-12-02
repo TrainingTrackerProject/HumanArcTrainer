@@ -1,5 +1,5 @@
 ﻿/* This file gets the data from the Training controller. It fills the table
-   created in the 'EditTraining.cshtml' page with data from the Quiz table. */
+   created in the 'AllTraining.cshtml' page with data from the Quiz table. */
 $(document).ready(function () {
     var quizes = [];
     
