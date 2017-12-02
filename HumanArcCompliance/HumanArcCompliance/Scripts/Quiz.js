@@ -5,10 +5,64 @@
 //Stores the JSON data in quiz
 var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
-    $http.get('/Training/GetQuizById/'+('#quizId').val()).then(function (response) {
+    //Gets Quiz information
+    ///currently broken
+    $http.get('/Training/GetQuizById/' + ('#quizId').val()).then(function (response) {
         $scope.quiz = response.data;
         alert($scope.quiz);
     });
+
+    //Submits user quiz information
+    ///Complete JSON to be sent to server
+    var sentJson = {
+        questionText: '',
+        questionType: '',
+        answers: []
+    };
+    $scope.questionData = {}
+
+    ///User Answers
+    $scope.userMcAnswers = [
+        answer1 = {
+            text: ''
+        },
+        answer2 = {
+            text: ''
+        },
+        answer3 = {
+            text: ''
+        },
+        answer4 = {
+            text: ''
+        }
+    ];
+
+    $scope.userTfAnswers = [
+        answer1 = {
+            text: ''
+        }
+    ];
+    $scope.userSaAnswers = [
+        answer1 = {
+            text: ''
+        }
+    ]
+
+    ///////////YO LOOK HERE THIS IS TODO. COPY-PASTED OVER BS.
+    //////////FOR USERQUIZQUESTIONANSWERS YOU NEED: userId, quizId, questionId, answerId, text, isChecked, isApproved
+    //////////JUST USE $scope.quiz.id AND STUFF
+    $scope.submitQuiz = function () {
+        $http.post('/Training/AddUserQuizQuestionAnswers',
+            { title: document.getElementById("trainingTitle").value, questionData: JSON.stringify(sentJson) }, config)
+            .then(
+                function (response) {
+                    // success callback
+                },
+                function (response) {
+                    // failure callback
+                }
+            );
+    }
 });
 
 
