@@ -21,13 +21,6 @@ namespace HumanArcCompliance.Models
         public int id { get; set; }
         public string text { get; set; }
         public string type { get; set; }
-        public List<QVMAnswer> answers { get; set; }
     }
 
-    public class QVMAnswer
-    {
-        public int id { get; set; }
-        public string answerText { get; set; }
-        public bool isCorrect { get; set; }        
-    }
 }

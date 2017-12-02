@@ -211,8 +211,10 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "home", new { error = "Invalid Quiz" });
             }
-            ViewBag.id = id;
-            return View(vmUser);
+            UserQuizViewModel uqvmQuiz = GetQuizById(id);
+            uqvmQuiz.isHR = vmUser.isHR;
+            uqvmQuiz.isManager = vmUser.isManager;
+            return View(uqvmQuiz);
         }
 
         public ActionResult gradeQuiz()
@@ -614,49 +616,57 @@ namespace HumanArcCompliance.Controllers
             return Json("Failed");
         }
 
-        public ActionResult GetQuizById(string id)
+        public UserQuizViewModel GetQuizById(int id)
         {
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
+            //UserViewModel vmUser = session.getSessionUser();
+            //if (vmUser == null)
+            //{
+            //    if (!val.getUserCredentials(Request))
+            //    {
+            //        return RedirectToAction("Login", "Home");
+            //    }
+            //    vmUser = session.getSessionUser();
+            //}
 
             int quizId = Convert.ToInt32(id);
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
 
-            QuizViewModel qvmQuiz = new QuizViewModel();
-            qvmQuiz.id = quizId;
-            qvmQuiz.title = quiz.title;
-            qvmQuiz.description = quiz.description;
-            qvmQuiz.questions = new List<QVMQuestion>();
+            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();
+            //uqvmQuiz.isHR = vmUser.isHR;
+            //uqvmQuiz.isManager = vmUser.isManager;
+
+            uqvmQuiz.QuizId = quizId;
+            uqvmQuiz.title = quiz.title;
+            uqvmQuiz.description = quiz.description;
+            uqvmQuiz.media = quiz.media;
+            uqvmQuiz.startDate = quiz.startDate;
+            uqvmQuiz.preferDate = quiz.preferDate;
+            uqvmQuiz.expiredDate = quiz.expiredDate;
+            uqvmQuiz.questions = new List<UserQuizVMQuestion>();
+            
             List<Question> questions = query.getQuestionsByQuiz(quiz.id);
 
             foreach (Question question in questions)
             {
-                QVMQuestion qvmQuestion = new QVMQuestion();
-                qvmQuestion.id = question.id;
-                qvmQuestion.text = question.questionText;
-                qvmQuestion.type = question.questionType;
-                qvmQuestion.answers = new List<QVMAnswer>();
+                UserQuizVMQuestion uqvmQuestion = new UserQuizVMQuestion();
+                uqvmQuestion.id = question.id;
+                uqvmQuestion.text = question.questionText;
+                uqvmQuestion.type = question.questionType;
+                uqvmQuestion.answers = new List<UserQuizVMAnswer>();
                 List<Answer> answers = query.getAnswersByQuestion(question.id);
 
                 foreach (Answer answer in answers)
                 {
-                    QVMAnswer qvmAnswer = new QVMAnswer();
-                    qvmAnswer.id = answer.id;
-                    qvmAnswer.answerText = answer.answerText;
-                    qvmAnswer.isCorrect = answer.isCorrect;
-                    qvmQuestion.answers.Add(qvmAnswer);
+                    UserQuizVMAnswer uqvmAnswer = new UserQuizVMAnswer();
+                    uqvmAnswer.id = answer.id;
+                    uqvmAnswer.answerText = answer.answerText;
+                    uqvmAnswer.isCorrect = answer.isCorrect;
+                    uqvmQuestion.answers.Add(uqvmAnswer);
                 }
-                qvmQuiz.questions.Add(qvmQuestion);
+                uqvmQuiz.questions.Add(uqvmQuestion);
             }
-            return Json(qvmQuiz, JsonRequestBehavior.AllowGet);
+            return uqvmQuiz;
         }
 
         [HttpPost]

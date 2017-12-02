@@ -296,14 +296,34 @@ namespace HumanArcCompliance.helpers
         {
             try
             {
-                HumanArcEntities db = new HumanArcEntities();
-                db.Quizes.Attach(updatedQuiz);
-                var entry = db.Entry(updatedQuiz);
-                entry.Property(e => e.description).IsModified = true;
-                entry.Property(e => e.startDate).IsModified = true;
-                entry.Property(e => e.preferDate).IsModified = true;
-                entry.Property(e => e.expiredDate).IsModified = true;
-                db.SaveChanges();
+                Quize quiz = new Quize();
+                using (var ctx = new HumanArcEntities())
+                {
+                    quiz = ctx.Quizes.First(q => q.id == updatedQuiz.id);
+                }
+
+                quiz.description = updatedQuiz.description;
+                quiz.media = updatedQuiz.media;
+                quiz.startDate = updatedQuiz.startDate;
+                quiz.preferDate = updatedQuiz.preferDate;
+                quiz.expiredDate = updatedQuiz.expiredDate;
+
+                //save modified entity using new Context
+                using (var dbCtx = new HumanArcEntities())
+                {
+                    dbCtx.Entry(quiz).State = System.Data.Entity.EntityState.Modified;
+
+                    dbCtx.SaveChanges();
+                }
+                //HumanArcEntities db = new HumanArcEntities();
+                //db.Quizes.Attach(updatedQuiz);
+                //var entry = db.Entry(updatedQuiz);
+
+                //entry.Property(e => e.description).IsModified = true;
+                //entry.Property(e => e.startDate).IsModified = true;
+                //entry.Property(e => e.preferDate).IsModified = true;
+                //entry.Property(e => e.expiredDate).IsModified = true;
+                //db.SaveChanges();
             }
             catch(Exception e)
             {
