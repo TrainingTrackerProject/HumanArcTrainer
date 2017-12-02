@@ -291,5 +291,25 @@ namespace HumanArcCompliance.helpers
             }
             return returnedList;
         }
+
+        public bool updateExistingQuiz(Quize updatedQuiz)
+        {
+            try
+            {
+                HumanArcEntities db = new HumanArcEntities();
+                db.Quizes.Attach(updatedQuiz);
+                var entry = db.Entry(updatedQuiz);
+                entry.Property(e => e.description).IsModified = true;
+                entry.Property(e => e.startDate).IsModified = true;
+                entry.Property(e => e.preferDate).IsModified = true;
+                entry.Property(e => e.expiredDate).IsModified = true;
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

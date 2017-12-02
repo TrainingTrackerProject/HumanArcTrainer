@@ -318,23 +318,46 @@ namespace HumanArcCompliance.Controllers
             }
             Queries query = new Queries();
             var result = JsonConvert.DeserializeObject<JQuiz>(quizData);
-            if (query.getQuizByTitle(result.title).Count != 0)
-            {
-                return Json("Duplicate Title", JsonRequestBehavior.AllowGet);
-            }
+
             List<int> quizIds = new List<int>();
-            foreach (int group in result.groups)
+            List<Quize> quizes = query.getQuizByTitle(result.title);
+            List<int> currentGroups = new List<int>();
+
+            foreach(Quize q in quizes)
             {
-                Quize quiz = new Quize();
-                quiz.groupId = Convert.ToInt32(group);
-                quiz.title = result.title;
-                quiz.description = result.description;
-                quiz.media = result.media;
-                quiz.startDate = result.startDate;
-                quiz.preferDate = result.preferredDate;
-                quiz.expiredDate = result.expirationDate;
-                quizIds.Add(query.addQuiz(quiz));
+                if (!result.groups.Contains(q.groupId))
+                {
+                    query.RemoveQuiz(q.id);
+                }
+                else
+                {
+                    quizIds.Add(q.id);
+
+                    q.description = result.description;
+                    q.media = result.media;
+                    q.startDate = result.startDate;
+                    q.preferDate = result.preferredDate;
+                    q.expiredDate = result.expirationDate;
+                    query.updateExistingQuiz(q);
+
+                    currentGroups.Add(q.groupId);
+                }
             }
+            foreach(int newGroupId in result.groups)
+            {
+                if (!currentGroups.Contains(newGroupId)){
+                    Quize newQuiz = new Quize();
+                    newQuiz.title = result.title;
+                    newQuiz.description = result.description;
+                    newQuiz.groupId = newGroupId;
+                    newQuiz.media = result.media;
+                    newQuiz.startDate = result.startDate;
+                    newQuiz.preferDate = result.preferredDate;
+                    newQuiz.expiredDate = result.expirationDate;
+                    quizIds.Add(query.addQuiz(newQuiz));
+                }
+            }
+            
             return Json(quizIds, JsonRequestBehavior.AllowGet);
         }
 
