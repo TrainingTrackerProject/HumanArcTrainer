@@ -302,7 +302,7 @@ var sampleJSON = {
 
 $(document).ready(function () {
 
-    $('#saveQuizInfo, #addQuestionBtn').attr('disabled', 'disabled');
+    $('#saveQuizInfo, #addQuestionBtn, #backToQuizPage').attr('disabled', 'disabled');
 
 
 
