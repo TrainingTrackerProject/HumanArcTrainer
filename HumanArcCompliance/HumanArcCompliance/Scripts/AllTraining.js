@@ -32,7 +32,7 @@ $(document).ready(function () {
                 
                 var button = "<input type='button' value='Edit' class='btn btn-primary edit' id='" + value.id + "'/>";
 
-                if (startNum > t) {
+                if (startNum <= t) {
                     button = "<input type='button' value='View' class='btn btn-primary edit' id='" + value.id + "'/>";
       
                 };
