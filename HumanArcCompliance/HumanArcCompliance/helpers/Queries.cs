@@ -255,7 +255,7 @@ namespace HumanArcCompliance.helpers
                 return false;
             }
             return true;
-        }
+       }
 
         public Group getGroupById(int id)
         {

@@ -12,11 +12,13 @@ namespace HumanArcCompliance.Models
         public int QuizId { get; set; }
         public string title { get; set; }
         public string description { get; set; }
+
         public string media { get; set; }
         public DateTime startDate { get; set; }
         public DateTime preferDate { get; set; }
         public DateTime expiredDate { get; set; }
         public List<UserQuizVMQuestion> questions { get; set; }
+        public List<UserQuizGroup> groups { get; set; }
     }
 
     public class UserQuizVMQuestion
@@ -32,5 +34,11 @@ namespace HumanArcCompliance.Models
         public int id { get; set; }
         public string answerText { get; set; }
         public bool isCorrect { get; set; }
+    }
+
+    public class UserQuizGroup
+    {
+        public int id { get; set; }
+        public string name { get; set; }
     }
 }
