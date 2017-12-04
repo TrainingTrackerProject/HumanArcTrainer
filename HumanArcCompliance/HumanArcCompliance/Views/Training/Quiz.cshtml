@@ -12,12 +12,8 @@
 
 
 <div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
-    <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
-    <h4>@Html.DisplayFor(m => m.description)</h4>
-    <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
 
 
-    <input type="button" ng-click="start()" value="Start"/>
     <input type="button" ng-click="next()" ng-disabled="!quiz.started || quiz.isLastQuestion" value="Next"/>
 
     <input type="button" ng-click="previous()" ng-disabled="quiz.isFirstQuestion" value="Previous" />
@@ -25,6 +21,45 @@
 
     <div ng-show="quiz.question.type == 'multipleChoice'">
         <label ng-model="quiz.question.answers[0].text"></label>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>@Html.DisplayFor(m => m.description)</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
+        </div>
+    </div>
+    <div class="row" ng-show="!quiz.started">
+        <div class="col-sm-5">
+
+        </div>
+        <div class="col-sm-2">
+            <input type="button" ng-click="start()" value="Start" />
+        </div>
+        <div class="col-sm-5">
+
+        </div>
+    </div>
+    <div class="row" ng-show="quiz.started">
+        <div class="col-sm-5">
+
+        </div>
+        <div class="col-sm-2">
+            <input type="button" ng-click="start()" value="Start" />
+        </div>
+        <div class="col-sm-5">
+
+        </div>
     </div>
 
 
