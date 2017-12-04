@@ -13,10 +13,32 @@
 @Html.HiddenFor(m => m.media, new { id = "media" })
 
 <div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
-    <h2>Quiz: {{quiz.title}}</h2>
-    <h4>{{quiz.description}}</h4>
+    <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
+    <h4>@Html.DisplayFor(m => m.description)</h4>
     <br />
-    <div ng-repeat="question in questions">
+    <p>This is before the for loop</p>
+    @foreach (var question in Model.questions)
+    {
+        <p>foreach works</p>
+    }
+    @for (var question = 0; question < Model.questions.Count(); question++)
+    {
+        if (Model.questions[question].type == "multipleChoice")
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="choices">question+1. Model.questions[question].</label>
+                </div>
+            </div>
+            for (var answer = 0; answer < Model.questions[question].answers.Count(); answer++)
+            {
+                <p>This is doing shit</p>
+                @*<input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}*@
+            }
+        }
+        <div ng-repeat="answer in question.answers">
+            <input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}
+        </div>
         <!--Displays multiple choice questions-->
         <div ng-if="question.type == 'multipleChoice'">
             <div class="row">
@@ -24,9 +46,11 @@
                     <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
                 </div>
             </div>
-            <div ng-repeat="answer in question.answers">
-                <input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}
-            </div>
+            <p>Entered first for loop</p>
+            @for (var answer = 0; answer < Model.questions[question].answers.Count(); answer++) { 
+                <p>This is doing shit</p>
+                @*<input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}*@
+            }
         </div>
 
         <!--Displays true/false questions-->
@@ -51,7 +75,7 @@
             <textarea rows="5" class="form-control" id="shortAnswerQuestion"></textarea>
         </div>
         <br />
-    </div>
+    }
 
     @*TODO Submit user answers*@
     @*Modal for Submit confimation*@
