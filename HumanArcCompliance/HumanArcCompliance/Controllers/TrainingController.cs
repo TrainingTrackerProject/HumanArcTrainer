@@ -728,5 +728,25 @@ namespace HumanArcCompliance.Controllers
             }
           
         }
+
+        public ActionResult EditTraining(int id)
+        {
+            Queries query = new Queries();
+            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();
+            Quize quiz = new Quize();
+            quiz = query.getQuizById(id);
+            uqvmQuiz.title = quiz.title;
+            uqvmQuiz.description = quiz.description;
+            uqvmQuiz.groups = new List<UserQuizGroup>();
+            List<Quize> quizes = query.getQuizByTitle(query.getQuizById(id).title);
+            foreach(Quize q in quizes)
+            {
+                UserQuizGroup group = new UserQuizGroup();
+                group.id = q.groupId;
+                group.name = query.getGroupById(group.id).name;
+                uqvmQuiz.groups.Add(group);
+            }
+            return View(uqvmQuiz);
+        }
     }
 }
