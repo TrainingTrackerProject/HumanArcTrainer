@@ -616,6 +616,13 @@ namespace HumanArcCompliance.Controllers
             return Json("Failed");
         }
 
+        public ActionResult TakeQuiz(string id)
+        {
+            UserQuizViewModel uqvm = new UserQuizViewModel();
+            uqvm = GetQuizById(Convert.ToInt32(id));
+            return Json(uqvm, JsonRequestBehavior.AllowGet);
+        }
+
         public UserQuizViewModel GetQuizById(int id)
         {
             int quizId = Convert.ToInt32(id);

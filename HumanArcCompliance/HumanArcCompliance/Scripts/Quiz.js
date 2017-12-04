@@ -3,9 +3,141 @@
  */
 
 //Stores the JSON data in quiz
+
+$(document).ready(function () {
+
+    //var quizId = $('#quizId').val();
+
+    //$.ajax({
+    //    url: '/Training/TakeQuiz',
+    //    type: "GET",
+    //    data: {  id: quizId},
+    //    contextType: "application/json",
+    //    success: function (res) {
+    //        console.log(res);
+    //    }
+    //});
+});
+
 var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
     ///Complete JSON to be sent to server
+    var currentQuestion = 0;
+    var data;
+
+    var submittedAnswers = [];
+ 
+
+    $scope.quiz = {
+        answer: 0,
+        quizId: 0,
+        question: {
+            questionId: 0,
+            questionText: '',
+            type: '',
+            answers: []
+        }       
+    }
+
+    var quizId = $('#quizId').val();
+
+    var config = {
+        headers: {
+            'Content-Type': 'application/json;'
+        }
+    }
+    console.log(quizId);
+    $http.post('/Training/TakeQuiz',
+        { id: quizId }, config)
+        .then(function (res) {
+            data = res.data;
+            console.log(data);
+        });
+
+    $scope.start = function () {
+            currentQuestion = 0;
+            $scope.quiz.question.text = data.questions[currentQuestion].text;
+            $scope.quiz.question.type = data.questions[currentQuestion].type;
+            $scope.quiz.question.answers = [];
+
+            $.each(data.questions[currentQuestion].answers, function (index, value) {
+                var answer = {
+                    id: value.id,
+                    text: value.text,
+                }
+
+                $scope.quiz.question.answers.push(answer);
+            });
+            console.log($scope.quiz.question.answers);
+        }      
+
+    $scope.next = function () {
+        if (typeof submittedAnswers[currentQuestion] === 'undefined') {
+            var uqqa = {
+                quizId: quizId,
+                questionId: angular.copy($scope.quiz.question.questionId),
+                answerId: angular.copy($scope.quiz.answer)
+            }
+            submittedAnswers.push(uqqa);
+        } else {
+            submittedAnswers[currentQuestion].answerId = angular.copy($scope.quiz.answer);
+        }
+
+        currentQuestion++;
+        $scope.quiz.question.text = data.questions[currentQuestion].text;
+        $scope.quiz.question.type = data.questions[currentQuestion].type;
+        $scope.quiz.question.answers = [];
+        $.each(data.questions[currentQuestion].answers, function (index, value) {
+            var answer = {
+                id: value.id,
+                text: value.text,
+            }
+            $scope.quiz.question.answers.push(answer);
+        });
+        console.log($scope.quiz.question.answers);
+
+    }
+
+    $scope.previous = function () {
+        if (typeof submittedAnswers[currentQuestion] === 'undefined') {
+            var uqqa = {
+                quizId: quizId,
+                questionId: angular.copy($scope.quiz.question.questionId),
+                answerId: angular.copy($scope.quiz.answer)
+            }
+            submittedAnswers.push(uqqa);
+        } else {
+            submittedAnswers[currentQuestion].answerId = angular.copy($scope.quiz.answer);
+        }
+        if (currentQuestion > 0) {
+            currentQuestion--;
+        }
+
+        $scope.quiz.question.text = data.questions[currentQuestion].text;
+        $scope.quiz.question.type = data.questions[currentQuestion].type;
+        $scope.quiz.question.answers = [];
+        $.each(data.questions[currentQuestion].answers, function (index, value) {
+            var answer = {
+                id: value.id,
+                text: value.text,
+            }
+            $scope.quiz.question.answers.push(answer);
+        });
+        console.log($scope.quiz.question.answers);
+    }
+
+    $scope.submit = function () {
+        console.log(submittedAnswers);
+        //$http.push('Training/SubmitQuiz', { answers: submittedAnswers }, config)
+        //    .then(function (res) {
+        //        console.log(res);
+        //    });
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     var sentJson = {
         questionText: '',
         questionType: '',
