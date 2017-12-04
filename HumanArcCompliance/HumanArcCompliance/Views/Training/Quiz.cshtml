@@ -1,6 +1,7 @@
 ﻿@model HumanArcCompliance.Models.UserQuizViewModel
 @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
 @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
+@Html.HiddenFor(m => m.QuizId, new { id = "quizId"})
 <!--For Jae: this is the example of how you can use the model with angular-->
 <!--If you made Hidden elements for each of the properties you should be able to target them in the controller-->
 <!-- there may be a better way to do this for example:-->
@@ -8,13 +9,26 @@
 <!--using Razor syntax (this is the code like above using the 'at' opperator) and then defining the directives on the-->
 <!--element specifically you should be able to target the element in the $scope. Once there we can send the answers over-->
 <!-- to the controller using ajax...... I would reccomend looking up 'iterating over lists in aps.net razor' -->
-@Html.HiddenFor(m => m.title, new { id = "title"})
-@Html.HiddenFor(m => m.description, new { id = "description" })
-@Html.HiddenFor(m => m.media, new { id = "media" })
+
 
 <div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
     <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
     <h4>@Html.DisplayFor(m => m.description)</h4>
+    <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
+
+
+    <input type="button" ng-click="start()" value="Start"/>
+    <input type="button" ng-click="next()" value="Next"/>
+
+    <input type="button" ng-click="previous()" value="Previous" />
+    <input type="button" ng-click="submit()" value="Submit" />
+
+
+
+
+
+
+
     <br />
     <p>This is before the for loop</p>
     @foreach (var question in Model.questions)
