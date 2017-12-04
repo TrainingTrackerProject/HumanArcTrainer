@@ -622,7 +622,7 @@ namespace HumanArcCompliance.Controllers
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
 
-            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();]
+            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();
 
             uqvmQuiz.QuizId = quizId;
             uqvmQuiz.title = quiz.title;
