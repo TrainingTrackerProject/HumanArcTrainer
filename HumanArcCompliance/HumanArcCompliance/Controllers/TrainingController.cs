@@ -618,23 +618,11 @@ namespace HumanArcCompliance.Controllers
 
         public UserQuizViewModel GetQuizById(int id)
         {
-            //UserViewModel vmUser = session.getSessionUser();
-            //if (vmUser == null)
-            //{
-            //    if (!val.getUserCredentials(Request))
-            //    {
-            //        return RedirectToAction("Login", "Home");
-            //    }
-            //    vmUser = session.getSessionUser();
-            //}
-
             int quizId = Convert.ToInt32(id);
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
 
-            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();
-            //uqvmQuiz.isHR = vmUser.isHR;
-            //uqvmQuiz.isManager = vmUser.isManager;
+            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();]
 
             uqvmQuiz.QuizId = quizId;
             uqvmQuiz.title = quiz.title;
