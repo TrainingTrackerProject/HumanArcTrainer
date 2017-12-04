@@ -8,13 +8,20 @@ $(document).ready(function () {
         type: 'GET',
         success: function (data, status) {
             $.each(data, function (index, value) {
-                quizes.push([value.title, value.description, "<input type='button' value='Edit' class='btn btn-primary edit' id='" + value.id + "'/>" + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"])
+                
+                var start = value.startDate;
+                var res = start.slice(6, 19);
+                var newDate = new Date(parseInt(res, 10));
+                var date = newDate.toDateString();
+
+                quizes.push([value.title, value.description, date, "<input type='button' value='Edit' class='btn btn-primary edit' id='" + value.id + "'/>" + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"])
             });
             $('#trainingTable').DataTable({
                 data: quizes,
                 columns: [
                     { title: "Title" },
                     { title: "Description" },
+                    {title:  "Start Date" },
                     {title: "Edit or Remove Training" }
                 ]
             });

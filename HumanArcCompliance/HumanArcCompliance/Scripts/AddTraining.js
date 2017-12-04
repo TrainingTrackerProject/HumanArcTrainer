@@ -252,10 +252,6 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
         expirationDateCheck(e,p);
     })
 
-    var t1 = Date.parse("12/23/2017");
-    var t2 = Date.now();
- 
-    //alert(t1 > t2)
 
     function startDateCheck(s) {
         if (Number.isInteger(s) && s < t) {
