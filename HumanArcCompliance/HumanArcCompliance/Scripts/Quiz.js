@@ -29,6 +29,9 @@ app.controller('QuizCtrl', function ($scope, $http) {
  
 
     $scope.quiz = {
+        started: false,
+        isFirstQuestion: true,
+        isLastQuestion: false,
         answer: 0,
         quizId: 0,
         question: {
@@ -55,6 +58,10 @@ app.controller('QuizCtrl', function ($scope, $http) {
         });
 
     $scope.start = function () {
+        $scope.quiz.started = true;
+        if (typeof submittedAnswers[currentQuestion + 1] === 'undefined') {
+            $scope.quiz.lastQuestion = true;
+        }
             currentQuestion = 0;
             $scope.quiz.question.text = data.questions[currentQuestion].text;
             $scope.quiz.question.type = data.questions[currentQuestion].type;
@@ -63,7 +70,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
             $.each(data.questions[currentQuestion].answers, function (index, value) {
                 var answer = {
                     id: value.id,
-                    text: value.text,
+                    text: value.answerText,
                 }
 
                 $scope.quiz.question.answers.push(answer);
@@ -72,6 +79,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
         }      
 
     $scope.next = function () {
+        $scope.quiz.isFirstQuestion = false;
         if (typeof submittedAnswers[currentQuestion] === 'undefined') {
             var uqqa = {
                 quizId: quizId,
@@ -90,7 +98,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
         $.each(data.questions[currentQuestion].answers, function (index, value) {
             var answer = {
                 id: value.id,
-                text: value.text,
+                text: value.answerText,
             }
             $scope.quiz.question.answers.push(answer);
         });
@@ -110,20 +118,25 @@ app.controller('QuizCtrl', function ($scope, $http) {
             submittedAnswers[currentQuestion].answerId = angular.copy($scope.quiz.answer);
         }
         if (currentQuestion > 0) {
-            currentQuestion--;
+            currentQuestion--;          
+        }
+        if (currentQuestion == 0) {
+            $scope.quiz.isFirstQuestion = true;
         }
 
         $scope.quiz.question.text = data.questions[currentQuestion].text;
         $scope.quiz.question.type = data.questions[currentQuestion].type;
         $scope.quiz.question.answers = [];
         $.each(data.questions[currentQuestion].answers, function (index, value) {
+            console.log(value);
             var answer = {
                 id: value.id,
-                text: value.text,
+                text: value.answerText,
             }
             $scope.quiz.question.answers.push(answer);
+            console.log(answer);
         });
-        console.log($scope.quiz.question.answers);
+        //console.log($scope.quiz.question.answers);
     }
 
     $scope.submit = function () {
