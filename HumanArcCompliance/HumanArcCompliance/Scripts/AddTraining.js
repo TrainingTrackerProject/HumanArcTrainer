@@ -44,30 +44,30 @@ app.controller('addQuestionController', function ($scope, $http) {
 
     $scope.mcAnswers = [
         answer1 = {
-            text: '',
+            answerText: '',
             isCorrect: false
         },
         answer2 = {
-            text: '',
+            answerText: '',
             isCorrect: false
         },
         answer3 = {
-            text: '',
+            answerText: '',
             isCorrect: false
         },
         answer4 = {
-            text: '',
+            answerText: '',
             isCorrect: false
         }
     ];
 
     $scope.tfAnswers = [
         answer1 = {
-            text: 'True',
+            answerText: 'True',
             isCorrect: false
         },
         answer2 = {
-            text: 'False',
+            answerText: 'False',
             isCorrect: false
         }
     ]
@@ -84,6 +84,7 @@ app.controller('addQuestionController', function ($scope, $http) {
         sentJson.questionText = $scope.questionData.questionText;
         sentJson.questionType = $scope.questionData.questionType;
         if ($scope.questionData.questionType == 'multipleChoice') {
+
             if ($scope.isCorrect == 'answer1') {
                 $scope.mcAnswers[0].isCorrect = true;
             }

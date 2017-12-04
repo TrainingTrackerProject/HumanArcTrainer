@@ -12,103 +12,144 @@
 
 
 <div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
-    <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
-    <h4>@Html.DisplayFor(m => m.description)</h4>
-    <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
 
 
-    <input type="button" ng-click="start()" value="Start"/>
-    <input type="button" ng-click="next()" value="Next"/>
+    <input type="button" ng-click="next()" ng-disabled="!quiz.started || quiz.isLastQuestion" value="Next"/>
 
-    <input type="button" ng-click="previous()" value="Previous" />
+    <input type="button" ng-click="previous()" ng-disabled="quiz.isFirstQuestion" value="Previous" />
     <input type="button" ng-click="submit()" value="Submit" />
 
+    <div ng-show="quiz.question.type == 'multipleChoice'">
+        <label ng-model="quiz.question.answers[0].text"></label>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>@Html.DisplayFor(m => m.description)</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
+        </div>
+    </div>
+    <div class="row" ng-show="!quiz.started">
+        <div class="col-sm-5">
+
+        </div>
+        <div class="col-sm-2">
+            <input type="button" ng-click="start()" value="Start" />
+        </div>
+        <div class="col-sm-5">
+
+        </div>
+    </div>
+    <div class="row" ng-show="quiz.started">
+        <div class="col-sm-5">
+
+        </div>
+        <div class="col-sm-2">
+            <input type="button" ng-click="start()" value="Start" />
+        </div>
+        <div class="col-sm-5">
+
+        </div>
+    </div>
 
 
 
 
 
 
-    <br />
-    <p>This is before the for loop</p>
-    @foreach (var question in Model.questions)
-    {
-        <p>foreach works</p>
-    }
-    @for (var question = 0; question < Model.questions.Count(); question++)
-    {
-        if (Model.questions[question].type == "multipleChoice")
+
+
+        <br />
+        <p>This is before the for loop</p>
+        @foreach (var question in Model.questions)
         {
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="choices">question+1. Model.questions[question].</label>
-                </div>
-            </div>
-            for (var answer = 0; answer < Model.questions[question].answers.Count(); answer++)
-            {
-                <p>This is doing shit</p>
-                @*<input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}*@
-            }
+            <p>foreach works</p>
         }
-        <div ng-repeat="answer in question.answers">
-            <input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}
-        </div>
-        <!--Displays multiple choice questions-->
-        <div ng-if="question.type == 'multipleChoice'">
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
+        @for (var question = 0; question < Model.questions.Count(); question++)
+        {
+            if (Model.questions[question].type == "multipleChoice")
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="choices">question+1. Model.questions[question].</label>
+                    </div>
                 </div>
-            </div>
-            <p>Entered first for loop</p>
-            @for (var answer = 0; answer < Model.questions[question].answers.Count(); answer++) { 
-                <p>This is doing shit</p>
-                @*<input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}*@
+                for (var answer = 0; answer < Model.questions[question].answers.Count(); answer++)
+                {
+                    <p>This is doing shit</p>
+                    @*<input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}*@
+                }
             }
-        </div>
-
-        <!--Displays true/false questions-->
-        <div ng-if="question.type == 'trueFalse'">
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
-                </div>
-            </div>
             <div ng-repeat="answer in question.answers">
                 <input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}
             </div>
-        </div>
+        <!--Displays multiple choice questions-->
+            <div ng-if="question.type == 'multipleChoice'">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
+                    </div>
+                </div>
+                <p>Entered first for loop</p>
+                @for (var answer = 0; answer < Model.questions[question].answers.Count(); answer++)
+                {
+                    <p>This is doing shit</p>
+                    @*<input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}*@
+                }
+            </div>
+
+        <!--Displays true/false questions-->
+            <div ng-if="question.type == 'trueFalse'">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
+                    </div>
+                </div>
+                <div ng-repeat="answer in question.answers">
+                    <input type="radio" value="{{answer.text}}" name="{{question.text}}"> {{answer.text}}
+                </div>
+            </div>
 
         <!--Displays short answer questions-->
-        <div ng-if="question.type == 'shortAnswer'">
-            <div class="row">
-                <div class="col-sm-4">
-                    <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
+            <div ng-if="question.type == 'shortAnswer'">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
+                    </div>
                 </div>
+                <textarea rows="5" class="form-control" id="shortAnswerQuestion"></textarea>
             </div>
-            <textarea rows="5" class="form-control" id="shortAnswerQuestion"></textarea>
-        </div>
-        <br />
-    }
+            <br />
+        }
 
-    @*TODO Submit user answers*@
-    @*Modal for Submit confimation*@
-    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    Confirm Submit
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to submit this quiz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'" ng-click="submitQuiz()">Submit</button>
+        @*TODO Submit user answers*@
+        @*Modal for Submit confimation*@
+        <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Confirm Submit
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to submit this quiz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'" ng-click="submitQuiz()">Submit</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
     </div>
-    <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
-</div>
 <script src="~/Scripts/Quiz.js"></script>
