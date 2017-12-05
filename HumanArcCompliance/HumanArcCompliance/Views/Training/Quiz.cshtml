@@ -14,10 +14,7 @@
 <div ng-app="QuizApp" ng-controller="QuizCtrl" ng-init="quiz">
 
 
-    <input type="button" ng-click="next()" ng-disabled="!quiz.started || quiz.isLastQuestion" value="Next"/>
 
-    <input type="button" ng-click="previous()" ng-disabled="quiz.isFirstQuestion" value="Previous" />
-    <input type="button" ng-click="submit()" value="Submit" />
 
     <div ng-show="quiz.question.type == 'multipleChoice'">
         <label ng-model="quiz.question.answers[0].text"></label>
@@ -39,28 +36,73 @@
             <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
         </div>
     </div>
-    <div class="row" ng-show="!quiz.started">
+    <div class="row" ng-if="!status.started">
         <div class="col-sm-5">
 
         </div>
         <div class="col-sm-2">
-            <input type="button" ng-click="start()" value="Start" />
+            <input class="btn btn-default" type="button" ng-click="start()" value="Start" />
         </div>
         <div class="col-sm-5">
 
         </div>
     </div>
-    <div class="row" ng-show="quiz.started">
-        <div class="col-sm-5">
-
+    
+    <div ng-if="(status.started)">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Question {{quiz.currentQuestion + 1}}</h4>
+            </div>
         </div>
-        <div class="col-sm-2">
-            <input type="button" ng-click="start()" value="Start" />
-        </div>
-        <div class="col-sm-5">
+        <div class="row" >
+            <div class="col-sm-12">
+                <h3>{{quiz.question.questionText}}</h3>
 
+                <div ng-if="!(quiz.question.type=='shortAnswer')">
+                    <div ng-repeat="answer in quiz.question.answers">
+                        <input ng-model="quiz.question.selectedAnswer" type="radio" ng-value="{{answer.id}}" name="{{quiz.question.questionText}}">
+                        <label>{{answer.text}}</label>
+                    </div>
+                </div>
+                <div ng-if="quiz.question.type == 'shortAnswer'">
+                    <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="quiz.question.answerText" placeholder="Answer Here"></textarea>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row" ng-if="status.started">
+        <div class="col-sm-2">
+            <input class="btn btn-default" type="button" ng-click="previous()" ng-disabled="status.isFirstQuestion" value="Previous" />
+        </div>
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-2">
+            <div ng-if="status.isLastQuestion">
+                <input ng-disabled="quiz.question.answerText==''" data-toggle="modal" data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right" type="button" value="Submit" />
+            </div>
+            <div ng-if="!status.isLastQuestion">
+                <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started || status.isLastQuestion || quiz.question.selectedAnswer==0" value="Next" />
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirm Submit
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to submit this quiz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    @*<button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'" ng-click="submit()">Submit</button>*@
+                    <button id="submit" class="btn btn-success success" ng-click="submit()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -70,6 +112,7 @@
 
 
         <br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         <p>This is before the for loop</p>
         @foreach (var question in Model.questions)
         {
@@ -121,35 +164,13 @@
             </div>
 
         <!--Displays short answer questions-->
-            <div ng-if="question.type == 'shortAnswer'">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="choices">{{quiz.questions.indexOf(question)+1}}. {{question.text}}</label>
-                    </div>
-                </div>
-                <textarea rows="5" class="form-control" id="shortAnswerQuestion"></textarea>
-            </div>
+            
             <br />
         }
 
         @*TODO Submit user answers*@
         @*Modal for Submit confimation*@
-        <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        Confirm Submit
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to submit this quiz?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'" ng-click="submitQuiz()">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <button id="submitModal" type="button" data-toggle="modal" data-target="#confirm-submit" class="btn btn-primary pull-right">Submit Quiz</button>
     </div>
 <script src="~/Scripts/Quiz.js"></script>

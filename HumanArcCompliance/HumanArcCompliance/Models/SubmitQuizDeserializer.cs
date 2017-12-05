@@ -7,22 +7,12 @@ namespace HumanArcCompliance.Models
 {
     public class SubmitQuizDeserializer
     {
-        public class SubmitAnswers
+        public class UserAnswer
         {
-            public int id { get; set; }
-            public string text { get; set; }
-        }
-
-        public class SubmitQuestions
-        {
-            public int id { get; set; }
-            public List<SubmitAnswers> answers { get; set; }
-        }
-
-        public class SubmitQuiz
-        {
-            public int id { get; set; }
-            public List<SubmitQuestions> questions { get; set; }
-        }
+            public int quizId { get; set; }
+            public int questionId { get; set; }
+            public int answerId { get; set; }
+            public string answerText { get; set; }
+        }       
     }
 }

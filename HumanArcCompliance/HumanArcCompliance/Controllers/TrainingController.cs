@@ -392,12 +392,22 @@ namespace HumanArcCompliance.Controllers
                 question.quizId = quiz.id;
                 int questionId = query.addQuestion(question);
                 questionIds.Add(questionId);
-                foreach (JAnswers jAnswer in result.answers)
+               
+                if (!(result.questionType == "shortAnswer"))
+                {
+                    foreach (JAnswers jAnswer in result.answers)
+                    {
+                        Answer answer = new Answer();
+                        answer.questionId = questionId;
+                        answer.answerText = jAnswer.answerText;
+                        answer.isCorrect = jAnswer.isCorrect;
+                        query.addAnswer(answer);
+                    }
+                }
+                else
                 {
                     Answer answer = new Answer();
                     answer.questionId = questionId;
-                    answer.answerText = jAnswer.answerText;
-                    answer.isCorrect = jAnswer.isCorrect;
                     query.addAnswer(answer);
                 }
             }
@@ -665,7 +675,7 @@ namespace HumanArcCompliance.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitQuiz(string data)
+        public ActionResult SubmitQuiz(string answers)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -679,28 +689,26 @@ namespace HumanArcCompliance.Controllers
 
             Queries query = new Queries();
             User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
-            var result = JsonConvert.DeserializeObject<SubmitQuiz>(data);
+            var result = JsonConvert.DeserializeObject<List<UserAnswer>>(answers);
             List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
-            foreach (SubmitQuestions question in result.questions)
-            {
-                foreach (SubmitAnswers answer in question.answers)
-                {
-                    UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                    uqqa.quizId = result.id;
-                    uqqa.questionId = question.id;
-                    uqqa.answerId = answer.id;
-                    uqqa.userId = user.id;
-                    if (answer.text != null)
-                    {
-                        uqqa.text = answer.text;
-                    }
-                    uqqas.Add(uqqa);
-                }
+            foreach (UserAnswer answer in result)
+            {              
+                UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                uqqa.quizId = answer.quizId;
+                uqqa.questionId = answer.questionId;
+                uqqa.answerId = answer.answerId;
+                uqqa.userId = user.id;
+                uqqa.text = answer.answerText;               
+                uqqas.Add(uqqa);               
             }
-            query.submitQuiz(uqqas);
+            List<UserQuizQuestionAnswer> addedUqqas = new List<UserQuizQuestionAnswer>();
+            addedUqqas = query.submitQuiz(uqqas);
+            if(addedUqqas.Count > 0)
+            {
+                return Json("Quiz Completed", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Failed to submit quiz", JsonRequestBehavior.AllowGet);
 
-
-            return Json("success", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

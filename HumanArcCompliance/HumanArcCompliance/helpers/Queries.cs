@@ -167,9 +167,10 @@ namespace HumanArcCompliance.helpers
             return db.Quizes.ToList();
         }
 
-        public bool submitQuiz(List<UserQuizQuestionAnswer> answers)
+        public List<UserQuizQuestionAnswer> submitQuiz(List<UserQuizQuestionAnswer> answers)
         {
             HumanArcEntities db = new HumanArcEntities();
+            List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
             try
             {
                 foreach (UserQuizQuestionAnswer uqqa in answers)
@@ -178,13 +179,14 @@ namespace HumanArcCompliance.helpers
                     uqqa.isApproved = false;
                     db.UserQuizQuestionAnswers.Add(uqqa);
                     db.SaveChanges();
+                    uqqas.Add(uqqa);
                 }
-                return true;
+                return uqqas;
             }
             catch(Exception e)
             {
                 Console.WriteLine(e);
-                return false;
+                return uqqas;
             }
         }
 

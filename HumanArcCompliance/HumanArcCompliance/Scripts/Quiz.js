@@ -22,24 +22,31 @@ $(document).ready(function () {
 var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
     ///Complete JSON to be sent to server
-    var currentQuestion = 0;
+    //var currentQuestion = 0;
     var data;
 
     var submittedAnswers = [];
- 
 
-    $scope.quiz = {
+    $scope.status = {
         started: false,
         isFirstQuestion: true,
         isLastQuestion: false,
+        isSubmitted: false
+    }
+
+    $scope.quiz = {     
         answer: 0,
         quizId: 0,
         question: {
             questionId: 0,
             questionText: '',
             type: '',
-            answers: []
-        }       
+            answers: [],
+            selectedAnswer: 0,
+            answerText: ''
+        },
+        currentQuestion: 0
+        
     }
 
     var quizId = $('#quizId').val();
@@ -49,7 +56,6 @@ app.controller('QuizCtrl', function ($scope, $http) {
             'Content-Type': 'application/json;'
         }
     }
-    console.log(quizId);
     $http.post('/Training/TakeQuiz',
         { id: quizId }, config)
         .then(function (res) {
@@ -58,95 +64,109 @@ app.controller('QuizCtrl', function ($scope, $http) {
         });
 
     $scope.start = function () {
-        $scope.quiz.started = true;
-        if (typeof submittedAnswers[currentQuestion + 1] === 'undefined') {
+        $scope.status.started = true;
+        if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
             $scope.quiz.lastQuestion = true;
         }
-            currentQuestion = 0;
-            $scope.quiz.question.text = data.questions[currentQuestion].text;
-            $scope.quiz.question.type = data.questions[currentQuestion].type;
-            $scope.quiz.question.answers = [];
-
-            $.each(data.questions[currentQuestion].answers, function (index, value) {
-                var answer = {
-                    id: value.id,
-                    text: value.answerText,
-                }
-
-                $scope.quiz.question.answers.push(answer);
-            });
-            console.log($scope.quiz.question.answers);
+        $scope.quiz.currentQuestion = 0;
+        setScope();
+        setPossibleAnswers();
         }      
 
     $scope.next = function () {
-        $scope.quiz.isFirstQuestion = false;
-        if (typeof submittedAnswers[currentQuestion] === 'undefined') {
-            var uqqa = {
-                quizId: quizId,
-                questionId: angular.copy($scope.quiz.question.questionId),
-                answerId: angular.copy($scope.quiz.answer)
-            }
-            submittedAnswers.push(uqqa);
-        } else {
-            submittedAnswers[currentQuestion].answerId = angular.copy($scope.quiz.answer);
+        $scope.status.isFirstQuestion = false;
+
+        setQuestionAnswer();
+
+        $scope.quiz.currentQuestion++;
+
+        if (data.questions.length - 1 == $scope.quiz.currentQuestion) {
+            $scope.status.isLastQuestion = true;
         }
-
-        currentQuestion++;
-        $scope.quiz.question.text = data.questions[currentQuestion].text;
-        $scope.quiz.question.type = data.questions[currentQuestion].type;
-        $scope.quiz.question.answers = [];
-        $.each(data.questions[currentQuestion].answers, function (index, value) {
-            var answer = {
-                id: value.id,
-                text: value.answerText,
-            }
-            $scope.quiz.question.answers.push(answer);
-        });
-        console.log($scope.quiz.question.answers);
-
+        setScope();
+        setPossibleAnswers();
+        if (typeof submittedAnswers[$scope.quiz.currentQuestion] != 'undefined') {
+            console.log($scope.quiz.currentQuestion);
+            console.log("going forward id: " + submittedAnswers[$scope.quiz.currentQuestion].answerId);
+            $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+            $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+        }
     }
 
     $scope.previous = function () {
-        if (typeof submittedAnswers[currentQuestion] === 'undefined') {
-            var uqqa = {
-                quizId: quizId,
-                questionId: angular.copy($scope.quiz.question.questionId),
-                answerId: angular.copy($scope.quiz.answer)
-            }
-            submittedAnswers.push(uqqa);
-        } else {
-            submittedAnswers[currentQuestion].answerId = angular.copy($scope.quiz.answer);
+        $scope.status.isLastQuestion = false;
+        setQuestionAnswer();
+
+        if ($scope.quiz.currentQuestion > 0) {
+            $scope.quiz.currentQuestion--;          
         }
-        if (currentQuestion > 0) {
-            currentQuestion--;          
-        }
-        if (currentQuestion == 0) {
-            $scope.quiz.isFirstQuestion = true;
+        if ($scope.quiz.currentQuestion == 0) {
+            $scope.status.isFirstQuestion = true;
         }
 
-        $scope.quiz.question.text = data.questions[currentQuestion].text;
-        $scope.quiz.question.type = data.questions[currentQuestion].type;
-        $scope.quiz.question.answers = [];
-        $.each(data.questions[currentQuestion].answers, function (index, value) {
-            console.log(value);
+        setScope();      
+        setPossibleAnswers();
+        $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+        $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+       
+    }
+
+    $scope.setLastQuestion = function () {
+        setQuestionAnswer();
+    }
+
+    $scope.submit = function () {
+        $http.post('/Training/SubmitQuiz', { answers: JSON.stringify(submittedAnswers) }, config)
+            
+            .then(function (res) {
+                console.log(res);
+            });
+    }
+
+    function setPossibleAnswers() {     
+        $.each(data.questions[$scope.quiz.currentQuestion].answers, function (index, value) {
             var answer = {
                 id: value.id,
                 text: value.answerText,
             }
+            console.log("possible id " + answer.id)
             $scope.quiz.question.answers.push(answer);
-            console.log(answer);
-        });
-        //console.log($scope.quiz.question.answers);
+        }); 
     }
 
-    $scope.submit = function () {
+    function setQuestionAnswer() {
+        if (typeof submittedAnswers[$scope.quiz.currentQuestion] === 'undefined') {
+            var uqqa = {
+                quizId: quizId,
+                questionId: angular.copy($scope.quiz.question.questionId),
+                answerId: angular.copy($scope.quiz.question.selectedAnswer),
+                answerText: ''
+            }
+            console.log($scope.quiz.currentQuestion + " " + $scope.quiz.question.selectedAnswer)
+
+            if ($scope.quiz.question.type == 'shortAnswer') {
+                var id = angular.copy($scope.quiz.question.answers[0].id);
+                uqqa.answerId = id,
+                uqqa.answerText = angular.copy($scope.quiz.question.answerText);
+            }
+            submittedAnswers.push(uqqa);
+        } else {
+            submittedAnswers[$scope.quiz.currentQuestion].answerId = angular.copy($scope.quiz.answer);
+            if ($scope.quiz.question.type == 'shortAnswer') {
+                submittedAnswers[$scope.quiz.currentQuestion].answerText = angular.copy($scope.quiz.question.answerText);
+            }
+        }
         console.log(submittedAnswers);
-        //$http.push('Training/SubmitQuiz', { answers: submittedAnswers }, config)
-        //    .then(function (res) {
-        //        console.log(res);
-        //    });
     }
 
+    function setScope() {
+        $scope.quiz.question.questionId = data.questions[$scope.quiz.currentQuestion].id;
+        $scope.quiz.question.questionText = data.questions[$scope.quiz.currentQuestion].text;
+        $scope.quiz.question.type = data.questions[$scope.quiz.currentQuestion].type;
+        $scope.quiz.question.answerText = '';
+        $scope.quiz.question.selectedAnswer = 0;
+        $scope.quiz.question.answers = [];
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
