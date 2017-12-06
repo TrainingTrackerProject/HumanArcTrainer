@@ -217,7 +217,7 @@ namespace HumanArcCompliance.Controllers
             return View(uqvmQuiz);
         }
 
-        public ActionResult gradeQuiz()
+        public ActionResult gradeQuiz(int id = 0)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -608,7 +608,38 @@ namespace HumanArcCompliance.Controllers
             }
             return Json(sending, JsonRequestBehavior.AllowGet);
         }
-        
+        public GradeViewModel GetGradedQuizById(int id)
+        {
+            int quizId = Convert.ToInt32(id);
+            Queries query = new Queries();
+            Quize quiz = query.getQuizById(quizId);
+
+            GradeViewModel gvmQuiz = new GradeViewModel();
+
+            gvmQuiz.QuizId = quizId;
+            gvmQuiz.title = quiz.title;
+            gvmQuiz.description = quiz.description;
+            gvmQuiz.media = quiz.media;
+            gvmQuiz.questions = new List<GradeVMQuestion>();
+
+            List<Question> questions = query.getQuestionsByQuiz(quiz.id);
+
+            foreach (Question question in questions)
+            {
+                GradeVMQuestion gvmQuestion = new GradeVMQuestion();
+                gvmQuestion.id = question.id;
+                gvmQuestion.text = question.questionText;
+                gvmQuestion.type = question.questionType;
+                List<Answer> answers = query.getAnswersByQuestion(question.id);
+                Answer answer = answers[0];
+
+                gvmQuestion.answerId = answer.id;
+                gvmQuestion.answerText = answer.answerText;
+
+                gvmQuiz.questions.Add(gvmQuestion);
+            }
+            return gvmQuiz;
+        }
         public ActionResult RemoveQuiz(string id)
         {
             UserViewModel vmUser = session.getSessionUser();
@@ -637,6 +668,13 @@ namespace HumanArcCompliance.Controllers
             UserQuizViewModel uqvm = new UserQuizViewModel();
             uqvm = GetQuizById(Convert.ToInt32(id));
             return Json(uqvm, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GradeNewQuiz(string id)
+        {
+            GradeViewModel gvm = new GradeViewModel();
+            gvm = GetGradedQuizById(Convert.ToInt32(id));
+            return Json(gvm, JsonRequestBehavior.AllowGet);
         }
 
         public UserQuizViewModel GetQuizById(int id)
@@ -714,7 +752,6 @@ namespace HumanArcCompliance.Controllers
                 return Json("Quiz Completed", JsonRequestBehavior.AllowGet);
             }
             return Json("Failed to submit quiz", JsonRequestBehavior.AllowGet);
-
         }
 
         [HttpPost]
