@@ -481,6 +481,9 @@ namespace HumanArcCompliance.Controllers
                     employeeQuiz.lastName = user.lastName;
                     employeeQuiz.quizId = quiz.id;
                     employeeQuiz.quizTitle = quiz.title;
+                    employeeQuiz.startDate = quiz.startDate;
+                    employeeQuiz.preferredDate = quiz.preferDate;
+                    employeeQuiz.expirationDate = quiz.expiredDate;
                     employeeQuiz.isCompleted = false;
                     employeeQuiz.isGraded = false;
                     UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
