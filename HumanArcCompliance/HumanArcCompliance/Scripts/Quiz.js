@@ -14,7 +14,6 @@ $(document).ready(function () {
     //    data: {  id: quizId},
     //    contextType: "application/json",
     //    success: function (res) {
-    //        console.log(res);
     //    }
     //});
 });
@@ -71,7 +70,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
         $scope.quiz.currentQuestion = 0;
         setScope();
         setPossibleAnswers();
-        }      
+    }
 
     $scope.next = function () {
         $scope.status.isFirstQuestion = false;
@@ -85,6 +84,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
         }
         setScope();
         setPossibleAnswers();
+
         if (typeof submittedAnswers[$scope.quiz.currentQuestion] != 'undefined') {
             console.log($scope.quiz.currentQuestion);
             console.log("going forward id: " + submittedAnswers[$scope.quiz.currentQuestion].answerId);
@@ -95,18 +95,20 @@ app.controller('QuizCtrl', function ($scope, $http) {
 
     $scope.previous = function () {
         $scope.status.isLastQuestion = false;
+
         setQuestionAnswer();
 
-        if ($scope.quiz.currentQuestion > 0) {
-            $scope.quiz.currentQuestion--;          
-        }
+        $scope.quiz.currentQuestion--; 
+        
         if ($scope.quiz.currentQuestion == 0) {
             $scope.status.isFirstQuestion = true;
         }
 
         setScope();      
         setPossibleAnswers();
+
         $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+        console.log("going previous id: " + submittedAnswers[$scope.quiz.currentQuestion].answerId);
         $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
        
     }
@@ -116,8 +118,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
     }
 
     $scope.submit = function () {
-        $http.post('/Training/SubmitQuiz', { answers: JSON.stringify(submittedAnswers) }, config)
-            
+        $http.post('/Training/SubmitQuiz', { answers: JSON.stringify(submittedAnswers) }, config)           
             .then(function (res) {
                 console.log(res);
             });
@@ -129,34 +130,39 @@ app.controller('QuizCtrl', function ($scope, $http) {
                 id: value.id,
                 text: value.answerText,
             }
-            console.log("possible id " + answer.id)
             $scope.quiz.question.answers.push(answer);
         }); 
+        console.log("current question number from setPossibleAnswers: " + $scope.quiz.currentQuestion);
+
     }
 
     function setQuestionAnswer() {
-        if (typeof submittedAnswers[$scope.quiz.currentQuestion] === 'undefined') {
-            var uqqa = {
-                quizId: quizId,
-                questionId: angular.copy($scope.quiz.question.questionId),
-                answerId: angular.copy($scope.quiz.question.selectedAnswer),
-                answerText: ''
+        if ($scope.quiz.question.selectedAnswer != 0) {
+            if (typeof submittedAnswers[$scope.quiz.currentQuestion] === 'undefined') {
+                var uqqa = {
+                    quizId: quizId,
+                    questionId: angular.copy($scope.quiz.question.questionId),
+                    answerId: angular.copy($scope.quiz.question.selectedAnswer),
+                    answerText: ''
+                }
+                console.log("current question : " + $scope.quiz.currentQuestion + "-------- selected answer : " + $scope.quiz.question.selectedAnswer)
+                if ($scope.quiz.question.type == 'shortAnswer') {
+                    uqqa.answerId = angular.copy($scope.quiz.question.answers[0].id);
+                    console.log("new set id: " + uqqa.answerId);
+                    uqqa.answerText = angular.copy($scope.quiz.question.answerText);
+                    console.log("new set text: " + uqqa.answerText);
+                }
+                submittedAnswers.push(uqqa);
+            } else {
+                console.log("the testing id " + submittedAnswers[$scope.quiz.currentQuestion].answerId)
+                console.log("id being set it " + $scope.quiz.question.selectedAnswer);
+                submittedAnswers[$scope.quiz.currentQuestion].answerId = angular.copy($scope.quiz.question.selectedAnswer);
+                if ($scope.quiz.question.type == 'shortAnswer') {
+                    submittedAnswers[$scope.quiz.currentQuestion].answerText = angular.copy($scope.quiz.question.answerText);
+                }
             }
-            console.log($scope.quiz.currentQuestion + " " + $scope.quiz.question.selectedAnswer)
-
-            if ($scope.quiz.question.type == 'shortAnswer') {
-                var id = angular.copy($scope.quiz.question.answers[0].id);
-                uqqa.answerId = id,
-                uqqa.answerText = angular.copy($scope.quiz.question.answerText);
-            }
-            submittedAnswers.push(uqqa);
-        } else {
-            submittedAnswers[$scope.quiz.currentQuestion].answerId = angular.copy($scope.quiz.answer);
-            if ($scope.quiz.question.type == 'shortAnswer') {
-                submittedAnswers[$scope.quiz.currentQuestion].answerText = angular.copy($scope.quiz.question.answerText);
-            }
-        }
-        console.log(submittedAnswers);
+            console.log(submittedAnswers);
+        }     
     }
 
     function setScope() {
