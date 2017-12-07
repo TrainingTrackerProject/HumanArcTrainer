@@ -55,7 +55,11 @@ namespace HumanArcCompliance.helpers
             HumanArcEntities db = new HumanArcEntities();
             return db.Quizes.Find(id);
         }
-
+        public UserQuizQuestionAnswer getAnswerToShortAnswerQuestion(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.UserQuizQuestionAnswers.First(a => a.questionId == id);
+        }
         public int addQuiz(Quize q)
         {          
             HumanArcEntities db = new HumanArcEntities();
