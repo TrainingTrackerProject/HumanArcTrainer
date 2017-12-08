@@ -165,9 +165,8 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
         $scope.inactive = true;
     }
 
-    $scope.setGroups = function () {
-        
-            console.log($scope.quizData.groups);
+    $scope.setGroups = function () {      
+        console.log($scope.quizData.groups);
     }
 
     $('.quizFormInfo').on('change keyup paste', function () {

@@ -61,8 +61,12 @@ app.controller('QuizCtrl', function ($scope, $http) {
         setScope();
         setPossibleAnswers();
         if (typeof submittedAnswers[$scope.quiz.currentQuestion] != 'undefined') {
-            $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
-            $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+            if ($scope.quiz.question.type != 'shortAnswer') {
+                $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+            }
+            else {
+                $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+            }
         }
     }
 
@@ -75,8 +79,12 @@ app.controller('QuizCtrl', function ($scope, $http) {
         }
         setScope();      
         setPossibleAnswers();
-        $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
-        $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText       
+        if ($scope.quiz.question.type != 'shortAnswer') {
+            $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+        }
+        else {
+            $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+        }   
     }
 
     $scope.setLastQuestion = function () {
@@ -112,18 +120,25 @@ app.controller('QuizCtrl', function ($scope, $http) {
                     answerId: angular.copy($scope.quiz.question.selectedAnswer),
                     answerText: ''
                 }
-                if ($scope.quiz.question.type == 'shortAnswer') {
-                    uqqa.answerId = angular.copy($scope.quiz.question.answers[0].id);
-                    uqqa.answerText = angular.copy($scope.quiz.question.answerText);
-                }
                 submittedAnswers.push(uqqa);
             } else {
                 submittedAnswers[$scope.quiz.currentQuestion].answerId = angular.copy($scope.quiz.question.selectedAnswer);
-                if ($scope.quiz.question.type == 'shortAnswer') {
-                    submittedAnswers[$scope.quiz.currentQuestion].answerText = angular.copy($scope.quiz.question.answerText);
-                }
             }
-        }     
+        }  
+        else if ($scope.quiz.question.type == 'shortAnswer' && $scope.quiz.question.answerText != '') {
+            if (typeof submittedAnswers[$scope.quiz.currentQuestion] === 'undefined') {
+                var uqqa = {
+                    quizId: quizId,
+                    questionId: angular.copy($scope.quiz.question.questionId),
+                    answerId: angular.copy($scope.quiz.question.answers[0].id),
+                    answerText: angular.copy($scope.quiz.question.answerText)
+                }
+                submittedAnswers.push(uqqa);
+            }
+            else {
+                submittedAnswers[$scope.quiz.currentQuestion].answerText = angular.copy($scope.quiz.question.answerText);
+            }
+        }
     }
 
     function setScope() {
