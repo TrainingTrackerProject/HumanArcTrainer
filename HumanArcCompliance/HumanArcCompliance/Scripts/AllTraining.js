@@ -36,12 +36,13 @@ $(document).ready(function () {
                     button = "<input type='button' value='View' class='btn btn-primary edit' id='" + value.id + "'/>";
       
                 };
-
-                quizes.push([value.title, value.description, date, button + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"]);
+                console.log(value);
+                quizes.push([value.id, value.title, value.description, date, button + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"]);
             });
             $('#trainingTable').DataTable({
                 data: quizes,
                 columns: [
+                    { title: "id", visible: false },
                     { title: "Title" },
                     { title: "Description" },
                     {title:  "Start Date" },
@@ -51,10 +52,10 @@ $(document).ready(function () {
         }
     }).then(function () {
         
-        });
+    });
 
     $("body").on("click", ".edit", function () {
-        location.href = 'updateTraining'
+        window.location.href = "/Training/updateTraining/?id=" + this.id;
     });
     
     var id;

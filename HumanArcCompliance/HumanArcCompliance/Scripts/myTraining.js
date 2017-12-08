@@ -39,17 +39,25 @@ $.ajax({
             var pDate = "<span>" + preferDateDisplay + "</span>";
 
             if (t < preferNum) {
-                pDate = "<span style='color: green;font-weight:bold;'>" + preferDateDisplay + "</span>";
+                pDate = "<span class='greenFont'>" + preferDateDisplay + "</span>";
             }
-            else if (t >= preferNum) {
-                pDate = "<span style='color: orange;font-weight:bold;'>" + preferDateDisplay + "</span>";
+            else if (t >= preferNum && t <= expireNum) {
+                pDate = "<span class='orangeFont'>" + preferDateDisplay + "</span>";
             }
 
             var eDate = "<span>" + expireDateDisplay + "</span>";
 
             if (t >= expireNum) {
-                eDate = "<span style='color: red;font-weight:bold;'>" + preferDateDisplay + " QUIZ CLOSED</span>";
+                eDate = "<span class='redFont'>" + preferDateDisplay + " QUIZ CLOSED</span>";
             }
+
+            $('#notCompleted').on("mouseover", "tbody tr", function () {
+                if (t >= expireNum) {
+                    var row = $('#notCompleted').DataTable().row(this).node();
+                    $(row).addClass("cursorChange");
+                }
+                //$('#notCompleted').DataTable().row(this).css("cursor", "not-allowed");
+            });
 
             if (value.isGraded) {
                 completed.push([value.userId, value.quizId, value.quizTitle]);
@@ -102,6 +110,8 @@ $.ajax({
 
             window.location.href = "/Training/Quiz/?id=" + data[1];
         });
+        
+
     }
 });
 
