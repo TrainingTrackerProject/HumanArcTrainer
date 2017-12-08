@@ -131,20 +131,23 @@
                             <h4 class="modal-title">Add Quiz Question</h4>
                         </div>
                         <div class="modal-body">
-                            <div ng-controller="addQuestionController" ng-init="questionData">
 
-                                <form name="questionForm" ng-submit="addQuestion">
-                                    
+                            <div ng-controller="addQuestionController">
+
+                                <form name="questionForm" ng-submit="addQuestion" ng-init="questionData.id = 0">
+                                    <input type="text" style="display:none" ng-model="questionData.id"/>
                                     <label>Question Type</label>
                                     <div class="form-group">
-                                        <label for="multipleChoice">Multiple Choice</label>
-                                        <input id="multipleChoice" ng-model="questionData.questionType" type="radio" name="questionType" value="multipleChoice">
-                                        <br />
-                                        <label for="trueFalse">True/False</label>
-                                        <input id="trueFalse" ng-model="questionData.questionType" type="radio" name="questionType" value="trueFalse">
-                                        <br />
-                                        <label for="shortAnswer">Short Answer</label>
-                                        <input id="shortAnswer" ng-model="questionData.questionType" type="radio" name="questionType" value="shortAnswer">
+                                        <div ng-show="!status.isEditing">
+                                            <label for="multipleChoice">Multiple Choice</label>
+                                            <input id="multipleChoice" ng-model="questionData.questionType" type="radio" name="questionType" value="multipleChoice">
+                                            <br />
+                                            <label for="trueFalse">True/False</label>
+                                            <input id="trueFalse" ng-model="questionData.questionType" type="radio" name="questionType" value="trueFalse">
+                                            <br />
+                                            <label for="shortAnswer">Short Answer</label>
+                                            <input id="shortAnswer" ng-model="questionData.questionType" type="radio" name="questionType" value="shortAnswer">
+                                        </div>
                                         <br /> <br />
                                         <div class="form-group">
                                             <label for="questionText">Question</label>
@@ -234,8 +237,14 @@
 
                                     <button id="cancel" type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
                                     <!--<button id="next" type="submit" class="btn btn-info">Next</button>-->
-                                    <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-info" ng-disabled="!questionForm.$valid">Save</button>
-                                </form>                                                            
+                                    <div ng-show="!status.isEditing">
+                                        <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-info" ng-disabled="!questionForm.$valid">Save</button>
+                                    </div>
+                                    <div ng-show="status.isEditing">
+                                        <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-info" ng-disabled="!questionForm.$valid">Save</button>
+                                    </div>
+                                </form>  
+                                <table id="questionTable"></table>
                             </div>
                         </div>
                     </div>
@@ -254,7 +263,6 @@
     </div>
 </div>
 
-<table id="questionTable"></table>
 <div class="modal fade" id="confirmQuestionRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

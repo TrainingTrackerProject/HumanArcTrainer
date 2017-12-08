@@ -41,7 +41,9 @@ var app = angular.module('addQuizApp', ['ngRoute']);
 app.controller('addQuestionController', function ($scope, $http) {
 
     $scope.questionData = {}
-
+    $scope.status = {
+        isEditing: false
+    }
     $scope.mcAnswers = [
         answer1 = {
             answerText: '',
@@ -73,9 +75,11 @@ app.controller('addQuestionController', function ($scope, $http) {
     ]
 
     var sentJson = {
+        questionId: 0,
         questionText: '',
         questionType: '',
-        answers: []
+        answers: [],
+        answerIds: []
     };
 
     $scope.isCorrect = '';
@@ -131,9 +135,19 @@ app.controller('addQuestionController', function ($scope, $http) {
             else {
                 type = "Short Answer"
             }
-            var row = [JSON.stringify(res.data), type, $scope.questionData.questionText, 'edit button', "<button class='btn btn-default remove'>remove</button>"];
+            var row = [JSON.stringify(res.data), type, $scope.questionData.questionText, "<button class='btn btn-default edit' ng-click='edit()'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
             var table = $('#questionTable').DataTable();
             table.row.add(row).draw();
+        });
+    }
+
+    $scope.edit = function () {
+        var table = $('#questionTable').DataTable();
+        //update datatable here
+        sentJson.answerIds = JSON.parse(table.row($(this).parent()).data()[0]);
+        $scope.setCorrectAnswer();
+        $http.post('/Training/AddQuizQuestionAnswer', { questionData: JSON.stringify(sentJson) }, config).then(function(res){
+            
         });
     }
 });
@@ -305,16 +319,13 @@ $(document).ready(function () {
 
     $('#saveQuizInfo, #addQuestionBtn, #backToQuizPage').attr('disabled', 'disabled');
 
-
-
-
     var userData = {}
 
     $('#questionTable').DataTable({
         data: userData,
         columns:
         [
-            { title: "id", visible: false },
+            { title: "id", visible: true },
             { title: "Question Type" },
             { title: "Question Text" },
             { title: "" },
@@ -323,6 +334,7 @@ $(document).ready(function () {
     });
     var id;
     var row;
+
     $("body").on("click", ".remove", function () {
         var table = $('#questionTable').DataTable();
         id = JSON.parse(table.row($(this).parent()).data()[0]);

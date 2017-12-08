@@ -112,6 +112,12 @@ namespace HumanArcCompliance.helpers
             return db.Answers.Where(a => a.questionId == id).ToList();
         }
 
+        public Answer getAnswerById(int id)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            return db.Answers.Find(id);
+        }
+
         public User getUserById(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
@@ -332,6 +338,35 @@ namespace HumanArcCompliance.helpers
                 return false;
             }
             return true;
+        }
+
+        public int updateExistingQuestion(Question updatedQuestion)
+        {
+            try
+            {
+                Question question = new Question();
+                using (var ctx = new HumanArcEntities())
+                {
+                    question = ctx.Questions.First(q => q.id == updatedQuestion.id);
+                }
+
+                question.questionType = updatedQuestion.questionType;
+                question.questionText = updatedQuestion.questionText;
+
+                //save modified entity using new Context
+                using (var dbCtx = new HumanArcEntities())
+                {
+                    dbCtx.Entry(question).State = System.Data.Entity.EntityState.Modified;
+
+                    dbCtx.SaveChanges();
+
+                    return question.id;
+                }
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }           
         }
     }
 }

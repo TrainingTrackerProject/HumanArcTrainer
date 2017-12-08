@@ -18,6 +18,7 @@ namespace HumanArcCompliance.Models
         public class JQuestion
         {
             public List<int> quizIds { get; set; }
+            public string id { get; set; }
             public string questionType { get; set; }
             public string questionText { get; set; } 
             public List<JAnswers> answers { get; set; }

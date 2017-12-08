@@ -390,26 +390,41 @@ namespace HumanArcCompliance.Controllers
             foreach (Quize quiz in quizes)
             {
                 question.quizId = quiz.id;
-                int questionId = query.addQuestion(question);
-                questionIds.Add(questionId);
-               
-                if (!(result.questionType == "shortAnswer"))
+                int resultId = Convert.ToInt32(result.id);
+                int questionId;
+                if(resultId == 0)
                 {
-                    foreach (JAnswers jAnswer in result.answers)
+                    questionId = query.addQuestion(question);
+                    questionIds.Add(questionId);
+                    if (!(result.questionType == "shortAnswer"))
+                    {
+                        foreach (JAnswers jAnswer in result.answers)
+                        {
+                            Answer answer = new Answer();
+                            answer.questionId = questionId;
+                            answer.answerText = jAnswer.answerText;
+                            answer.isCorrect = jAnswer.isCorrect;
+                            query.addAnswer(answer);
+                        }
+                    }
+                    else
                     {
                         Answer answer = new Answer();
                         answer.questionId = questionId;
-                        answer.answerText = jAnswer.answerText;
-                        answer.isCorrect = jAnswer.isCorrect;
                         query.addAnswer(answer);
                     }
                 }
                 else
                 {
-                    Answer answer = new Answer();
-                    answer.questionId = questionId;
-                    query.addAnswer(answer);
+                    questionId = query.updateExistingQuestion(question);
+                    List<Answer> answers = query.getAnswersByQuestion(questionId);
+                    foreach(Answer answer in answers)
+                    {
+
+                    }
                 }
+               
+                
             }
             return Json(questionIds, JsonRequestBehavior.AllowGet);
         }
