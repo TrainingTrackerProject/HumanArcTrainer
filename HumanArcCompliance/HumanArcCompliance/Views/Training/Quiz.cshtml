@@ -93,10 +93,15 @@
             </div>
             <div class="col-sm-2">
                 <div ng-if="status.isLastQuestion">
-                    <input ng-disabled="quiz.question.answerText==''" data-toggle="modal" data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right" type="button" value="Submit" />
+                    <input ng-disabled="(quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
+                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='')" data-toggle="modal" 
+                           data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right" 
+                           type="button" value="Submit" />
                 </div>
                 <div ng-if="!status.isLastQuestion">
-                    <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started || status.isLastQuestion || quiz.question.selectedAnswer==0" value="Next" />
+                    <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started || 
+                           (quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
+                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='')" value="Next" />
                 </div>
             </div>
         </div>
