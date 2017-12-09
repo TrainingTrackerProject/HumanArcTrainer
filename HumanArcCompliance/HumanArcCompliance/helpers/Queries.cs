@@ -68,7 +68,7 @@ namespace HumanArcCompliance.helpers
             return q.id;           
         }
 
-        public Question getQuestion(int id)
+        public Question getQuestionById(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Questions.Find(id);
@@ -110,7 +110,7 @@ namespace HumanArcCompliance.helpers
             return db.Questions.Where(q => q.quizId == id).ToList();
         }
 
-        public List<Answer> getAnswersByQuestion(int id)
+        public List<Answer> getAnswersByQuestionId(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Answers.Where(a => a.questionId == id).ToList();

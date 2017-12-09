@@ -417,7 +417,7 @@ namespace HumanArcCompliance.Controllers
                 else
                 {
                     questionId = query.updateExistingQuestion(question);
-                    List<Answer> answers = query.getAnswersByQuestion(questionId);
+                    List<Answer> answers = query.getAnswersByQuestionId(questionId);
                     foreach(Answer answer in answers)
                     {
 
@@ -427,6 +427,32 @@ namespace HumanArcCompliance.Controllers
                 
             }
             return Json(questionIds, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateQuizQuestionAnswers(int[] ids, string questionData)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            var result = JsonConvert.DeserializeObject<JQuestion>(questionData);
+            Question question = new Question();
+            question.questionText = result.questionText;
+            question.questionType = result.questionType;
+
+            Queries query = new Queries();
+
+            List<int> questionIds = new List<int>();
+            return Json(JsonRequestBehavior.AllowGet);
         }
 
         //////////////YO LOOK HERE. THIS IS TODO COPY-PASTED OVER. FIX IT, JAE.
@@ -645,7 +671,7 @@ namespace HumanArcCompliance.Controllers
                 gvmQuestion.id = question.id;
                 gvmQuestion.text = question.questionText;
                 gvmQuestion.type = question.questionType;
-                List<Answer> answers = query.getAnswersByQuestion(question.id);
+                List<Answer> answers = query.getAnswersByQuestionId(question.id);
                 Answer answer = answers[0];
 
                 gvmQuestion.answerId = answer.id;
@@ -718,7 +744,7 @@ namespace HumanArcCompliance.Controllers
                 uqvmQuestion.text = question.questionText;
                 uqvmQuestion.type = question.questionType;
                 uqvmQuestion.answers = new List<UserQuizVMAnswer>();
-                List<Answer> answers = query.getAnswersByQuestion(question.id);
+                List<Answer> answers = query.getAnswersByQuestionId(question.id);
 
                 foreach (Answer answer in answers)
                 {
@@ -808,6 +834,28 @@ namespace HumanArcCompliance.Controllers
                 uqvmQuiz.groups.Add(group);
             }
             return View(uqvmQuiz);
+        }
+
+        public ActionResult GetQuestionAnswers(string questionId)
+        {
+            Queries query = new Queries();
+            Question question = query.getQuestionById(Convert.ToInt32(questionId));
+            List<Answer> answers = query.getAnswersByQuestionId(question.id);
+            List<JAnswers> jAnswers = new List<JAnswers>();
+            foreach(Answer ans in answers)
+            {
+                JAnswers jAnswer = new JAnswers();
+                jAnswer.answerText = ans.answerText;
+                jAnswer.isCorrect = ans.isCorrect;
+                jAnswers.Add(jAnswer);
+            }
+            JQuestion jQuestion = new JQuestion();
+            jQuestion.id = questionId;
+            jQuestion.questionText = question.questionText;
+            jQuestion.questionType = question.questionType;
+            jQuestion.answers = jAnswers;
+
+            return Json(jQuestion, JsonRequestBehavior.AllowGet);
         }
     }
 }

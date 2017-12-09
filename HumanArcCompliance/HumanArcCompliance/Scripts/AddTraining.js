@@ -38,7 +38,7 @@ $(document).on('change', '.hide-file', function () {
 
 var app = angular.module('addQuizApp', ['ngRoute']);
 
-app.controller('addQuestionController', function ($scope, $http) {
+app.controller('addQuestionController', function ($scope, $http, $compile) {
 
     $scope.questionData = {}
     $scope.status = {
@@ -112,7 +112,13 @@ app.controller('addQuestionController', function ($scope, $http) {
             }
             sentJson.answers = $scope.tfAnswers;
         }
-        $scope.addQuestion();
+        if ($scope.status.isEditing) {
+            $scope.updateQuestion();
+        }
+        else {
+            $scope.addQuestion();
+        }
+        $scope.clearQuestion();
     }
 
     var config = {
@@ -120,6 +126,50 @@ app.controller('addQuestionController', function ($scope, $http) {
             'Content-Type': 'application/json;'
         }
     }
+
+    $scope.cancelQuestion = function () {
+        $scope.status.isEditing = false;
+        $scope.clearQuestion();
+    }
+
+    $scope.clearQuestion = function () {
+        $scope.questionData.questionType = '';
+        $scope.questionData.questionText = '';
+        $scope.isCorrect = 'answer1';
+        $scope.mcAnswers[0].answerText = '';
+        $scope.mcAnswers[1].answerText = '';
+        $scope.mcAnswers[2].answerText = '';
+        $scope.mcAnswers[3].answerText = '';
+    }
+
+    $("body").on("click", ".edit", function () {
+        var table = $('#questionTable').DataTable();
+        //update datatable here
+        sentJson.answerIds = JSON.parse(table.row($(this).parent()).data()[0]);
+        $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: sentJson.answerIds[0] }), config).then(function (res) {
+            $scope.status.isEditing = true;
+            $scope.questionData.questionType = res.data.questionType;
+            $scope.questionData.questionText = res.data.questionText;
+            if (res.data.questionType == 'multipleChoice') {
+                $scope.mcAnswers[0].answerText = res.data.answers[0].answerText;
+                $scope.mcAnswers[1].answerText = res.data.answers[1].answerText;
+                $scope.mcAnswers[2].answerText = res.data.answers[2].answerText;
+                $scope.mcAnswers[3].answerText = res.data.answers[3].answerText;
+                $.each(res.data.answers, function (index, value) {
+                    if (value.isCorrect == true) {
+                        $scope.isCorrect = 'answer' + (index + 1);
+                    }
+                });
+            }
+            else if (res.data.questionType == 'trueFalse') {
+                $.each(res.data.answers, function (index, value) {
+                    if (value.isCorrect == true) {
+                        $scope.isCorrect = 'answer' + (index + 1);
+                    }
+                });
+            }
+        })
+    });
 
     $scope.addQuestion = function () {
         $("#questionModal").modal('hide');
@@ -135,19 +185,23 @@ app.controller('addQuestionController', function ($scope, $http) {
             else {
                 type = "Short Answer"
             }
-            var row = [JSON.stringify(res.data), type, $scope.questionData.questionText, "<button class='btn btn-default edit' ng-click='edit()'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
+            var row = [JSON.stringify(res.data), type, $scope.questionData.questionText, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
             var table = $('#questionTable').DataTable();
             table.row.add(row).draw();
+            var angularElement = angular.element($('#questionTable'));
+            $compile(angularElement.contents())($scope);
         });
     }
 
-    $scope.edit = function () {
-        var table = $('#questionTable').DataTable();
-        //update datatable here
-        sentJson.answerIds = JSON.parse(table.row($(this).parent()).data()[0]);
-        $scope.setCorrectAnswer();
-        $http.post('/Training/AddQuizQuestionAnswer', { questionData: JSON.stringify(sentJson) }, config).then(function(res){
-            
+    $scope.updateQuestion = function () {
+        $("#questionModal").modal('hide');
+        $http.post('/Training/UpdateQuizQuestionAnswers', { questionData: JSON.stringify(sentJson) }, config).then(function (res) {
+            console.log(res);
+            var row = [JSON.stringify(res.data), angular.copy($scope.sentJson.questionType), $scope.questionData.questionText, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
+            var table = $('#questionTable').DataTable();
+            table.row.add(row).draw();
+            var angularElement = angular.element($('#questionTable'));
+            $compile(angularElement.contents())($scope);
         });
     }
 });
@@ -302,48 +356,35 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
             document.getElementById('expirationWarning').innerHTML = ""
         }
     }
-   
-
-    console.log(startDate)
-    console.log(preferredDate)
-    console.log(expirationDate)
-
 });
 
-var sampleJSON = {
-    title: 'this is the test title'
-}
-
 $(document).ready(function () {
-
-    $('#saveQuizInfo, #addQuestionBtn, #backToQuizPage').attr('disabled', 'disabled');
-
+    //$('#saveQuizInfo, #addQuestionBtn, #backToQuizPage').attr('disabled', 'disabled');
     var userData = {}
-
     $('#questionTable').DataTable({
         data: userData,
         columns:
         [
-            { title: "id", visible: true },
+            { title: "id", visible: false },
             { title: "Question Type" },
             { title: "Question Text" },
             { title: "" },
             { title: "" }
         ]
     });
-    var id;
+    var questionIds;
     var row;
 
     $("body").on("click", ".remove", function () {
         var table = $('#questionTable').DataTable();
-        id = JSON.parse(table.row($(this).parent()).data()[0]);
+        questionIds = JSON.parse(table.row($(this).parent()).data()[0]);
         row = $(this).parent();
         $("#confirmQuestionRemove").modal('show');
     });
 
     $('#removeQuestionBtn').on('click', function () {
         var ids = {
-            ids: id
+            ids: questionIds
         }
         $.ajax({
             method: 'post',
@@ -372,106 +413,4 @@ $(document).ready(function () {
             .remove()
             .draw();
     }
-
-
-
-
-    //$('#submit').click(function () {
-    //    var json;
-    //    var groups = [];
-    //    var quiz = {
-    //        title: '',
-    //        description: '',
-    //        media: '',
-    //        startDate: '',
-    //        preferDate: '',
-    //        expiredDate: ''
-    //    }
-    //    var questions = "";
-    //    var answers = [];
-    //    var q = [];
-    //    event.preventDefault();
-    //    quiz.title = $('#trainingTitle').val();
-    //    quiz.description = $('#trainingDesc').val();
-    //    quiz.media = $('#mediaFile').val();
-    //    quiz.startDate = $('#startDate').val();
-    //    quiz.preferDate = $('#preferredDate').val();
-    //    quiz.expiredDate = $('#expirationDate').val();
-    //    $('#groupsApplied > option:selected').each(function (index, value) {
-    //        groups.push(value.id);
-    //    });
-    //    var questionForm = $('#questions > fieldset').each(function (index, value) {
-    //        var question = {
-    //            type: '',
-    //            text: document.getElementById('questionText' + index).value,
-    //            answers: []
-    //        }
-    //        $('input:radio').each(function (i, value) {                
-    //            if (value.name == "content" + index) {                  
-    //                if (value.checked) {
-    //                    question.type = value.value;
-    //                }
-    //            }
-    //        });
-
-    //        if (question.type == "multipleChoice") {
-    //            for (var i = 1; i < 5; i++) {
-    //                var answerid = 'choice' + i + index;
-    //                var answer = {
-    //                    //id: index,
-    //                    answerText: document.getElementById(answerid).value,
-    //                    isCorrect: 'false'
-    //                }
-    //                if (document.getElementById(('is' + i) + index).checked){
-    //                    answer.isCorrect = 'true';
-    //                }
-    //                question.answers.push(answer);
-    //            }
-    //        } else if (question.type == "trueFalse") {
-    //            var answer1 = {
-    //                //id: index,
-    //                answerText: 'true',
-    //                isCorrect: 'false'
-    //            }
-    //            if (document.getElementById('trueAnswer' + index).checked) {
-    //                answer1.isCorrect = 'true';
-    //            }
-    //            question.answers.push(answer1);
-    //            var answer2 = {
-    //                //id: index,
-    //                answerText: 'false',
-    //                isCorrect: 'false'
-    //            }
-    //            if (document.getElementById('falseAnswer' + index).checked) {
-    //               answer2.isCorrect = 'true';
-    //            }
-    //            question.answers.push(answer2);
-    //        } else {
-    //            var answer = {
-    //                isCorrect: 'false'
-    //            }
-    //            question.answers.push(answer);
-    //        }
-    //        if (questions == "") {
-    //            questions += JSON.stringify(question);
-    //        } else {
-    //            questions += "|" + JSON.stringify(question);
-    //        }
-    //        q.push(question);
-    //        json = {
-    //            title: quiz.title,
-    //            description: quiz.description,
-    //            questions: q
-    //        }
-    //    });
-    //    $.ajax({
-    //        type: 'POST',
-    //        url: '/Training/AddQuiz',
-    //        data: {group:groups.toString(), j:JSON.stringify(json) }, //{group: groups.toString(), quiz: JSON.stringify(quiz), question: questions },
-    //    });
-    //});
-});
-$('#submitBtnMod').click(function () {
-    /* when the submit button in the modal is clicked, submit the form */
-    $('#formField').submit();
 });
