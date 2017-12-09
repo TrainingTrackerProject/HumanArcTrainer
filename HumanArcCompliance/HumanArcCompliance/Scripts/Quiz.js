@@ -10,6 +10,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
     var data;
     var submittedAnswers = [];
     $scope.status = {
+        isTaken: false,
         started: false,
         isFirstQuestion: true,
         isLastQuestion: false,
@@ -35,10 +36,29 @@ app.controller('QuizCtrl', function ($scope, $http) {
             'Content-Type': 'application/json;'
         }
     }
-    $http.post('/Training/TakeQuiz',
-        { id: quizId }, config)
+    $http.post('/Training/ViewQuiz',
+        JSON.stringify({ id: quizId }), config)
         .then(function (res) {
             data = res.data;
+            if (data.isTaken == true) {
+                $scope.status.isTaken = true;
+                $scope.status.started = true;
+                if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
+                    $scope.quiz.lastQuestion = true;
+                }
+                $scope.quiz.currentQuestion = 0;
+                setScope();
+
+                setPossibleAnswers();
+                if (typeof submittedAnswers[$scope.quiz.currentQuestion] != 'undefined') {
+                    if ($scope.quiz.question.type != 'shortAnswer') {
+                        $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+                    }
+                    else {
+                        $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+                    }
+                }
+            }
         });
 
     $scope.start = function () {
@@ -48,7 +68,9 @@ app.controller('QuizCtrl', function ($scope, $http) {
         }
         $scope.quiz.currentQuestion = 0;
         setScope();
+
         setPossibleAnswers();
+
     }
 
     $scope.next = function () {
@@ -142,6 +164,8 @@ app.controller('QuizCtrl', function ($scope, $http) {
     }
 
     function setScope() {
+        console.log(data);
+        console.log(data.questions[$scope.quiz.currentQuestion]);
         $scope.quiz.question.questionId = data.questions[$scope.quiz.currentQuestion].id;
         $scope.quiz.question.questionText = data.questions[$scope.quiz.currentQuestion].text;
         $scope.quiz.question.type = data.questions[$scope.quiz.currentQuestion].type;

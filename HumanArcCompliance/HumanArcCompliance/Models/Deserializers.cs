@@ -10,7 +10,7 @@ namespace HumanArcCompliance.Models
     {
         public class JAnswers
         {
-
+            public int id { get; set; }
             public string answerText { get; set; }
             public bool isCorrect { get; set; }
         }

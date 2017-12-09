@@ -12,8 +12,8 @@ namespace HumanArcCompliance.Models
         public int QuizId { get; set; }
         public string title { get; set; }
         public string description { get; set; }
-
         public string media { get; set; }
+        public bool isTaken { get; set; }
         public DateTime startDate { get; set; }
         public DateTime preferDate { get; set; }
         public DateTime expiredDate { get; set; }

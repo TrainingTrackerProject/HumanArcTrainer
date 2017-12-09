@@ -55,3 +55,7 @@ body {
         .navbar-fixed-left .navbar-nav > li > .dropdown-menu {
             margin-top: -50px;
         }
+
+.sorting, .sorting_asc, .sorting_desc,.sorting_both, .sorting_asc_disabled, .sorting_desc_disabled {
+    background: none;
+}

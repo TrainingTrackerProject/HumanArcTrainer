@@ -75,7 +75,6 @@ app.controller('addQuestionController', function ($scope, $http, $compile) {
     ]
 
     var sentJson = {
-        questionId: 0,
         questionText: '',
         questionType: '',
         answers: [],
@@ -118,7 +117,6 @@ app.controller('addQuestionController', function ($scope, $http, $compile) {
         else {
             $scope.addQuestion();
         }
-        $scope.clearQuestion();
     }
 
     var config = {
@@ -141,13 +139,18 @@ app.controller('addQuestionController', function ($scope, $http, $compile) {
         $scope.mcAnswers[2].answerText = '';
         $scope.mcAnswers[3].answerText = '';
     }
-
+    var tempVars = {
+        ids: [],
+        rowIndex: 0
+    }
     $("body").on("click", ".edit", function () {
         var table = $('#questionTable').DataTable();
-        //update datatable here
-        sentJson.answerIds = JSON.parse(table.row($(this).parent()).data()[0]);
+        tempVars.ids = JSON.parse(table.row($(this).parent()).data()[0])
+        tempVars.rowIndex = table.row($(this).parent()).index();
+        sentJson.answerIds = tempVars.ids;
         $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: sentJson.answerIds[0] }), config).then(function (res) {
             $scope.status.isEditing = true;
+            $scope.questionData.questionId = res.data.id;
             $scope.questionData.questionType = res.data.questionType;
             $scope.questionData.questionText = res.data.questionText;
             if (res.data.questionType == 'multipleChoice') {
@@ -174,36 +177,34 @@ app.controller('addQuestionController', function ($scope, $http, $compile) {
     $scope.addQuestion = function () {
         $("#questionModal").modal('hide');
         $http.post('/Training/AddQuizQuestionAnswers', { title: document.getElementById("trainingTitle").value, questionData: JSON.stringify(sentJson) }, config).then(function (res) {
-            console.log(res);
-            var type;
-            if ($scope.questionData.questionType == 'trueFalse') {
-                type = "True/False";
-            }
-            else if ($scope.questionData.questionType == "multipleChoice") {
-                type = "Multiple Choice";
-            }
-            else {
-                type = "Short Answer"
-            }
-            var row = [JSON.stringify(res.data), type, $scope.questionData.questionText, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
+            var row = [JSON.stringify(res.data), angular.copy($scope.questionData.questionType), $scope.questionData.questionText, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
             var table = $('#questionTable').DataTable();
             table.row.add(row).draw();
             var angularElement = angular.element($('#questionTable'));
             $compile(angularElement.contents())($scope);
+            $scope.clearQuestion();
         });
     }
 
     $scope.updateQuestion = function () {
         $("#questionModal").modal('hide');
-        $http.post('/Training/UpdateQuizQuestionAnswers', { questionData: JSON.stringify(sentJson) }, config).then(function (res) {
+        $http.post('/Training/UpdateQuizQuestionAnswers', JSON.stringify({questionIds: tempVars.ids, questionData: sentJson }), config).then(function (res) {
             console.log(res);
-            var row = [JSON.stringify(res.data), angular.copy($scope.sentJson.questionType), $scope.questionData.questionText, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"];
             var table = $('#questionTable').DataTable();
-            table.row.add(row).draw();
-            var angularElement = angular.element($('#questionTable'));
-            $compile(angularElement.contents())($scope);
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                if (rowIdx == tempVars.rowIndex) {
+                    var data = this.data();
+                    data[1] = sentJson.questionType;
+                    data[2] = sentJson.questionText;
+                    this.data(data);
+                }
+            });
+            $scope.clearQuestion();
         });
     }
+    $('#questionModal').on('hidden.bs.modal', function () {
+        $scope.status.isEditing = false;
+    });
 });
 
 app.controller('addQuizController', function ($scope, $http, $timeout) {
