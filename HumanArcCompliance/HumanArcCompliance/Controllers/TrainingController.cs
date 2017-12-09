@@ -530,15 +530,31 @@ namespace HumanArcCompliance.Controllers
                             employeeQuiz.isCompleted = false;
                             employeeQuiz.isGraded = false;
                             UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                            uqqa = query.getQuizByUserIdQuizId(user.id, quiz.id);
-                            if (uqqa.id != 0)
+                            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(user.id, quiz.id);
+                            if (uqqas.Count > 0)
                             {
-                                employeeQuiz.isCompleted = true;
-                                if (uqqa.isChecked != false && (bool)uqqa.isChecked)
+                                uqqa = uqqas[0];
+                                if (uqqa.id != 0)
                                 {
-                                    employeeQuiz.isGraded = true;
+                                    employeeQuiz.isCompleted = true;
+                                    if (uqqa.isChecked == true)
+                                    {
+                                        employeeQuiz.isGraded = true;
+                                        if (uqqa.isChecked == true)
+                                        {
+                                            employeeQuiz.isGraded = true;
+                                        }
+                                        else
+                                        {
+                                            employeeQuiz.isGraded = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        employeeQuiz.isGraded = false;
+                                    }
                                 }
-                            }
+                            }                           
                             employeeQuizes.Add(employeeQuiz);
                         }                       
                     }                 
@@ -583,18 +599,32 @@ namespace HumanArcCompliance.Controllers
                     employeeQuiz.isCompleted = false;
                     employeeQuiz.isGraded = false;
                     UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                    uqqa = query.getQuizByUserIdQuizId(user.id, quiz.id);
-                    if (uqqa.id != 0)
+                    List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(user.id, quiz.id);
+                    if (uqqas.Count > 0)
                     {
-                        employeeQuiz.isCompleted = true;
-                        if ((bool)uqqa.isChecked)
+                        uqqa = uqqas[0];
+                        if (uqqa.id != 0)
                         {
-                            employeeQuiz.isGraded = true;
+                            employeeQuiz.isCompleted = true;
+                            if (uqqa.isChecked == true)
+                            {
+                                employeeQuiz.isGraded = true;
+                                if (uqqa.isChecked == true)
+                                {
+                                    employeeQuiz.isGraded = true;
+                                }
+                                else
+                                {
+                                    employeeQuiz.isGraded = false;
+                                }
+                            }
+                            else
+                            {
+                                employeeQuiz.isGraded = false;
+                            }
                         }
                     }
-
                     employeeQuizes.Add(employeeQuiz);
-
                 }
             }
 
@@ -723,10 +753,17 @@ namespace HumanArcCompliance.Controllers
             UserQuizViewModel uqvm = new UserQuizViewModel();
             uqvm = GetQuizById(id);
             Queries query = new Queries();
-            UserQuizQuestionAnswer uqqa = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
-            if(uqqa.id != 0)
+            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
+            
+            if (uqqas.Count > 0)
             {
                 uqvm.isTaken = true;
+                ViewModelConverter vmConverter = new ViewModelConverter();
+                uqvm.juqqas = new List<JUserQuizQuestionAnswer>();
+                foreach (UserQuizQuestionAnswer uqqa in uqqas)
+                {
+                    uqvm.juqqas.Add(vmConverter.UserQuizQuestionAnswerToJModel(uqqa));
+                }
             }
             return Json(uqvm, JsonRequestBehavior.AllowGet);
         }

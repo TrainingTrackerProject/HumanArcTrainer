@@ -148,29 +148,20 @@ namespace HumanArcCompliance.helpers
             
         }
 
-        public UserQuizQuestionAnswer getQuizByUserIdQuizId(int userId, int quizId)
+        public List<UserQuizQuestionAnswer> getQuizByUserIdQuizId(int userId, int quizId)
         {
             HumanArcEntities db = new HumanArcEntities();
+            List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
             try
             {
-                UserQuizQuestionAnswer uqqa = db.UserQuizQuestionAnswers.First(uq => uq.userId == userId && uq.quizId == quizId);
-                if(uqqa.isChecked == null)
-                {
-                    uqqa.isChecked = false;
-                }
-                if (uqqa.isApproved == null)
-                {
-                    uqqa.isApproved = false;
-                }
-                return uqqa;
+                uqqas = db.UserQuizQuestionAnswers.Where(uq => uq.userId == userId && uq.quizId == quizId).ToList();
             }
             catch (Exception e)
             {
-                UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                return uqqa;
             }
+            return uqqas;
         }
-        
+
         public List<Quize> getAllQuizes()
         {
             HumanArcEntities db = new HumanArcEntities();

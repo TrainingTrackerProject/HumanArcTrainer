@@ -36,6 +36,18 @@ namespace HumanArcCompliance.Models
 
         }
 
+        public class JUserQuizQuestionAnswer
+        {
+            public int id { get; set; }
+            public int quizId { get; set; }
+            public int questionId { get; set; }
+            public int answerId { get; set; }
+            public bool isChecked { get; set; }
+            public bool isApproved { get; set; }
+            public int userId { get; set; }
+            public string text { get; set; }
+        }
+
         public class JIds
         {
             public int[] ids { get; set; }

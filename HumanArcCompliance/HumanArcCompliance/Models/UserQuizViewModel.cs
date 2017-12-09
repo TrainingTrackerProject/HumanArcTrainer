@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static HumanArcCompliance.Models.Deserializers;
 
 namespace HumanArcCompliance.Models
 {
@@ -19,6 +20,7 @@ namespace HumanArcCompliance.Models
         public DateTime expiredDate { get; set; }
         public List<UserQuizVMQuestion> questions { get; set; }
         public List<UserQuizGroup> groups { get; set; }
+        public List<JUserQuizQuestionAnswer> juqqas { get; set; }
     }
 
     public class UserQuizVMQuestion

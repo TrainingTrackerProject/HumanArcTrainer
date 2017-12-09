@@ -36,41 +36,47 @@ app.controller('QuizCtrl', function ($scope, $http) {
             'Content-Type': 'application/json;'
         }
     }
-    $http.post('/Training/ViewQuiz',
-        JSON.stringify({ id: quizId }), config)
-        .then(function (res) {
-            data = res.data;
-            if (data.isTaken == true) {
-                $scope.status.isTaken = true;
-                $scope.status.started = true;
-                if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
-                    $scope.quiz.lastQuestion = true;
-                }
-                $scope.quiz.currentQuestion = 0;
-                setScope();
-
-                setPossibleAnswers();
-                if (typeof submittedAnswers[$scope.quiz.currentQuestion] != 'undefined') {
-                    if ($scope.quiz.question.type != 'shortAnswer') {
-                        $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
-                    }
-                    else {
-                        $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
-                    }
-                }
+    $http.post('/Training/ViewQuiz', JSON.stringify({ id: quizId }), config).then(function (res) {
+        data = res.data;
+        if (data.isTaken == true) {
+            $scope.status.isTaken = true;
+            $scope.status.started = true;
+            if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
+                $scope.quiz.lastQuestion = true;
             }
-        });
+            $scope.quiz.currentQuestion = 0;
+            setScope();
+
+            setPossibleAnswers();
+            $.each(res.data.juqqas, function (index, value) {
+                var answer = {
+                    answerId: value.answerId,
+                    answerText: value.text
+                }
+                submittedAnswers.push(answer)
+            })
+            if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
+                $scope.status.isLastQuestion = true;
+            }
+            if ($scope.quiz.question.type != 'shortAnswer') {
+                console.log($scope.quiz.currentQuestion);
+                console.log(submittedAnswers);
+                $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+            }
+            else {
+                $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+            }
+        }
+    });
 
     $scope.start = function () {
         $scope.status.started = true;
-        if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
-            $scope.quiz.lastQuestion = true;
-        }
         $scope.quiz.currentQuestion = 0;
+        if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
+            $scope.status.isLastQuestion = true;
+        }
         setScope();
-
         setPossibleAnswers();
-
     }
 
     $scope.next = function () {
@@ -116,11 +122,9 @@ app.controller('QuizCtrl', function ($scope, $http) {
     $scope.submit = function () {
         $('#confirm-submit').modal('hide');
         $scope.status.isSubmitted = true;
-        $http.post('/Training/SubmitQuiz', { answers: JSON.stringify(submittedAnswers) }, config)           
-            .then(function (res) {
-                console.log(res.data);
-                $scope.status.text = res.data;
-            });
+        $http.post('/Training/SubmitQuiz', { answers: JSON.stringify(submittedAnswers) }, config).then(function (res) {
+            $scope.status.text = res.data;
+        });
     }
 
     function setPossibleAnswers() {     
@@ -176,16 +180,14 @@ app.controller('QuizCtrl', function ($scope, $http) {
 
    
     $scope.submitQuiz = function () {
-        $http.post('/Training/AddUserQuizQuestionAnswers',
-            { title: document.getElementById("trainingTitle").value, questionData: JSON.stringify(sentJson) }, config)
-            .then(
-                function (response) {
-                    // success callback
-                },
-                function (response) {
-                    // failure callback
-                }
-            );
+        $http.post('/Training/AddUserQuizQuestionAnswers',{ title: document.getElementById("trainingTitle").value, questionData: JSON.stringify(sentJson) }, config).then(
+            function (response) {
+                // success callback
+            },
+            function (response) {
+                // failure callback
+            }
+        );
     }
 });
 
