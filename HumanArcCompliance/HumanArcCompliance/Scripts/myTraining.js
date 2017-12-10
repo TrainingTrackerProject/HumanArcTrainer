@@ -111,6 +111,12 @@ $.ajax({
 
             window.location.href = "/Training/Quiz/?id=" + data[1];
         });
+        $('#needsGraded').on('click', 'tbody tr', function () {
+            var data = $('#needsGraded').DataTable().row(this).data();
+            console.log(data[1]);
+
+            window.location.href = "/Training/GradeQuiz/?id=" + data[1];
+        });
 
         // Initialize your table
         var notCompletedTable = $('#notCompleted').dataTable();
