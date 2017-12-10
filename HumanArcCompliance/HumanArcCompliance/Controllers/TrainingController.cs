@@ -699,9 +699,10 @@ namespace HumanArcCompliance.Controllers
             }
             return Json(sending, JsonRequestBehavior.AllowGet);
         }
-        public GradeViewModel GetGradedQuizById(int id)
+        public GradeViewModel GetGradedQuizById(int uId, int qId)
         {
-            int quizId = Convert.ToInt32(id);
+            int userId = Convert.ToInt32(uId);
+            int quizId = Convert.ToInt32(qId);
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
 
@@ -721,7 +722,7 @@ namespace HumanArcCompliance.Controllers
                 gvmQuestion.id = question.id;
                 gvmQuestion.text = question.questionText;
                 gvmQuestion.type = question.questionType;
-                Answer answer = query.getUserAnswerByQuestionId(question.id);
+                Answer answer = query.getUserAnswerByQuestionId(userId, question.id);
 
                 gvmQuestion.answerId = answer.id;
                 gvmQuestion.answerText = answer.answerText;
