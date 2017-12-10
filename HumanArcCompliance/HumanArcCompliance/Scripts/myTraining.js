@@ -1,5 +1,6 @@
 ﻿//Dataset for To Do list for My Training
 
+   
 $.ajax({
     url: '/Training/GetUserQuizes',
     type: 'GET',
@@ -48,7 +49,8 @@ $.ajax({
             var eDate = "<span>" + expireDateDisplay + "</span>";
 
             if (t >= expireNum) {
-                eDate = "<span class='redFont'>" + preferDateDisplay + " QUIZ CLOSED</span>";
+                pDate = "<span class='redFont'>" + preferDateDisplay + " QUIZ CLOSED</span>"
+                eDate = "<span class='redFont'>" + expireDateDisplay + " QUIZ CLOSED</span>";
             }
 
             $('#notCompleted').on("mouseover", "tbody tr", function () {
@@ -56,7 +58,6 @@ $.ajax({
                     var row = $('#notCompleted').DataTable().row(this).node();
                     $(row).addClass("cursorChange");
                 }
-                //$('#notCompleted').DataTable().row(this).css("cursor", "not-allowed");
             });
 
             if (value.isGraded) {
@@ -104,12 +105,18 @@ $.ajax({
         //    var data = $('#needsGraded').DataTable().row(this).data();
         //    window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
         //});
-        $('#notCompleted tbody tr').on('click', function () {
+        $('#notCompleted').on('click', 'tbody tr', function () {
             var data = $('#notCompleted').DataTable().row(this).data();
             console.log(data[1]);
 
             window.location.href = "/Training/Quiz/?id=" + data[1];
         });
+
+        // Initialize your table
+        var notCompletedTable = $('#notCompleted').dataTable();
+
+        // Get the length
+        console.log(notCompletedTable.fnGetData().length);
         
 
     }
