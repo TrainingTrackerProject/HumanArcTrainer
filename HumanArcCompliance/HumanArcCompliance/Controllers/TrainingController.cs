@@ -252,7 +252,8 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
-            return View(vmUser);
+            GradeViewModel gvmQuiz = GetGradedQuizById(id);
+            return View(gvmQuiz);
         }
 
         public ActionResult GetAllGroups()
@@ -720,8 +721,7 @@ namespace HumanArcCompliance.Controllers
                 gvmQuestion.id = question.id;
                 gvmQuestion.text = question.questionText;
                 gvmQuestion.type = question.questionType;
-                List<Answer> answers = query.getAnswersByQuestionId(question.id);
-                Answer answer = answers[0];
+                Answer answer = query.getUserAnswerByQuestionId(question.id);
 
                 gvmQuestion.answerId = answer.id;
                 gvmQuestion.answerText = answer.answerText;
@@ -772,7 +772,7 @@ namespace HumanArcCompliance.Controllers
             uqvm = GetQuizById(id);
             Queries query = new Queries();
             List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
-            
+
             if (uqqas.Count > 0)
             {
                 uqvm.isTaken = true;
@@ -784,6 +784,38 @@ namespace HumanArcCompliance.Controllers
                 }
             }
             return Json(uqvm, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ViewGradeQuiz(int id)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            GradeViewModel gvm = new GradeViewModel();
+            gvm = GetGradedQuizById(id);
+            Queries query = new Queries();
+            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
+            
+            if (uqqas.Count > 0)
+            {
+                ViewModelConverter vmConverter = new ViewModelConverter();
+                gvm.juqqas = new List<JUserQuizQuestionAnswer>();
+                foreach (UserQuizQuestionAnswer uqqa in uqqas)
+                {
+                    gvm.juqqas.Add(vmConverter.UserQuizQuestionAnswerToJModel(uqqa));
+                }
+            }
+            return Json(gvm, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GradeNewQuiz(string id)

@@ -116,6 +116,13 @@ namespace HumanArcCompliance.helpers
             return db.Answers.Where(a => a.questionId == id).ToList();
         }
 
+        public Answer getUserAnswerByQuestionId(int userId, int questionId)
+        {
+            HumanArcEntities db = new HumanArcEntities();
+            UserQuizQuestionAnswer uqqa = db.UserQuizQuestionAnswers.First(u => u.userId == userId && u.questionId == questionId);
+            return getAnswerById(uqqa.answerId);
+        }
+
         public Answer getAnswerById(int id)
         {
             HumanArcEntities db = new HumanArcEntities();

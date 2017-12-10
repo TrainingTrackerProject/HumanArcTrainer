@@ -11,10 +11,12 @@
 @*Header*@
 <h2>@ViewBag.errorMessage</h2>
 <div class="jumbotron">
-    <h2>Hey, @Html.DisplayTextFor(m => m.firstName)!</h2>
-    <p class="lead">Welcome to the Human Arc Compliance website. This site 
-		provides you with the required compliance training. 
-	</p>
+    <button type="button" class="btn btn-warning pull-right" onclick="location.href='@Url.Action("myTraining", "Training")'">Quizzes To Complete: <span id="quizNum"class="badge"></span></button>
+        <h2>Hey, @Html.DisplayTextFor(m => m.firstName)!</h2>
+        <p class="lead">
+            Welcome to the Human Arc Compliance website. This site
+            provides you with the required compliance training.
+        </p>
 </div>
 
 @*Body. This includes all the buttons that will navigate a user to a page. 
@@ -68,5 +70,6 @@
     <div class="col-md-2"></div>
 </div>
 <script type="text/javascript" src="~/Scripts/index.js"></script>
+
 
 
