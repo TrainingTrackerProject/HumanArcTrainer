@@ -237,7 +237,7 @@ namespace HumanArcCompliance.Controllers
             return View(uqvmQuiz);
         }
 
-        public ActionResult gradeQuiz(int id = 0)
+        public ActionResult gradeQuiz(int userId, int quizId = 0)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -252,7 +252,7 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
-            GradeViewModel gvmQuiz = GetGradedQuizById(id);
+            GradeViewModel gvmQuiz = GetGradedQuizById(userId, quizId);
             return View(gvmQuiz);
         }
 
@@ -469,45 +469,6 @@ namespace HumanArcCompliance.Controllers
                 }            
             }
             return Json(JsonRequestBehavior.AllowGet);
-        }
-
-        //////////////YO LOOK HERE. THIS IS TODO COPY-PASTED OVER. FIX IT, JAE.
-        //////////FOR USERQUIZQUESTIONANSWERS YOU NEED: userId, quizId, questionId, answerId, text, isChecked, isApproved
-        public ActionResult AddUserQuizQuestionAnswers(string title, string questionData)
-        {
-            UserViewModel vmUser = session.getSessionUser();
-            if (vmUser == null)
-            {
-                if (!val.getUserCredentials(Request))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-                vmUser = session.getSessionUser();
-            }
-            var result = JsonConvert.DeserializeObject<JQuestion>(questionData);
-            Question question = new Question();
-            question.questionText = result.questionText;
-            question.questionType = result.questionType;
-
-            Queries query = new Queries();
-
-            List<Quize> quizes = query.getQuizByTitle(title);
-            List<int> questionIds = new List<int>();
-            foreach (Quize quiz in quizes)
-            {
-                question.quizId = quiz.id;
-                int questionId = query.addQuestion(question);
-                questionIds.Add(questionId);
-                foreach (JAnswers jAnswer in result.answers)
-                {
-                    Answer answer = new Answer();
-                    answer.questionId = questionId;
-                    answer.answerText = jAnswer.answerText;
-                    answer.isCorrect = jAnswer.isCorrect;
-                    query.addAnswer(answer);
-                }
-            }
-            return Json(questionIds, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -787,7 +748,7 @@ namespace HumanArcCompliance.Controllers
             return Json(uqvm, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ViewGradeQuiz(int id)
+        public ActionResult ViewGradeQuiz(int uId, int id)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -803,7 +764,7 @@ namespace HumanArcCompliance.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
             GradeViewModel gvm = new GradeViewModel();
-            gvm = GetGradedQuizById(id);
+            gvm = GetGradedQuizById(uId, id);
             Queries query = new Queries();
             List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
             
@@ -816,13 +777,6 @@ namespace HumanArcCompliance.Controllers
                     gvm.juqqas.Add(vmConverter.UserQuizQuestionAnswerToJModel(uqqa));
                 }
             }
-            return Json(gvm, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GradeNewQuiz(string id)
-        {
-            GradeViewModel gvm = new GradeViewModel();
-            gvm = GetGradedQuizById(Convert.ToInt32(id));
             return Json(gvm, JsonRequestBehavior.AllowGet);
         }
 
