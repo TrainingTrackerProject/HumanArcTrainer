@@ -272,6 +272,7 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
         //$('#saveQuizInfo').attr('disabled', 'disabled');
+        console.log($scope.quizData);
         if (quizId != 0) {
             $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
 
@@ -360,7 +361,6 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
 });
 
 $(document).ready(function () {
-    //$('#saveQuizInfo, #addQuestionBtn, #backToQuizPage').attr('disabled', 'disabled');
     var userData = {}
     $('#questionTable').DataTable({
         data: userData,
@@ -384,15 +384,12 @@ $(document).ready(function () {
     });
 
     $('#removeQuestionBtn').on('click', function () {
-        var ids = {
-            ids: questionIds
-        }
         $.ajax({
             method: 'post',
             url: '/Training/RemoveQuestion',
             dataType: "json",
             contentType: 'application/json',
-            data: JSON.stringify({ ids: JSON.stringify(ids) }),
+            data: JSON.stringify({ ids: questionIds }),
             success: function (res, status) {
                 console.log(res);
                 if (res == true) {

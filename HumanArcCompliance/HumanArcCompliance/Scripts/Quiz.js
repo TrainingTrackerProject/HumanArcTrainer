@@ -72,7 +72,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
     $scope.start = function () {
         $scope.status.started = true;
         $scope.quiz.currentQuestion = 0;
-        if (typeof submittedAnswers[$scope.quiz.currentQuestion + 1] === 'undefined') {
+        if (typeof data.questions[$scope.quiz.currentQuestion + 1] === 'undefined') {
             $scope.status.isLastQuestion = true;
         }
         setScope();
@@ -122,7 +122,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
     $scope.submit = function () {
         $('#confirm-submit').modal('hide');
         $scope.status.isSubmitted = true;
-        $http.post('/Training/SubmitQuiz', { answers: JSON.stringify(submittedAnswers) }, config).then(function (res) {
+        $http.post('/Training/SubmitQuiz', JSON.stringify({ answers:submittedAnswers }), config).then(function (res) {
             $scope.status.text = res.data;
         });
     }

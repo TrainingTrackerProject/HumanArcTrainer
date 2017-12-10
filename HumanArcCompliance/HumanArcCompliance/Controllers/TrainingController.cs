@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static HumanArcCompliance.Models.Deserializers;
 using static HumanArcCompliance.Models.SubmitQuizDeserializer;
-using static HumanArcCompliance.Models.Serializers;
 
 namespace HumanArcCompliance.Controllers
 {
@@ -178,9 +177,30 @@ namespace HumanArcCompliance.Controllers
         {
             return View(session.getSessionUser());
         }
-        public ActionResult updateTraining()
+        public ActionResult updateTraining(int id = 0)
         {
-            return View(session.getSessionUser());
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            Queries query = new Queries();
+            if (id == 0)
+            {
+                return RedirectToAction("Index", "home", new { error = "Cannot Locate Quiz" });
+            }
+            else if (!vmUser.userGroups.Contains(query.getGroupById(query.getQuizById(id).groupId).name))
+            {
+                return RedirectToAction("Index", "home", new { error = "Invalid Quiz" });
+            }
+            UserQuizViewModel uqvmQuiz = GetQuizById(id);
+            uqvmQuiz.isHR = vmUser.isHR;
+            uqvmQuiz.isManager = vmUser.isManager;
+            return View(uqvmQuiz);
         }
         public ActionResult AddTraining()
         {
@@ -334,14 +354,12 @@ namespace HumanArcCompliance.Controllers
                 else
                 {
                     quizIds.Add(q.id);
-
                     q.description = result.description;
                     q.media = result.media;
                     q.startDate = result.startDate;
                     q.preferDate = result.preferredDate;
                     q.expiredDate = result.expirationDate;
                     query.updateExistingQuiz(q);
-
                     currentGroups.Add(q.groupId);
                 }
             }
@@ -565,7 +583,7 @@ namespace HumanArcCompliance.Controllers
 
 
         [HttpPost]
-        public ActionResult GetUserQuizes(string id)
+        public ActionResult GetUserQuizes(int id)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -581,7 +599,7 @@ namespace HumanArcCompliance.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
             Queries query = new Queries();
-            User user = query.getUserById(Convert.ToInt32(id));
+            User user = query.getUserById(id);
             List<EmployeeQuizesViewModel> employeeQuizes = new List<EmployeeQuizesViewModel>();
             string[] groups = user.userGroups.Split(',');
             foreach (string group in groups)
@@ -712,7 +730,7 @@ namespace HumanArcCompliance.Controllers
             }
             return gvmQuiz;
         }
-        public ActionResult RemoveQuiz(string id)
+        public ActionResult RemoveQuiz(int id)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -728,7 +746,7 @@ namespace HumanArcCompliance.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
             Queries query = new Queries();
-            if (query.RemoveQuiz(Convert.ToInt32(id)))
+            if (query.RemoveQuiz(id))
             {
                 return Json("success");
             }
@@ -775,9 +793,8 @@ namespace HumanArcCompliance.Controllers
             return Json(gvm, JsonRequestBehavior.AllowGet);
         }
 
-        public UserQuizViewModel GetQuizById(int id)
+        public UserQuizViewModel GetQuizById(int quizId)
         {
-            int quizId = Convert.ToInt32(id);
             Queries query = new Queries();
             Quize quiz = query.getQuizById(quizId);
 
@@ -817,7 +834,7 @@ namespace HumanArcCompliance.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitQuiz(string answers)
+        public ActionResult SubmitQuiz(UserAnswer[] answers)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -831,9 +848,9 @@ namespace HumanArcCompliance.Controllers
 
             Queries query = new Queries();
             User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
-            var result = JsonConvert.DeserializeObject<List<UserAnswer>>(answers);
+            //var result = JsonConvert.DeserializeObject<List<UserAnswer>>(answers);
             List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
-            foreach (UserAnswer answer in result)
+            foreach (UserAnswer answer in answers)
             {              
                 UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
                 uqqa.quizId = answer.quizId;
@@ -853,14 +870,14 @@ namespace HumanArcCompliance.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveQuestion(string ids)
+        public ActionResult RemoveQuestion(int[] ids)
         {
             try
             {
-                var result = JsonConvert.DeserializeObject<JIds>(ids);
+                //var result = JsonConvert.DeserializeObject<JIds>(ids);
                 Queries query = new Queries();
                 
-                foreach (int i in result.ids)
+                foreach (int i in ids)
                 {
                     query.RemoveQuestion(i);
                 }

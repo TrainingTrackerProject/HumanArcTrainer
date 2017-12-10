@@ -17,110 +17,99 @@
     <div class="row">
         <div class="col-md-8">
 
-                <div ng-controller="addQuizController" ng-init="quizData">
-                    
-                    <form id="quizForm" name="quizForm" ng-submit="addQuiz">
-                        <div class="form-group required">
-                            <label class="control-label" for="trainingTitle">Title</label>
-                            <input type="text" class="form-control quizFormInfo" id="trainingTitle" ng-model="quizData.title" placeholder="Enter Title" required>
-                            
-                        </div>
-                        <div class="form-group" ng-init="quizData.description=''">
-                            <label for="trainingDesc">Description</label>
-                            <input type="text" class="form-control quizFormInfo" id="trainingDesc" ng-model="quizData.description" placeholder="Enter Description">
-                        </div>
-                        <div class="form-group required">
-                            <label class="control-label" for="groupApplied">Group(s) Applied To</label>
-                            <select multiple class="form-control quizFormInfo" id="groupsApplied" ng-model="quizData.groups" ng-change="setGroups()" required>
+            <div ng-controller="addQuizController" ng-init="quizData">
 
-                                @*<option>Training Administrators</option>
-                    <option>Leadership</option>
-                    <option>Users</option>*@
-                                <option id="{{group.id}}" ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</option>
-                            </select>
-                            
-                        </div>
-                        <div class="form-group" ng-init="quizData.media=''">
-                            <label for="uploadMedia">Media Link</label>
-                            <input id="mediaFile" type="text" name="uploadFile" class="form-control quizFormInfo" ng-model="quizData.media" placeholder="Enter Media Link">
-                            @*<div class="input-group">
-                    <input type="text" class="form-control" placeholder="Media Link">
-                    <span class="input-group-btn">
-                        <button class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i>Browse</button>
-                    </span>
-                </div>*@
-                        </div>
-                        
-                        <!--Datepicker Container-->
-                        <div id="sandbox-container">
-                            <div class="form-group row required">
-                                <label class="col-sm-3 col-form-label control-label">Start Date</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <input id="startDate" name="startDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.startDate" required />
-                                        <label class="input-group-addon btn" for="startDate">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </label>    
-                                    </div> 
-                                    <span id="startWarning" style="color:red"></span>
+                <form id="quizForm" name="quizForm" ng-submit="addQuiz">
+                    <div class="form-group required">
+                        <label class="control-label" for="trainingTitle">Title</label>
+                        <input type="text" class="form-control quizFormInfo" id="trainingTitle" ng-model="quizData.title" placeholder="Enter Title" required>
+
+                    </div>
+                    <div class="form-group" ng-init="quizData.description=''">
+                        <label for="trainingDesc">Description</label>
+                        <input type="text" class="form-control quizFormInfo" id="trainingDesc" ng-model="quizData.description" placeholder="Enter Description">
+                    </div>
+                    <div class="form-group required">
+                        <label class="control-label" for="groupApplied">Group(s) Applied To</label>
+                        <select multiple class="form-control quizFormInfo" id="groupsApplied" ng-model="quizData.groups" ng-change="setGroups()" required>
+                            <option id="{{group.id}}" ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group" ng-init="quizData.media=''">
+                        <label for="uploadMedia">Media Link</label>
+                        <input id="mediaFile" type="text" name="uploadFile" class="form-control quizFormInfo" ng-model="quizData.media" placeholder="Enter Media Link">
+                    </div>
+
+                    <!--Datepicker Container-->
+                    <div id="sandbox-container">
+                        <div class="form-group row required">
+                            <label class="col-sm-3 col-form-label control-label">Start Date</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input id="startDate" name="startDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.startDate" required />
+                                    <label class="input-group-addon btn" for="startDate">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </label>
                                 </div>
+                                <span id="startWarning" style="color:red"></span>
                             </div>
-                            <div class="form-group row required">
-                                <label class="col-sm-3 col-form-label control-label">Preferred Date</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <input id="preferredDate" name="preferredDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.preferredDate" ng-disabled="!quizData.startDate" required/>
-                                        <label class="input-group-addon btn" for="preferredDate">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </label>
-                                    </div>
-                                    <span id="preferredWarning" style="color:red"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row required">
-                                <label class="col-sm-3 col-form-label control-label">Expiration Date</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <input id="expirationDate" name="expirationDate" type="text" class="form-control quizFormInfo dateInfo"  ng-model="quizData.expirationDate" ng-disabled="!quizData.startDate || !quizData.preferredDate" required />
-                                        <label class="input-group-addon btn" for="expirationDate">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                        </label>
-                                    </div>
-                                    <span id="expirationWarning" style="color:red"></span>
-                                </div>
-                            </div>
-
                         </div>
-
-                        <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right" ng-disabled="!quizData.title || !quizData.groups || !quizData.startDate || !quizData.preferredDate || !quizData.expirationDate || !inactive">Save Quiz Info</button>
-
-                        <div style="clear:both"></div>
-                        <hr />
-                        <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
-                        <button id="backToQuizPage" type="button" class="btn btn-info" ng-disabled="inactive" onclick="location.href='@Url.Action("AllTraining", "Training")'">Return to Quiz Page</button>
-
-                    </form>
-
-                    @*Modal for Save Quiz confimation*@
-                    <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    Confirm Submit
+                        <div class="form-group row required">
+                            <label class="col-sm-3 col-form-label control-label">Preferred Date</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input id="preferredDate" name="preferredDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.preferredDate" ng-disabled="!quizData.startDate" required />
+                                    <label class="input-group-addon btn" for="preferredDate">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </label>
                                 </div>
-                                <div class="modal-body">
-                                    Are you sure you want to save this quiz?
+                                <span id="preferredWarning" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row required">
+                            <label class="col-sm-3 col-form-label control-label">Expiration Date</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input id="expirationDate" name="expirationDate" type="text" class="form-control quizFormInfo dateInfo" ng-model="quizData.expirationDate" ng-disabled="!quizData.startDate || !quizData.preferredDate" required />
+                                    <label class="input-group-addon btn" for="expirationDate">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </label>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <button id="submit" type="submit" class="btn btn-success success" ng-click="addQuiz();">Submit</button>
-                                </div>
+                                <span id="expirationWarning" style="color:red"></span>
                             </div>
                         </div>
                     </div>
+                    <button id="saveQuizInfo" data-toggle="modal" data-target="#confirm-submit" class="btn btn-info pull-right"
+                            ng-disabled="!quizData.title || !quizData.groups || !quizData.startDate || !quizData.preferredDate || !quizData.expirationDate || !inactive">
+                        Save Quiz Info
+                    </button>
+                    <div style="clear:both"></div>
+                    <hr />
+                    <button id="addQuestionBtn" type="button" class="btn btn-info" data-toggle="modal" data-target="#questionModal" ng-click="addNewChoice();" ng-disabled="inactive">Add Quiz Question</button>
+                    <button id="backToQuizPage" type="button" class="btn btn-info" ng-disabled="inactive" onclick="location.href='@Url.Action("AllTraining", "Training")'">Return to Quiz Page</button>
+                </form>
 
+                @*Modal for Save Quiz confimation*@
+                <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Confirm Submit
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to save this quiz?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button id="submit" type="submit" class="btn btn-success success" ng-click="addQuiz();">Submit</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+
+            </div>
+
             <div ng-controller="addQuestionController">
 
                 <!--Modal for adding quiz question-->
@@ -249,7 +238,7 @@
                                                 <button id="cancel" type="button" class="btn btn-secondary pull-right" data-dismiss="modal" ng-click="cancelQuestion()">Cancel</button>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </form>
                             </div>
@@ -260,7 +249,7 @@
                 <table id="questionTable"></table>
             </div>
             <br />
-            <br /> 
+            <br />
             <br />
         </div>
     </div>
@@ -282,9 +271,5 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript" src="~/Scripts/datepicker.js"></script>
 <script type="text/javascript" src="~/Scripts/addTraining.js"></script>
-
-
-
