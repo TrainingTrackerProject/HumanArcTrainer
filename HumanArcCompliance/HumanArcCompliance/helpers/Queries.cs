@@ -68,7 +68,7 @@ namespace HumanArcCompliance.helpers
             return q.id;           
         }
 
-        public Question getQuestion(int id)
+        public Question getQuestionById(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Questions.Find(id);
@@ -88,12 +88,12 @@ namespace HumanArcCompliance.helpers
             return db.Answers.Find(id);
         }
 
-        public int addAnswer(Answer a)
+        public int addAnswer(Answer answer)
         {          
             HumanArcEntities db = new HumanArcEntities();
-            db.Answers.Add(a);
+            db.Answers.Add(answer);
             db.SaveChanges();
-            return a.id;         
+            return answer.id;         
         }
 
         public List<UserQuizQuestionAnswer> getAllUserQuizes(int id)
@@ -104,13 +104,13 @@ namespace HumanArcCompliance.helpers
             return userQuizes;
         }
 
-        public List<Question> getQuestionsByQuiz(int id)
+        public List<Question> getQuestionsByQuizId(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Questions.Where(q => q.quizId == id).ToList();
         }
 
-        public List<Answer> getAnswersByQuestion(int id)
+        public List<Answer> getAnswersByQuestionId(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
             return db.Answers.Where(a => a.questionId == id).ToList();
@@ -148,29 +148,20 @@ namespace HumanArcCompliance.helpers
             
         }
 
-        public UserQuizQuestionAnswer getQuizByUserIdQuizId(int userId, int quizId)
+        public List<UserQuizQuestionAnswer> getQuizByUserIdQuizId(int userId, int quizId)
         {
             HumanArcEntities db = new HumanArcEntities();
+            List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
             try
             {
-                UserQuizQuestionAnswer uqqa = db.UserQuizQuestionAnswers.First(uq => uq.userId == userId && uq.quizId == quizId);
-                if(uqqa.isChecked == null)
-                {
-                    uqqa.isChecked = false;
-                }
-                if (uqqa.isApproved == null)
-                {
-                    uqqa.isApproved = false;
-                }
-                return uqqa;
+                uqqas = db.UserQuizQuestionAnswers.Where(uq => uq.userId == userId && uq.quizId == quizId).ToList();
             }
             catch (Exception e)
             {
-                UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                return uqqa;
             }
+            return uqqas;
         }
-        
+
         public List<Quize> getAllQuizes()
         {
             HumanArcEntities db = new HumanArcEntities();
@@ -323,7 +314,7 @@ namespace HumanArcCompliance.helpers
                 //save modified entity using new Context
                 using (var dbCtx = new HumanArcEntities())
                 {
-                    dbCtx.Entry(quiz).State = System.Data.Entity.EntityState.Modified;
+                    dbCtx.Entry(quiz).State = EntityState.Modified;
 
                     dbCtx.SaveChanges();
                 }
@@ -372,5 +363,32 @@ namespace HumanArcCompliance.helpers
                 return 0;
             }           
         }
+
+        public int updateExistingAnswer(Answer updatedAnswer)
+        {
+            try
+            {
+                Answer answer = new Answer();
+                using (var ctx = new HumanArcEntities())
+                {
+                    answer = ctx.Answers.First(a => a.id == updatedAnswer.id);
+                }
+                answer.answerText = updatedAnswer.answerText;
+                answer.isCorrect = updatedAnswer.isCorrect;
+                using (var dbCtx = new HumanArcEntities())
+                {
+                    dbCtx.Entry(answer).State = System.Data.Entity.EntityState.Modified;
+
+                    dbCtx.SaveChanges();
+
+                    return answer.id;
+                }
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
     }
 }

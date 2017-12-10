@@ -390,43 +390,66 @@ namespace HumanArcCompliance.Controllers
             foreach (Quize quiz in quizes)
             {
                 question.quizId = quiz.id;
-                int resultId = Convert.ToInt32(result.id);
                 int questionId;
-                if(resultId == 0)
+                questionId = query.addQuestion(question);
+                questionIds.Add(questionId);
+                if (!(result.questionType == "shortAnswer"))
                 {
-                    questionId = query.addQuestion(question);
-                    questionIds.Add(questionId);
-                    if (!(result.questionType == "shortAnswer"))
-                    {
-                        foreach (JAnswers jAnswer in result.answers)
-                        {
-                            Answer answer = new Answer();
-                            answer.questionId = questionId;
-                            answer.answerText = jAnswer.answerText;
-                            answer.isCorrect = jAnswer.isCorrect;
-                            query.addAnswer(answer);
-                        }
-                    }
-                    else
+                    foreach (JAnswers jAnswer in result.answers)
                     {
                         Answer answer = new Answer();
                         answer.questionId = questionId;
+                        answer.answerText = jAnswer.answerText;
+                        answer.isCorrect = jAnswer.isCorrect;
                         query.addAnswer(answer);
                     }
                 }
                 else
                 {
-                    questionId = query.updateExistingQuestion(question);
-                    List<Answer> answers = query.getAnswersByQuestion(questionId);
-                    foreach(Answer answer in answers)
-                    {
-
-                    }
-                }
-               
-                
+                    Answer answer = new Answer();
+                    answer.questionId = questionId;
+                    query.addAnswer(answer);
+                }               
             }
             return Json(questionIds, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateQuizQuestionAnswers(int[] questionIds, JQuestion questionData)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
+            Queries query = new Queries();
+           
+            foreach (int index in questionIds)
+            {
+                Question question = new Question();
+                question.id = index;
+                question.questionText = questionData.questionText;
+                question.questionType = questionData.questionType;
+                query.updateExistingQuestion(question);
+                List<Answer> answers = query.getAnswersByQuestionId(index);
+                if(questionData.questionType != "shortAnswer")
+                {
+                    for (int i = 0; i < questionData.answers.Count; i++)
+                    {
+                        answers[i].answerText = questionData.answers[i].answerText;
+                        answers[i].isCorrect = questionData.answers[i].isCorrect;
+                        query.updateExistingAnswer(answers[i]);
+                    }
+                }            
+            }
+            return Json(JsonRequestBehavior.AllowGet);
         }
 
         //////////////YO LOOK HERE. THIS IS TODO COPY-PASTED OVER. FIX IT, JAE.
@@ -492,28 +515,48 @@ namespace HumanArcCompliance.Controllers
                 {
                     if (DateTime.Now.Ticks >= quiz.startDate.Ticks)
                     {
-                        EmployeeQuizesViewModel employeeQuiz = new EmployeeQuizesViewModel();
-                        employeeQuiz.userId = user.id;
-                        employeeQuiz.firstName = user.firstName;
-                        employeeQuiz.lastName = user.lastName;
-                        employeeQuiz.quizId = quiz.id;
-                        employeeQuiz.quizTitle = quiz.title;
-                        employeeQuiz.startDate = quiz.startDate;
-                        employeeQuiz.preferredDate = quiz.preferDate;
-                        employeeQuiz.expirationDate = quiz.expiredDate;
-                        employeeQuiz.isCompleted = false;
-                        employeeQuiz.isGraded = false;
-                        UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                        uqqa = query.getQuizByUserIdQuizId(user.id, quiz.id);
-                        if (uqqa.id != 0)
+                        List<Question> questions = query.getQuestionsByQuizId(quiz.id);
+                        if (questions.Count > 0)
                         {
-                            employeeQuiz.isCompleted = true;
-                            if (uqqa.isChecked != false && (bool)uqqa.isChecked)
+                            EmployeeQuizesViewModel employeeQuiz = new EmployeeQuizesViewModel();
+                            employeeQuiz.userId = user.id;
+                            employeeQuiz.firstName = user.firstName;
+                            employeeQuiz.lastName = user.lastName;
+                            employeeQuiz.quizId = quiz.id;
+                            employeeQuiz.quizTitle = quiz.title;
+                            employeeQuiz.startDate = quiz.startDate;
+                            employeeQuiz.preferredDate = quiz.preferDate;
+                            employeeQuiz.expirationDate = quiz.expiredDate;
+                            employeeQuiz.isCompleted = false;
+                            employeeQuiz.isGraded = false;
+                            UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(user.id, quiz.id);
+                            if (uqqas.Count > 0)
                             {
-                                employeeQuiz.isGraded = true;
-                            }
-                        }
-                        employeeQuizes.Add(employeeQuiz);
+                                uqqa = uqqas[0];
+                                if (uqqa.id != 0)
+                                {
+                                    employeeQuiz.isCompleted = true;
+                                    if (uqqa.isChecked == true)
+                                    {
+                                        employeeQuiz.isGraded = true;
+                                        if (uqqa.isChecked == true)
+                                        {
+                                            employeeQuiz.isGraded = true;
+                                        }
+                                        else
+                                        {
+                                            employeeQuiz.isGraded = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        employeeQuiz.isGraded = false;
+                                    }
+                                }
+                            }                           
+                            employeeQuizes.Add(employeeQuiz);
+                        }                       
                     }                 
                 }
             }
@@ -556,18 +599,32 @@ namespace HumanArcCompliance.Controllers
                     employeeQuiz.isCompleted = false;
                     employeeQuiz.isGraded = false;
                     UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                    uqqa = query.getQuizByUserIdQuizId(user.id, quiz.id);
-                    if (uqqa.id != 0)
+                    List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(user.id, quiz.id);
+                    if (uqqas.Count > 0)
                     {
-                        employeeQuiz.isCompleted = true;
-                        if ((bool)uqqa.isChecked)
+                        uqqa = uqqas[0];
+                        if (uqqa.id != 0)
                         {
-                            employeeQuiz.isGraded = true;
+                            employeeQuiz.isCompleted = true;
+                            if (uqqa.isChecked == true)
+                            {
+                                employeeQuiz.isGraded = true;
+                                if (uqqa.isChecked == true)
+                                {
+                                    employeeQuiz.isGraded = true;
+                                }
+                                else
+                                {
+                                    employeeQuiz.isGraded = false;
+                                }
+                            }
+                            else
+                            {
+                                employeeQuiz.isGraded = false;
+                            }
                         }
                     }
-
                     employeeQuizes.Add(employeeQuiz);
-
                 }
             }
 
@@ -637,7 +694,7 @@ namespace HumanArcCompliance.Controllers
             gvmQuiz.media = quiz.media;
             gvmQuiz.questions = new List<GradeVMQuestion>();
 
-            List<Question> questions = query.getQuestionsByQuiz(quiz.id);
+            List<Question> questions = query.getQuestionsByQuizId(quiz.id);
 
             foreach (Question question in questions)
             {
@@ -645,7 +702,7 @@ namespace HumanArcCompliance.Controllers
                 gvmQuestion.id = question.id;
                 gvmQuestion.text = question.questionText;
                 gvmQuestion.type = question.questionType;
-                List<Answer> answers = query.getAnswersByQuestion(question.id);
+                List<Answer> answers = query.getAnswersByQuestionId(question.id);
                 Answer answer = answers[0];
 
                 gvmQuestion.answerId = answer.id;
@@ -678,10 +735,36 @@ namespace HumanArcCompliance.Controllers
             return Json("Failed");
         }
 
-        public ActionResult TakeQuiz(string id)
+        public ActionResult ViewQuiz(int id)
         {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+            if (!val.checkUserAuth(vmUser, hrGroup))
+            {
+                return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
+            }
             UserQuizViewModel uqvm = new UserQuizViewModel();
-            uqvm = GetQuizById(Convert.ToInt32(id));
+            uqvm = GetQuizById(id);
+            Queries query = new Queries();
+            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
+            
+            if (uqqas.Count > 0)
+            {
+                uqvm.isTaken = true;
+                ViewModelConverter vmConverter = new ViewModelConverter();
+                uqvm.juqqas = new List<JUserQuizQuestionAnswer>();
+                foreach (UserQuizQuestionAnswer uqqa in uqqas)
+                {
+                    uqvm.juqqas.Add(vmConverter.UserQuizQuestionAnswerToJModel(uqqa));
+                }
+            }
             return Json(uqvm, JsonRequestBehavior.AllowGet);
         }
 
@@ -709,7 +792,7 @@ namespace HumanArcCompliance.Controllers
             uqvmQuiz.expiredDate = quiz.expiredDate;
             uqvmQuiz.questions = new List<UserQuizVMQuestion>();
             
-            List<Question> questions = query.getQuestionsByQuiz(quiz.id);
+            List<Question> questions = query.getQuestionsByQuizId(quiz.id);
 
             foreach (Question question in questions)
             {
@@ -718,7 +801,7 @@ namespace HumanArcCompliance.Controllers
                 uqvmQuestion.text = question.questionText;
                 uqvmQuestion.type = question.questionType;
                 uqvmQuestion.answers = new List<UserQuizVMAnswer>();
-                List<Answer> answers = query.getAnswersByQuestion(question.id);
+                List<Answer> answers = query.getAnswersByQuestionId(question.id);
 
                 foreach (Answer answer in answers)
                 {
@@ -808,6 +891,28 @@ namespace HumanArcCompliance.Controllers
                 uqvmQuiz.groups.Add(group);
             }
             return View(uqvmQuiz);
+        }
+
+        public ActionResult GetQuestionAnswers(string questionId)
+        {
+            Queries query = new Queries();
+            Question question = query.getQuestionById(Convert.ToInt32(questionId));
+            List<Answer> answers = query.getAnswersByQuestionId(question.id);
+            List<JAnswers> jAnswers = new List<JAnswers>();
+            foreach(Answer ans in answers)
+            {
+                JAnswers jAnswer = new JAnswers();
+                jAnswer.answerText = ans.answerText;
+                jAnswer.isCorrect = ans.isCorrect;
+                jAnswers.Add(jAnswer);
+            }
+            JQuestion jQuestion = new JQuestion();
+            jQuestion.id = questionId;
+            jQuestion.questionText = question.questionText;
+            jQuestion.questionType = question.questionType;
+            jQuestion.answers = jAnswers;
+
+            return Json(jQuestion, JsonRequestBehavior.AllowGet);
         }
     }
 }

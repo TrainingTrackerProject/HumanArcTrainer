@@ -2,13 +2,6 @@
 @Html.HiddenFor(m => m.isHR, new { id = "hrCheck" })
 @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
 @Html.HiddenFor(m => m.QuizId, new { id = "quizId"})
-<!--For Jae: this is the example of how you can use the model with angular-->
-<!--If you made Hidden elements for each of the properties you should be able to target them in the controller-->
-<!-- there may be a better way to do this for example:-->
-<!--since the model uses a list within a list (see the UserQuizViewModel object) there is a way to iterate over the list -->
-<!--using Razor syntax (this is the code like above using the 'at' opperator) and then defining the directives on the-->
-<!--element specifically you should be able to target the element in the $scope. Once there we can send the answers over-->
-<!-- to the controller using ajax...... I would reccomend looking up 'iterating over lists in aps.net razor' -->
 <div ng-app="QuizApp" ng-controller="QuizCtrl">
     <div ng-show="status.isSubmitted">
         <div class="row">
@@ -93,10 +86,15 @@
             </div>
             <div class="col-sm-2">
                 <div ng-if="status.isLastQuestion">
-                    <input ng-disabled="quiz.question.answerText==''" data-toggle="modal" data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right" type="button" value="Submit" />
+                    <input ng-disabled="(quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
+                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='') || status.isTaken" data-toggle="modal" 
+                           data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right" 
+                           type="button" value="Submit" />
                 </div>
                 <div ng-if="!status.isLastQuestion">
-                    <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started || status.isLastQuestion || quiz.question.selectedAnswer==0" value="Next" />
+                    <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started || 
+                           (quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
+                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='')" value="Next" />
                 </div>
             </div>
         </div>

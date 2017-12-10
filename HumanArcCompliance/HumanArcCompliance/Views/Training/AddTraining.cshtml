@@ -121,24 +121,25 @@
 
                 </div>
                 
+            <div ng-controller="addQuestionController">
 
-            <!--Modal for adding quiz question-->
-            <div class="modal fade" id="questionModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Add Quiz Question</h4>
-                        </div>
-                        <div class="modal-body">
+                <!--Modal for adding quiz question-->
+                <div class="modal fade" id="questionModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Add Quiz Question</h4>
+                            </div>
+                            <div class="modal-body">
 
-                            <div ng-controller="addQuestionController">
 
-                                <form name="questionForm" ng-submit="addQuestion" ng-init="questionData.id = 0">
-                                    <input type="text" style="display:none" ng-model="questionData.id"/>
-                                    <label>Question Type</label>
+                                <form id="questionForm" name="questionForm" ng-submit="addQuestion" ng-init="questionData.id = 0">
+                                    <input type="text" style="display:none" ng-model="questionData.id" />
                                     <div class="form-group">
                                         <div ng-show="!status.isEditing">
+                                            <label>Question Type</label>
+                                            <br />
                                             <label for="multipleChoice">Multiple Choice</label>
                                             <input id="multipleChoice" ng-model="questionData.questionType" type="radio" name="questionType" value="multipleChoice">
                                             <br />
@@ -175,7 +176,7 @@
                                                         <input ng-model="mcAnswers[0].answerText" name="myInput" type="text" class="form-control" id="choice1" ng-required="questionData.questionType=='multipleChoice'" placeholder="Enter Choice A">
                                                     </div>
                                                     <div class="col-sm-1">
-                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" value="answer1" checked/>
+                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" value="answer1" checked />
                                                     </div>
                                                 </div>
 
@@ -186,27 +187,27 @@
                                                         <input ng-model="mcAnswers[1].answerText" name="myInput" type="text" class="form-control" id="choice2" ng-required="questionData.questionType=='multipleChoice'" placeholder="Enter Choice B">
                                                     </div>
                                                     <div class="col-sm-1">
-                                                        <input  ng-model="isCorrect" type="radio" name="correctAnswer" value="answer2"/>
+                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" value="answer2" />
                                                     </div>
                                                 </div>
-                                            
+
                                                 <div class="form-group row">
                                                     <label for="labelC" class="col-sm-2 col-form-label">Choice C:</label>
                                                     <div class="col-sm-6">
                                                         <input ng-model="mcAnswers[2].answerText" name="myInput" type="text" class="form-control" id="choice3" ng-required="questionData.questionType=='multipleChoice'" placeholder="Enter Choice C">
                                                     </div>
                                                     <div class="col-sm-1">
-                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" id="is3" value="answer3"/>
+                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" id="is3" value="answer3" />
                                                     </div>
                                                 </div>
-                                               
+
                                                 <div class="form-group row">
                                                     <label for="labelD" class="col-sm-2 col-form-label">Choice D:</label>
                                                     <div class="col-sm-6">
                                                         <input ng-model="mcAnswers[3].answerText" name="myInput" type="text" class="form-control" id="choice4" ng-required="questionData.questionType=='multipleChoice'" placeholder="Enter Choice D">
                                                     </div>
                                                     <div class="col-sm-1">
-                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" id="is4"value="answer4"/>
+                                                        <input ng-model="isCorrect" type="radio" name="correctAnswer" id="is4" value="answer4" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -218,7 +219,7 @@
                                                         <div class="form-group">
                                                             <div class="col-sm-2">
                                                                 <label ng-model="tfAnswers[0].answerText" for="trueAnswer" value="true">True</label>
-                                                                <input ng-model="isCorrect" id="trueAnswer" type="radio" value="answer1" name="trueFalse" Checked/>
+                                                                <input ng-model="isCorrect" id="trueAnswer" type="radio" value="answer1" name="trueFalse" Checked />
                                                             </div>
                                                             <div class="col-sm-2">
                                                                 <label ng-model="tfAnswers[1].answerText" for="falseAnswer" value="false">False</label>
@@ -234,31 +235,33 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <button id="cancel" type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                                    <!--<button id="next" type="submit" class="btn btn-info">Next</button>-->
-                                    <div ng-show="!status.isEditing">
-                                        <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-info" ng-disabled="!questionForm.$valid">Save</button>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div ng-if="!status.isEditing">
+                                                    <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-primary pull-left" ng-disabled="!questionForm.$valid">Save</button>
+                                                </div>
+                                                <div ng-if="status.isEditing">
+                                                    <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-primary pull-left" ng-disabled="!questionForm.$valid">Save</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button id="cancel" type="button" class="btn btn-secondary pull-right" data-dismiss="modal" ng-click="cancelQuestion()">Cancel</button>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
-                                    <div ng-show="status.isEditing">
-                                        <button id="saveQuestion" type="submit" ng-click="setCorrectAnswer()" class="btn btn-info" ng-disabled="!questionForm.$valid">Save</button>
-                                    </div>
-                                </form>  
-                                <table id="questionTable"></table>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                <br />
+                <table id="questionTable"></table>
             </div>
-
             <br />
-
-           
-
-
-            <br /> <br />
-
-
+            <br /> 
+            <br />
         </div>
     </div>
 </div>

@@ -3,14 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static HumanArcCompliance.Models.Deserializers;
 
 namespace HumanArcCompliance.helpers
 {
-    public class ViewModel
+    public class ViewModelConverter
     {
         public UserViewModel userToModel(User myUser)
         {
-            validateUser validate = new validateUser();
+            validation validate = new validation();
             UserViewModel vmUser = new UserViewModel();
             vmUser.firstName = myUser.firstName;
             vmUser.lastName = myUser.lastName;
@@ -18,17 +19,17 @@ namespace HumanArcCompliance.helpers
             vmUser.SAMAccountName = myUser.SAMAccountName;
             vmUser.manager = myUser.manager;
             vmUser.userGroups = myUser.userGroups.Split(',');
-            vmUser.isHR = "false";
-            vmUser.isManager = "false";
+            vmUser.isHR = false;
+            vmUser.isManager = false;
             if (validate.validateHR(vmUser.userGroups))
             {
-                vmUser.isHR = "true";
+                vmUser.isHR = true;
             }
             else
             {
                 if (validate.validateManager(vmUser.userGroups))
                 {
-                    vmUser.isManager = "true";
+                    vmUser.isManager = true;
                 }
             }
 
@@ -45,6 +46,20 @@ namespace HumanArcCompliance.helpers
             myUser.manager = vmUser.manager;
             myUser.userGroups = string.Join(",", vmUser.userGroups);
             return myUser;
+        }
+
+        public JUserQuizQuestionAnswer UserQuizQuestionAnswerToJModel(UserQuizQuestionAnswer uqqa)
+        {
+            JUserQuizQuestionAnswer juqqa = new JUserQuizQuestionAnswer();
+            juqqa.id = uqqa.id;
+            juqqa.quizId = uqqa.quizId;
+            juqqa.questionId = uqqa.questionId;
+            juqqa.answerId = uqqa.answerId;
+            juqqa.userId = uqqa.userId;
+            juqqa.text = uqqa.text;
+            juqqa.isChecked = (bool)uqqa.isChecked;
+            juqqa.isApproved = (bool)uqqa.isApproved;
+            return juqqa;
         }
     }
 }

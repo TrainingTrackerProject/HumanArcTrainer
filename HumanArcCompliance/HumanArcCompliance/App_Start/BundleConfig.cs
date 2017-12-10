@@ -27,8 +27,7 @@ namespace HumanArcCompliance
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Content/font-awesome.min.css",
-                      "~/Content/layout.css"
+                      "~/Content/font-awesome.min.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/dataTables/css").Include(

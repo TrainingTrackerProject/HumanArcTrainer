@@ -10,7 +10,7 @@ namespace HumanArcCompliance.Models
     {
         public class JAnswers
         {
-
+            public int id { get; set; }
             public string answerText { get; set; }
             public bool isCorrect { get; set; }
         }
@@ -34,6 +34,18 @@ namespace HumanArcCompliance.Models
             public System.DateTime preferredDate { get; set; }
             public System.DateTime expirationDate { get; set; }
 
+        }
+
+        public class JUserQuizQuestionAnswer
+        {
+            public int id { get; set; }
+            public int quizId { get; set; }
+            public int questionId { get; set; }
+            public int answerId { get; set; }
+            public bool isChecked { get; set; }
+            public bool isApproved { get; set; }
+            public int userId { get; set; }
+            public string text { get; set; }
         }
 
         public class JIds
