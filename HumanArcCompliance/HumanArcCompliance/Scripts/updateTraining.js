@@ -1,4 +1,5 @@
-﻿var quizId = 0;
+﻿var data;
+var quizId = $('#quizId').val();
 
 //This displays the datepicker
 $('#sandbox-container input').datepicker({
@@ -25,20 +26,9 @@ $('#sandbox-container input').on('hide', function (e) {
     }
 });
 
+var app = angular.module('updateQuizApp', ['ngRoute']);
 
-// This lets the HR member look for media files when "Browse" is clicked.
-$(document).on('click', '.browse', function () {
-    var file = $(this).parent().parent().parent().find('.hide-file');
-    file.trigger('click');
-});
-$(document).on('change', '.hide-file', function () {
-    $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
-});
-
-
-var app = angular.module('addQuizApp', ['ngRoute']);
-
-app.controller('addQuestionController', function ($scope, $http, $compile) {
+app.controller('updateQuestionController', function ($scope, $http, $compile) {
 
     $scope.questionData = {}
     $scope.status = {
@@ -207,11 +197,8 @@ app.controller('addQuestionController', function ($scope, $http, $compile) {
     });
 });
 
-app.controller('addQuizController', function ($scope, $http, $timeout) {
-
-    $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
-
-    });
+app.controller('updateQuizController', function ($scope, $http, $timeout) {
+    
     $scope.savedForm;
     $scope.inactive = true;
     $scope.quizData = {}
@@ -269,26 +256,16 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
     }
 
 
-    $scope.addQuiz = function () {
+    $scope.updateQuiz = function () {
         $scope.savedForm = angular.copy($scope.quizData);
         console.log($scope.savedForm)
         enableAddQuestion();
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
-        //$('#saveQuizInfo').attr('disabled', 'disabled');
         console.log($scope.quizData);
-        if (quizId != 0) {
-            $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
+        $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
 
-            });
-        }
-        else {
-            $http.post('/Training/AddQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
-                quizId = res.data[0];
-            });
-        }
-
-
+        });
     };
 
 
@@ -362,21 +339,35 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
             document.getElementById('expirationWarning').innerHTML = ""
         }
     }
+
+    $http.post('/Training/GetQuizById', JSON.stringify({ quizId: quizId }), config).then(function (res) {
+        console.log(res);
+        //$scope.quizData.title = res.data.title;
+        //$scope.quizData.description = res.data.description;
+        //$scope.quizData.media = res.data.media;
+        //$scope.quizData.startDate = res.data.startDate;
+        //$scope.quizData.preferredDate = res.data.preferredDate;
+        //$scope.quizData.expirationDate = res.data.expirationDate;
+        //var userData = [];
+        //$.each(res.data.questions)
+
+
+
+        //$('#questionTable').DataTable({
+        //    data: userData,
+        //    columns:
+        //    [
+        //        { title: "id", visible: false },
+        //        { title: "Question Type" },
+        //        { title: "Question Text" },
+        //        { title: "" },
+        //        { title: "" }
+        //    ]
+        //});
+    });
 });
 
 $(document).ready(function () {
-    var userData = {}
-    $('#questionTable').DataTable({
-        data: userData,
-        columns:
-        [
-            { title: "id", visible: false },
-            { title: "Question Type" },
-            { title: "Question Text" },
-            { title: "" },
-            { title: "" }
-        ]
-    });
     var questionIds;
     var row;
 

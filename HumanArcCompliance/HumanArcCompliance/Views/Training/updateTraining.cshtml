@@ -7,13 +7,13 @@
 
 
 <h2>Add Quiz</h2>
-<div ng-app="addQuizApp">
+<div ng-app="updateQuizApp">
     <div class="row">
         <div class="col-md-8">
 
-            <div ng-controller="addQuizController" ng-init="quizData">
+            <div ng-controller="updateQuizController" ng-init="quizData">
 
-                <form id="quizForm" name="quizForm" ng-submit="addQuiz">
+                <form id="quizForm" name="quizForm" ng-submit="updateQuiz">
                     <div class="form-group required">
                         <label class="control-label" for="trainingTitle">Title</label>
                         <input type="text" class="form-control quizFormInfo" id="trainingTitle" ng-model="quizData.title" placeholder="Enter Title" required>
@@ -96,7 +96,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button id="submit" type="submit" class="btn btn-success success" ng-click="addQuiz();">Submit</button>
+                                <button id="submit" type="submit" class="btn btn-success success" ng-click="updateQuiz();">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
 
             </div>
 
-            <div ng-controller="addQuestionController">
+            <div ng-controller="updateQuestionController">
 
                 <!--Modal for adding quiz question-->
                 <div class="modal fade" id="questionModal" tabindex="-1" role="dialog">
