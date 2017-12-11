@@ -3,29 +3,12 @@
 @Html.HiddenFor(m => m.isManager, new { id = "managerCheck" })
 @Html.HiddenFor(m => m.userGroups, new { id = "memberOf" })
 <link rel="stylesheet" type="text/css" href="~/Content/manageEmployees.css" />
-<h1>This is the Employee Training page for Managers</h1>
-
-@*<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <div class="input-group input-group-lg">
-            <input type="text" class="form-control" placeholder="Search Employee Name" aria-describedby="searchBtn">
-            <span class="input-group-addon btn btn-default glyphicon glyphicon-search" id="searchBtn"></span>
-        </div>
-    </div>
-    <div class="col-md-2"></div>
-</div>*@
+<h2>Manage Employees</h2>
 
 <div class="row">
-    <div class="col-md-1"></div>
-
-    <div class="col-md-10">
-        <table id="employeeTable" class="display" cellspacing="0" style="width:100%;">
-            
-        </table>
+    <div class="col-sm-10 col-sm-offset-1">
+        <table id="employeeTable" class="display" cellspacing="0" style="width:100%;"></table>
     </div>
-
-    <div class="col-md-1"></div>
 </div>
 
 <script src="~/Scripts/manageEmployees.js"></script>
