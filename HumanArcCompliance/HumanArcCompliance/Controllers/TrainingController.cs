@@ -237,9 +237,10 @@ namespace HumanArcCompliance.Controllers
             return View(uqvmQuiz);
         }
 
-        public ActionResult gradeQuiz(int userId, int quizId = 0)
+        public ActionResult gradeQuiz(int id = 0)
         {
             UserViewModel vmUser = session.getSessionUser();
+            Queries query = new Queries();
             if (vmUser == null)
             {
                 if (!val.getUserCredentials(Request))
@@ -252,7 +253,8 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
-            GradeViewModel gvmQuiz = GetGradedQuizById(userId, quizId);
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
+            GradeViewModel gvmQuiz = GetGradedQuizById(user.id, id);
             return View(gvmQuiz);
         }
 
@@ -748,9 +750,10 @@ namespace HumanArcCompliance.Controllers
             return Json(uqvm, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ViewGradeQuiz(int uId, int id)
+        public ActionResult ViewGradeQuiz(int id)
         {
             UserViewModel vmUser = session.getSessionUser();
+            Queries query = new Queries();
             if (vmUser == null)
             {
                 if (!val.getUserCredentials(Request))
@@ -764,8 +767,8 @@ namespace HumanArcCompliance.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
             GradeViewModel gvm = new GradeViewModel();
-            gvm = GetGradedQuizById(uId, id);
-            Queries query = new Queries();
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
+            gvm = GetGradedQuizById(user.id, id);
             List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
             
             if (uqqas.Count > 0)
