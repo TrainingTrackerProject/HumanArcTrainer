@@ -134,7 +134,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
                 text: value.answerText,
             }
             $scope.quiz.question.answers.push(answer);
-        }); 
+        });
     }
 
     function setQuestionAnswer() {
@@ -177,17 +177,6 @@ app.controller('QuizCtrl', function ($scope, $http) {
         $scope.quiz.question.selectedAnswer = 0;
         $scope.quiz.question.answers = [];
     }
-
-   
-    $scope.submitQuiz = function () {
-        $http.post('/Training/AddUserQuizQuestionAnswers',{ title: document.getElementById("trainingTitle").value, questionData: JSON.stringify(sentJson) }, config).then(
-            function (response) {
-                // success callback
-            },
-            function (response) {
-                // failure callback
-            }
-        );
-    }
+    
 });
 

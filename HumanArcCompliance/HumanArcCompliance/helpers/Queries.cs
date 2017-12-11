@@ -55,11 +55,6 @@ namespace HumanArcCompliance.helpers
             HumanArcEntities db = new HumanArcEntities();
             return db.Quizes.Find(id);
         }
-        public UserQuizQuestionAnswer getAnswerToShortAnswerQuestion(int id)
-        {
-            HumanArcEntities db = new HumanArcEntities();
-            return db.UserQuizQuestionAnswers.First(a => a.questionId == id);
-        }
         public int addQuiz(Quize q)
         {          
             HumanArcEntities db = new HumanArcEntities();
@@ -152,7 +147,6 @@ namespace HumanArcCompliance.helpers
                 Group group = new Group();
                 return group;
             }
-            
         }
 
         public List<UserQuizQuestionAnswer> getQuizByUserIdQuizId(int userId, int quizId)
