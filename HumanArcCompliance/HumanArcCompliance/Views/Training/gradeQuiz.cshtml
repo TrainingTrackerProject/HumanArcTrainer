@@ -21,7 +21,7 @@
     <div ng-show="!status.isSubmitted">
         <div class="row">
             <div class="col-sm-12">
-                <h2>{{data.questions}}</h2>
+                <h2>{{data.questions[0].answerText}}</h2>
                 <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
             </div>
         </div>
@@ -35,16 +35,17 @@
                 <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
             </div>
         </div>
-        <div ng-repeat="question in quiz.questions">
-            <div ng-if="quiz.question.type == 'shortAnswer'">
+        <p>{{data.questions}}</p>
+        <div ng-repeat="question in data.questions">
+            <div ng-if="data.question.type == 'shortAnswer'">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Question {{1}}</h4>
+                        <h4>Question {{i+1}}</h4>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3>{{quiz.question.questionText}}</h3>
+                        <h3>{{data.questions[i].questionText}}</h3>
                         <textarea rows="5" class="form-control" id="shortAnswerQuestion" 
                             ng-model="quiz.question.answerText" placeholder="Answer Here" readonly></textarea>
                     </div>

@@ -3,6 +3,8 @@
  */
 var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
+    var submittedAnswers = [];
+    var i = 0;
     $scope.data;
     $scope.quiz = {
         answer: 0,
@@ -22,6 +24,16 @@ app.controller('QuizCtrl', function ($scope, $http) {
     }
     $http.post('/Training/ViewGradeQuiz', JSON.stringify({ id: quizId }), config).then(function (res) {
         $scope.data = res.data;
+        $.each(res.data.juqqas, function (index, value) {
+            var answer = {
+                answerId: value.answerId,
+                answerText: value.text
+            }
+            submittedAnswers.push(answer)
+        })
+        if ($scope.data.questions[i].type == 'shortAnswer') {
+            $scope.data.questions[i].answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+        }
     });
     /*
     $scope.submit = function () {
