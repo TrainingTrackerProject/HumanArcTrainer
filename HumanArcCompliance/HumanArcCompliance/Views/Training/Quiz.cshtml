@@ -5,99 +5,74 @@
 <div ng-app="QuizApp" ng-controller="QuizCtrl">
     <div ng-show="status.isSubmitted">
         <div class="row">
-            <div class="col-sm-4">
-
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <h3 class="text-center">{{status.text}}</h3>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Quiz: </strong> @Html.DisplayFor(m => m.title)</li>
+                    <li class="list-group-item"><strong>Description: </strong> @Html.DisplayFor(m => m.description)</li>
+                    <li class="list-group-item"><strong>Referenced Media: </strong> <a href="@Html.DisplayFor(m => m.media)">@Html.DisplayFor(m => m.media)</a></li>
+                </ul>
+                @Html.ActionLink("Back to My Training", "MyTraining", "Training", new { @class = "btn btn-success pull-left" })
+                <button class="btn btn-success pull-right" type="button" onclick="window.location.reload()">View Answers</button>
             </div>
-            <div class="col-sm-4">
-                <h3>{{status.text}}</h3>
-            </div>
-            <div class="col-sm-4">
-
-            </div>
+            <div class="col-sm-2"></div>
         </div>
-        <div class="row">
-            <div class="col-sm-3 pull-left">
-                @Html.ActionLink("Back to My Training", "MyTraining", "Training", new { @class = "btn btn-success" })
-            </div>
-            <div class="col-sm-3">
-            </div>
-            <div class="col-sm-3">
-            </div>
-            <div class="col-sm-3 pull-right">
-                @Html.ActionLink("View Answers", "ViewQuiz", "Training", new { @class = "btn btn-success" })
-            </div>
-        </div>
-        
     </div>
+
     <div ng-show="!status.isSubmitted">
         <div class="row">
-            <div class="col-sm-12">
-                <h2>Quiz: @Html.DisplayFor(m => m.title)</h2>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Quiz: </strong> @Html.DisplayFor(m => m.title)</li>
+                    <li class="list-group-item"><strong>Description: </strong> @Html.DisplayFor(m => m.description)</li>
+                    <li class="list-group-item"><strong>Referenced Media: </strong> <a href="@Html.DisplayFor(m => m.media)">@Html.DisplayFor(m => m.media)</a></li>
+                </ul>
+                <div ng-if="!status.started">
+                    <input class="btn btn-default pull-right" type="button" ng-click="start()" value="Start Quiz" />
+                    <input class="btn btn-default pull-left" type="button" onclick="location.href='@Url.Action("myTraining", "Training")'" value="Back to My Training" />
+                </div>
             </div>
+            <div class="col-sm-2"></div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <h4>@Html.DisplayFor(m => m.description)</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
-            </div>
-        </div>
-        <div class="row" ng-if="!status.started">
-            <div class="col-sm-5">
-
-            </div>
-            <div class="col-sm-2">
-                <input class="btn btn-default" type="button" ng-click="start()" value="Start" />
-            </div>
-            <div class="col-sm-5">
-
-            </div>
-        </div>
+        
         <div ng-if="(status.started)">
             <div class="row">
-                <div class="col-sm-12">
-                    <h4>Question {{quiz.currentQuestion + 1}}</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3>{{quiz.question.questionText}}</h3>
-
-                    <div ng-if="!(quiz.question.type=='shortAnswer')">
-                        <div ng-repeat="answer in quiz.question.answers">
-                            <input ng-model="quiz.question.selectedAnswer" type="radio" ng-value="{{answer.id}}" name="{{quiz.question.questionText}}">
-                            <label>{{answer.text}}</label>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Question {{quiz.currentQuestion + 1}}</div>
+                        <div class="panel-body">
+                            <h4>{{quiz.question.questionText}}</h4>
+                            <div ng-if="!(quiz.question.type=='shortAnswer')">
+                                <div ng-repeat="answer in quiz.question.answers">
+                                    <input ng-model="quiz.question.selectedAnswer" type="radio" ng-value="{{answer.id}}" name="{{quiz.question.questionText}}">
+                                    <label>{{answer.text}}</label>
+                                </div>
+                            </div>
+                            <div ng-if="quiz.question.type == 'shortAnswer'">
+                                <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="quiz.question.answerText" placeholder="Answer Here"></textarea>
+                            </div>
                         </div>
                     </div>
-                    <div ng-if="quiz.question.type == 'shortAnswer'">
-                        <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="quiz.question.answerText" placeholder="Answer Here"></textarea>
+                    <input class="btn btn-default pull-left" type="button" ng-click="previous()" ng-disabled="status.isFirstQuestion" value="Previous" />
+                    <div ng-if="status.isLastQuestion">
+                        <input ng-disabled="(quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
+                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='') || status.isTaken" data-toggle="modal"
+                               data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right"
+                               type="button" value="Submit" />
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" ng-if="status.started">
-            <div class="col-sm-2">
-                <input class="btn btn-default" type="button" ng-click="previous()" ng-disabled="status.isFirstQuestion" value="Previous" />
-            </div>
-            <div class="col-sm-8">
-            </div>
-            <div class="col-sm-2">
-                <div ng-if="status.isLastQuestion">
-                    <input ng-disabled="(quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
-                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='') || status.isTaken" data-toggle="modal" 
-                           data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right" 
-                           type="button" value="Submit" />
-                </div>
-                <div ng-if="!status.isLastQuestion">
-                    <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started || 
+                    <div ng-if="!status.isLastQuestion">
+                        <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started ||
                            (quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
                            (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='')" value="Next" />
+                    </div>
                 </div>
+                <div class="col-sm-2"></div>
             </div>
         </div>
+
         <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
