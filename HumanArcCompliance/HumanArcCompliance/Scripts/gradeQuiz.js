@@ -49,6 +49,13 @@ app.controller('QuizCtrl', function ($scope, $http) {
             }*/
         }
     });
+
+    $scope.accept = function () {
+        //TODO
+    }
+    $scope.reject = function () {
+        //TODO
+    }
     /*
     $scope.submit = function () {
         $('#confirm-submit').modal('hide');

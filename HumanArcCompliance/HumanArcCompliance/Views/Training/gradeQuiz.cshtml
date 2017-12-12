@@ -44,8 +44,10 @@
             <div class="row">
                 <div class="col-sm-12">
                     <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="question.answerText" readonly></textarea>
+                    <br />
+                    <input class="btn btn-default pull-left" type="button" ng-click="accept()" value="Accept" />
+                    <input class="btn btn-default pull-left" type="button" ng-click="reject()" value="Reject" />
                 </div>
-                <br />
             </div>
         </div>
         <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -55,7 +57,7 @@
                         Confirm Submit
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to submit this quiz?
+                        Are you finished grading?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
