@@ -64,13 +64,13 @@ function pageLoad() {
 
                     var t = Date.parse(today);
 
-                    var button = "<input type='button' value='Edit' class='btn btn-primary edit' id='" + value.id + "'/>";
+                    var button = "<input type='button' style='width:60px;margin-right:1em;' value='Edit' class='btn btn-primary edit' id='" + value.id + "'/>";
 
                     if (startNum <= t) {
-                        button = "<input type='button' value='View' class='btn btn-primary edit' id='" + value.id + "'/>";
+                        button = "<input type='button' style='width:60px;margin-right:1em;' value='View' class='btn btn-primary edit' id='" + value.id + "'/>";
 
                     };
-                    quizes.push([value.id, value.title, value.description, date, button + " || " + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"]);
+                    quizes.push([value.id, value.title, value.description, date, button + "<input type='button' value='Remove' class='btn btn-primary remove' id='" + value.id + "'/>"]);
                 });
                 $('#trainingTable').DataTable({
                     data: quizes,

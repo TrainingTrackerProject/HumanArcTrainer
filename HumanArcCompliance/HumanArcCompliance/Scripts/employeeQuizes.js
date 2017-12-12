@@ -49,7 +49,7 @@
             });
             $('#needsGraded').on('click', 'tbody tr', function () {
                 var data = $('#needsGraded').DataTable().row(this).data();
-                window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
+                window.location.href = "/Training/GradeQuiz/?id=" + data[1];
             });
            
         }

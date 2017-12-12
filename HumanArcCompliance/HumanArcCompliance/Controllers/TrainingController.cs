@@ -236,10 +236,9 @@ namespace HumanArcCompliance.Controllers
             uqvmQuiz.isManager = vmUser.isManager;
             return View(uqvmQuiz);
         }
-
-        public ActionResult GradeQuiz(int userId = 0, int quizId = 0)
+        public ActionResult gradeQuiz(int id = 0)
         {
-            if (userId == 0 || quizId == 0)
+            if (id == 0)
             {
                 RedirectToAction("ManageEmployees", "Training");
             }
@@ -256,11 +255,11 @@ namespace HumanArcCompliance.Controllers
             if (!val.checkUserAuth(vmUser, hrGroup))
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }          
-            GradeViewModel gvmQuiz = GetGradedQuizById(userId, quizId);
+            }
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
+            GradeViewModel gvmQuiz = GetGradedQuizById(user.id, id);
             return View(gvmQuiz);
         }
-
         public ActionResult GetAllGroups()
         {
             UserViewModel vmUser = session.getSessionUser();
@@ -860,7 +859,7 @@ namespace HumanArcCompliance.Controllers
             return Json("Failed to submit quiz", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult SubmitGrade(UserAnswer[] answers)
+        public ActionResult SubmitGrade(GradingDecision[] decisions)
         {
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
@@ -874,25 +873,23 @@ namespace HumanArcCompliance.Controllers
 
             Queries query = new Queries();
             User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
-            //var result = JsonConvert.DeserializeObject<List<UserAnswer>>(answers);
             List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
-            foreach (UserAnswer answer in answers)
+            foreach (GradingDecision decision in decisions)
             {
                 UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
-                uqqa.quizId = answer.quizId;
-                uqqa.questionId = answer.questionId;
-                uqqa.answerId = answer.answerId;
-                uqqa.userId = user.id;
-                uqqa.text = answer.answerText;
+                uqqa.quizId = decision.quizId;
+                uqqa.userId = decision.userId;
+                uqqa.questionId = decision.questionId;
+                uqqa.isApproved = decision.isApproved;
                 uqqas.Add(uqqa);
             }
             List<UserQuizQuestionAnswer> addedUqqas = new List<UserQuizQuestionAnswer>();
             addedUqqas = query.submitQuiz(uqqas);
             if (addedUqqas.Count > 0)
             {
-                return Json("Quiz Completed", JsonRequestBehavior.AllowGet);
+                return Json("Grading Completed", JsonRequestBehavior.AllowGet);
             }
-            return Json("Failed to submit quiz", JsonRequestBehavior.AllowGet);
+            return Json("Failed to submit grades", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
