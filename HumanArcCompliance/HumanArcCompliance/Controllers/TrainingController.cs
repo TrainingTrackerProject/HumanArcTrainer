@@ -952,7 +952,7 @@ namespace HumanArcCompliance.Controllers
             {
                 if(vmQuestion.type != "shortAnswer")
                 {
-                    for (var i = 0; i < questionCount; i++)
+                    for (var i = 0; i < vmQuestion.answers.Count(); i++)
                     {
                         if (vmQuestion.answers[i].id == uqqas[i].answerId)
                         {
