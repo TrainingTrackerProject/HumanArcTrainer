@@ -236,10 +236,9 @@ namespace HumanArcCompliance.Controllers
             uqvmQuiz.isManager = vmUser.isManager;
             return View(uqvmQuiz);
         }
-
-        public ActionResult GradeQuiz(int userId = 0, int quizId = 0)
+        public ActionResult gradeQuiz(int id = 0)
         {
-            if (userId == 0 || quizId == 0)
+            if (id == 0)
             {
                 RedirectToAction("ManageEmployees", "Training");
             }
@@ -256,11 +255,11 @@ namespace HumanArcCompliance.Controllers
             if (!val.checkUserAuth(vmUser, hrGroup))
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }          
-            GradeViewModel gvmQuiz = GetGradedQuizById(userId, quizId);
+            }
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
+            GradeViewModel gvmQuiz = GetGradedQuizById(user.id, id);
             return View(gvmQuiz);
         }
-
         public ActionResult GetAllGroups()
         {
             UserViewModel vmUser = session.getSessionUser();
