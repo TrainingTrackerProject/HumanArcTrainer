@@ -59,7 +59,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
                 quizId: quizId,
                 userId: userId,
                 questionId: angular.copy($scope.quiz.question.questionId),
-                isApproved: angular.copy($scope.data.questions[i].isApproved)
+                isApproved: $scope.quiz.questions[i].isApproved
             }
             gradeApprovals.push(uqqa);
         }
@@ -67,4 +67,3 @@ app.controller('QuizCtrl', function ($scope, $http) {
         $http.post('/Training/SubmitGrade', JSON.stringify({ decisions: gradeApprovals }), config)
     }
 });
-
