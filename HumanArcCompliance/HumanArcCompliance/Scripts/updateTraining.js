@@ -138,7 +138,8 @@ app.controller('updateQuestionController', function ($scope, $http, $compile) {
         tempVars.ids = JSON.parse(table.row($(this).parent()).data()[0])
         tempVars.rowIndex = table.row($(this).parent()).index();
         sentJson.answerIds = tempVars.ids;
-        $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: sentJson.answerIds[0] }), config).then(function (res) {
+        console.log(sentJson.answerIds[0]);
+        $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: tempVars.ids[0] }), config).then(function (res) {
             $scope.status.isEditing = true;
             $scope.questionData.questionId = res.data.id;
             $scope.questionData.questionType = res.data.questionType;
@@ -340,32 +341,41 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
         }
     }
 
-    $http.post('/Training/GetQuizById', JSON.stringify({ quizId: quizId }), config).then(function (res) {
-        console.log(res);
-        //$scope.quizData.title = res.data.title;
-        //$scope.quizData.description = res.data.description;
-        //$scope.quizData.media = res.data.media;
-        //$scope.quizData.startDate = res.data.startDate;
-        //$scope.quizData.preferredDate = res.data.preferredDate;
-        //$scope.quizData.expirationDate = res.data.expirationDate;
-        //var userData = [];
-        //$.each(res.data.questions)
+    $http.post('/Training/EditTraining', JSON.stringify({ id: quizId }), config).then(function (res) {
+        
+        data = res.data;
+        console.log(data);
+        console.log(data.title);
 
+        $scope.quizData.title = data.title;
+        $scope.quizData.description = data.description;
+        $scope.quizData.media = data.media;
+        $scope.quizData.startDate = formatDate(new Date(parseInt(data.startDate.slice(6, 19))));
+        $scope.quizData.preferredDate = formatDate(new Date(parseInt(data.preferDate.slice(6, 19))));
+        $scope.quizData.expirationDate = formatDate(new Date(parseInt(data.expiredDate.slice(6, 19))));
+        var questionData = [];
+        $.each(res.data.questions, function (index, value) {
+            var question = [value.id, value.text, value.type, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"]
+            questionData.push(question);
+        });
 
-
-        //$('#questionTable').DataTable({
-        //    data: userData,
-        //    columns:
-        //    [
-        //        { title: "id", visible: false },
-        //        { title: "Question Type" },
-        //        { title: "Question Text" },
-        //        { title: "" },
-        //        { title: "" }
-        //    ]
-        //});
+        $('#questionTable').DataTable({
+            data: questionData,
+            columns:
+            [
+                { title: "id", visible: true },
+                { title: "Question Type" },
+                { title: "Question Text" },
+                { title: "" },
+                { title: "" }
+            ]
+        });
     });
 });
+
+function formatDate(value) {
+    return value.getMonth() + 1 + "/" + value.getDate() + "/" + value.getFullYear();
+}
 
 $(document).ready(function () {
     var questionIds;

@@ -237,8 +237,12 @@ namespace HumanArcCompliance.Controllers
             return View(uqvmQuiz);
         }
 
-        public ActionResult gradeQuiz(int userId, int quizId = 0)
+        public ActionResult GradeQuiz(int userId = 0, int quizId = 0)
         {
+            if (userId == 0 || quizId == 0)
+            {
+                RedirectToAction("ManageEmployees", "Training");
+            }
             UserViewModel vmUser = session.getSessionUser();
             if (vmUser == null)
             {
@@ -252,6 +256,7 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
+            
             GradeViewModel gvmQuiz = GetGradedQuizById(userId, quizId);
             return View(gvmQuiz);
         }
@@ -274,15 +279,15 @@ namespace HumanArcCompliance.Controllers
             Queries q = new Queries();
             List<Group> groups = new List<Group>();
             groups = q.getAllGroups();
-            List<Group> sending = new List<Group>();
+            List<Group> result = new List<Group>();
             foreach (Group group in groups)
             {
                 Group g = new Group();
                 g.id = group.id;
                 g.name = group.name;
-                sending.Add(g);
+                result.Add(g);
             }
-            return Json(sending, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -308,10 +313,10 @@ namespace HumanArcCompliance.Controllers
                 return Json("Duplicate Title", JsonRequestBehavior.AllowGet);
             }
             List<int> quizIds = new List<int>();
-            foreach (int group in result.groups)
+            foreach (int groupId in result.groups)
             {
                 Quize quiz = new Quize();
-                quiz.groupId = Convert.ToInt32(group);
+                quiz.groupId = Convert.ToInt32(groupId);
                 quiz.title = result.title;
                 quiz.description = result.description;
                 quiz.media = result.media;
@@ -617,6 +622,7 @@ namespace HumanArcCompliance.Controllers
             if (vmUser == null)
             {
                 if (!val.getUserCredentials(Request))
+
                 {
                     return RedirectToAction("Login", "Home");
                 }
@@ -647,7 +653,7 @@ namespace HumanArcCompliance.Controllers
             }
             Queries query = new Queries();
             List<Quize> quizes = query.getUniqueQuizes();
-            List<Quize> sending = new List<Quize>();
+            List<Quize> results = new List<Quize>();
             foreach (Quize quiz in quizes)
             {
                 Quize q = new Quize();
@@ -656,9 +662,9 @@ namespace HumanArcCompliance.Controllers
                 q.description = quiz.description;
                 q.startDate = quiz.startDate;
                 q.expiredDate = quiz.expiredDate;
-                sending.Add(q);
+                results.Add(q);
             }
-            return Json(sending, JsonRequestBehavior.AllowGet);
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
         public GradeViewModel GetGradedQuizById(int uId, int qId)
         {
@@ -880,21 +886,8 @@ namespace HumanArcCompliance.Controllers
         public ActionResult EditTraining(int id)
         {
             Queries query = new Queries();
-            UserQuizViewModel uqvmQuiz = new UserQuizViewModel();
-            Quize quiz = new Quize();
-            quiz = query.getQuizById(id);
-            uqvmQuiz.title = quiz.title;
-            uqvmQuiz.description = quiz.description;
-            uqvmQuiz.groups = new List<UserQuizGroup>();
-            List<Quize> quizes = query.getQuizByTitle(query.getQuizById(id).title);
-            foreach(Quize q in quizes)
-            {
-                UserQuizGroup group = new UserQuizGroup();
-                group.id = q.groupId;
-                group.name = query.getGroupById(group.id).name;
-                uqvmQuiz.groups.Add(group);
-            }
-            return View(uqvmQuiz);
+            UserQuizViewModel uqvmQuiz = GetQuizById(id);
+            return Json(uqvmQuiz, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetQuestionAnswers(string questionId)
