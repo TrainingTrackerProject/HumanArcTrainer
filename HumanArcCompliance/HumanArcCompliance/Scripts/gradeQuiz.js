@@ -14,7 +14,8 @@ app.controller('QuizCtrl', function ($scope, $http) {
             questionId: 0,
             questionText: '',
             type: '',
-            answerText: ''
+            answerText: '',
+            isApproved: false
         }]
     }
     var quizId = $('#quizId').val();
@@ -50,11 +51,16 @@ app.controller('QuizCtrl', function ($scope, $http) {
         }
     });
 
-    $scope.accept = function () {
-        //TODO
+    $scope.accept = function (i) {
+        $scope.quiz.questions[i].isApproved = true;
     }
-    $scope.reject = function () {
-        //TODO
+    $scope.reject = function (i) {
+        $scope.quiz.questions[i].isApproved = false;
+    }
+    $scope.submit = function () {
+        $('#confirm-submit').modal('hide');
+        $http.post('/Training/SubmitGrade', { answers: JSON.stringify(/*TODO*/) }, config).then(function (res) {
+        });
     }
     /*
     $scope.submit = function () {

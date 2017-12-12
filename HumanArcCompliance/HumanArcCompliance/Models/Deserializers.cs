@@ -52,5 +52,13 @@ namespace HumanArcCompliance.Models
         {
             public int[] ids { get; set; }
         }
+        public class GradingDecision
+        {
+            public int quizId { get; set; }
+            public int userId { get; set; }
+            public int questionId { get; set; }
+            public int answerId { get; set; }
+            public bool isApproved { get; set; }
+        }
     }
 }

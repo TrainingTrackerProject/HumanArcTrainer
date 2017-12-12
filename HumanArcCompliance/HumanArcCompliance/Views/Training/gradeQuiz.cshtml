@@ -45,28 +45,13 @@
                 <div class="col-sm-12">
                     <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="question.answerText" readonly></textarea>
                     <br />
-                    <input class="btn btn-default pull-left" type="button" ng-click="accept()" value="Accept" />
-                    <input class="btn btn-default pull-left" type="button" ng-click="reject()" value="Reject" />
+                    <input class="btn btn-success" type="button" ng-click="accept(question.iterator)" value="Accept" />
+                    <input class="btn btn-danger" type="button" ng-click="reject(question.iterator)" value="Reject" />
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        Confirm Submit
-                    </div>
-                    <div class="modal-body">
-                        Are you finished grading?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        @*<button id="submit" class="btn btn-success success" onclick="location.href='@Url.Action("myTraining", "Training")'" ng-click="submit()">Submit</button>*@
-                        <button id="submit" class="btn btn-success success" ng-click="submit()">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <br />
+        <input class="btn btn-success" type="button" ng-click="submit()" value="Submit Grades" />
     </div>
 </div>
 <script src="~/Scripts/gradeQuiz.js"></script>
