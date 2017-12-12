@@ -514,31 +514,27 @@ namespace HumanArcCompliance.Controllers
                             employeeQuiz.expirationDate = quiz.expiredDate;
                             employeeQuiz.isCompleted = false;
                             employeeQuiz.isGraded = false;
-                            UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                            //UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
                             List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(user.id, quiz.id);
-                            if (uqqas.Count > 0)
+                            double uqqaCount = uqqas.Count();
+                            if (uqqaCount > 0)
                             {
-                                uqqa = uqqas[0];
-                                if (uqqa.id != 0)
+                                employeeQuiz.isCompleted = true;
+                                employeeQuiz.isGraded = true;
+                                double numberCorrect = 0;
+                                foreach(UserQuizQuestionAnswer uqqa in uqqas)
                                 {
-                                    employeeQuiz.isCompleted = true;
-                                    if (uqqa.isChecked == true)
+                                    if ((bool)uqqa.isApproved)
                                     {
-                                        employeeQuiz.isGraded = true;
-                                        if (uqqa.isChecked == true)
-                                        {
-                                            employeeQuiz.isGraded = true;
-                                        }
-                                        else
-                                        {
-                                            employeeQuiz.isGraded = false;
-                                        }
+                                        numberCorrect++;
                                     }
-                                    else
+                                    else if(query.getQuestionById(uqqa.questionId).questionType == "shortAnswer" && uqqa.isChecked == false)
                                     {
+                                        uqqaCount--;
                                         employeeQuiz.isGraded = false;
                                     }
                                 }
+                                employeeQuiz.percentCorrect = numberCorrect / uqqaCount;
                             }                           
                             employeeQuizes.Add(employeeQuiz);
                         }                       
@@ -854,6 +850,7 @@ namespace HumanArcCompliance.Controllers
                 uqqa.text = answer.answerText;
                 uqqas.Add(uqqa);
             }
+            uqqas = GradeQuiz(GetQuizById(answers[0].quizId), uqqas);
             List<UserQuizQuestionAnswer> addedUqqas = new List<UserQuizQuestionAnswer>();
             addedUqqas = query.submitQuiz(uqqas);
             if(addedUqqas.Count > 0)
@@ -946,6 +943,26 @@ namespace HumanArcCompliance.Controllers
             jQuestion.answers = jAnswers;
 
             return Json(jQuestion, JsonRequestBehavior.AllowGet);
+        }
+
+        public List<UserQuizQuestionAnswer> GradeQuiz(UserQuizViewModel quiz, List<UserQuizQuestionAnswer> uqqas)
+        {
+            int questionCount = quiz.questions.Count();
+            foreach(UserQuizVMQuestion vmQuestion in quiz.questions)
+            {
+                if(vmQuestion.type != "shortAnswer")
+                {
+                    for (var i = 0; i < questionCount; i++)
+                    {
+                        if (vmQuestion.answers[i].id == uqqas[i].answerId)
+                        {
+                            uqqas[i].isApproved = true;
+                        }
+                    }
+                }
+                
+            }
+            return uqqas;
         }
     }
 }

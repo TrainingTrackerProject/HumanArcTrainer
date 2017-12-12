@@ -41,21 +41,28 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">Question {{quiz.currentQuestion + 1}}</div>
-                        <div class="panel-body">
-                            <h4>{{quiz.question.questionText}}</h4>
-                            <div ng-if="!(quiz.question.type=='shortAnswer')">
-                                <div ng-repeat="answer in quiz.question.answers">
-                                    <input ng-model="quiz.question.selectedAnswer" type="radio" ng-value="{{answer.id}}" name="{{quiz.question.questionText}}">
-                                    <label>{{answer.text}}</label>
+                    <fieldset ng-disabled="status.isTaken">
+                        <div class="panel panel-primary" ng-disabled="status.isTaken">
+                            <div class="panel-heading">Question {{quiz.currentQuestion + 1}}</div>
+                            <div class="panel-body">
+                                <h4>
+                                    {{quiz.question.questionText}}
+                                    <span class="glyphicon glyphicon-ok" ng-if="status.isTaken && status.isChecked && status.isCorrect"></span>
+                                    <span class="glyphicon glyphicon-remove" ng-if="status.isTaken && status.isChecked && !status.isCorrect"></span>
+                                    <span class="" ng-if="status.isTaken && !status.isChecked &&!status.isCorrect"><i>*Awaiting Grade</i></span>
+                                </h4>
+                                <div ng-if="!(quiz.question.type=='shortAnswer')">
+                                    <div ng-repeat="answer in quiz.question.answers">
+                                        <input ng-model="quiz.question.selectedAnswer" type="radio" ng-value="{{answer.id}}" name="{{quiz.question.questionText}}">
+                                        <label>{{answer.text}}</label>
+                                    </div>
+                                </div>
+                                <div ng-if="quiz.question.type == 'shortAnswer'">
+                                    <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="quiz.question.answerText" placeholder="Answer Here"></textarea>
                                 </div>
                             </div>
-                            <div ng-if="quiz.question.type == 'shortAnswer'">
-                                <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="quiz.question.answerText" placeholder="Answer Here"></textarea>
-                            </div>
                         </div>
-                    </div>
+                    </fieldset>
                     <input class="btn btn-default pull-left" type="button" ng-click="previous()" ng-disabled="status.isFirstQuestion" value="Previous" />
                     <div ng-if="status.isLastQuestion">
                         <input ng-disabled="(quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||

@@ -1,10 +1,6 @@
 ﻿/*
  * AngularJS code for the Quiz application, called on Quiz.cshtml.
  */
-$(document).ready(function () {
-
-});
-
 var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
     var data;
@@ -15,6 +11,8 @@ app.controller('QuizCtrl', function ($scope, $http) {
         isFirstQuestion: true,
         isLastQuestion: false,
         isSubmitted: false,
+        isChecked: true,
+        isCorrect: false,
         text: ''
     }
     $scope.quiz = {     
@@ -48,7 +46,7 @@ app.controller('QuizCtrl', function ($scope, $http) {
             setScope();
 
             setPossibleAnswers();
-            $.each(res.data.juqqas, function (index, value) {
+            $.each(data.juqqas, function (index, value) {
                 var answer = {
                     answerId: value.answerId,
                     answerText: value.text
@@ -59,12 +57,24 @@ app.controller('QuizCtrl', function ($scope, $http) {
                 $scope.status.isLastQuestion = true;
             }
             if ($scope.quiz.question.type != 'shortAnswer') {
-                console.log($scope.quiz.currentQuestion);
-                console.log(submittedAnswers);
                 $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+                $.each(data.questions[$scope.quiz.currentQuestion].answers, function (index, value) {
+                    if (value.id == submittedAnswers[$scope.quiz.currentQuestion].answerId && value.isCorrect) {
+                        $scope.status.isCorrect = true;
+                    }
+
+                });
             }
             else {
                 $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+                if (data.juqqas[$scope.quiz.currentQuestion].isChecked) {
+                    if (data.juqqas[$scope.quiz.currentQuestion].isApproved) {
+                        $scope.status.isCorrect = true;
+                    }
+                } 
+                else {
+                    $scope.status.isChecked = false;
+                }
             }
         }
     });
@@ -91,9 +101,23 @@ app.controller('QuizCtrl', function ($scope, $http) {
         if (typeof submittedAnswers[$scope.quiz.currentQuestion] != 'undefined') {
             if ($scope.quiz.question.type != 'shortAnswer') {
                 $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+                $.each(data.questions[$scope.quiz.currentQuestion].answers, function (index, value) {
+                    if (value.id == submittedAnswers[$scope.quiz.currentQuestion].answerId && value.isCorrect) {
+                        $scope.status.isCorrect = true;
+                    }
+
+                });
             }
             else {
                 $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+                if (data.juqqas[$scope.quiz.currentQuestion].isChecked) {
+                    if (data.juqqas[$scope.quiz.currentQuestion].isApproved) {
+                        $scope.status.isCorrect = true;
+                    }
+                }
+                else {
+                    $scope.status.isChecked = false;
+                }
             }
         }
     }
@@ -109,9 +133,23 @@ app.controller('QuizCtrl', function ($scope, $http) {
         setPossibleAnswers();
         if ($scope.quiz.question.type != 'shortAnswer') {
             $scope.quiz.question.selectedAnswer = submittedAnswers[$scope.quiz.currentQuestion].answerId
+            $.each(data.questions[$scope.quiz.currentQuestion].answers, function (index, value) {
+                if (value.id == submittedAnswers[$scope.quiz.currentQuestion].answerId && value.isCorrect) {
+                    $scope.status.isCorrect = true;
+                }
+
+            });
         }
         else {
             $scope.quiz.question.answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+            if (data.juqqas[$scope.quiz.currentQuestion].isChecked) {
+                if (data.juqqas[$scope.quiz.currentQuestion].isApproved) {
+                    $scope.status.isCorrect = true;
+                }
+            }
+            else {
+                $scope.status.isChecked = false;
+            }
         }   
     }
 
@@ -176,6 +214,10 @@ app.controller('QuizCtrl', function ($scope, $http) {
         $scope.quiz.question.answerText = '';
         $scope.quiz.question.selectedAnswer = 0;
         $scope.quiz.question.answers = [];
+        $scope.status.isCorrect = false;
+        $scope.status.isChecked = true;
+
+
     }
     
 });

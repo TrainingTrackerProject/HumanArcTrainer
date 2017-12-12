@@ -178,7 +178,6 @@ namespace HumanArcCompliance.helpers
                 foreach (UserQuizQuestionAnswer uqqa in answers)
                 {
                     uqqa.isChecked = false;
-                    uqqa.isApproved = false;
                     db.UserQuizQuestionAnswers.Add(uqqa);
                     db.SaveChanges();
                     uqqas.Add(uqqa);

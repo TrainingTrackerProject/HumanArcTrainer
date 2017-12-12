@@ -14,6 +14,7 @@ namespace HumanArcCompliance.Models
         public string quizTitle { get; set; }
         public bool isCompleted { get; set; }
         public bool isGraded { get; set; }
+        public double percentCorrect { get; set; }
         public System.DateTime startDate { get; set; }
         public System.DateTime preferredDate { get; set; }
         public System.DateTime expirationDate { get; set; }

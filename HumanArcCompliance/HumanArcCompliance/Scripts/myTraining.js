@@ -61,9 +61,9 @@ $.ajax({
             });
 
             if (value.isGraded) {
-                completed.push([value.userId, value.quizId, value.quizTitle]);
+                completed.push([value.userId, value.quizId, value.quizTitle, (value.percentCorrect*100) + '%']);
             } else if (value.isCompleted) {
-                needsGraded.push([value.userId, value.quizId, value.quizTitle]);
+                needsGraded.push([value.userId, value.quizId, value.quizTitle, (value.percentCorrect * 100) + '%']);
             } else {
                 notCompleted.push([value.userId, value.quizId, value.quizTitle, pDate, eDate]);
             }
@@ -74,7 +74,8 @@ $.ajax({
             [
                 { title: "userId", visible: false },
                 { title: "quizId", visible: false },
-                { title: "Title" }
+                { title: "Title" },
+                { title: "Percent Correct"}
             ]
         });
         $('#notCompleted').DataTable({
@@ -94,7 +95,8 @@ $.ajax({
             [
                 { title: "userId", visible: false },
                 { title: "quizId", visible: false },
-                { title: "Title" }
+                { title: "Title" },
+                { title: "Percent Correct" }
             ]
         });
         //$('#needsGraded tbody tr').on('click', function () {
