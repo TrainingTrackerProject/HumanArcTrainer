@@ -850,7 +850,7 @@ namespace HumanArcCompliance.Controllers
                 uqqa.text = answer.answerText;
                 uqqas.Add(uqqa);
             }
-            uqqas = GradeQuiz(GetQuizById(answers[0].quizId), uqqas);
+            uqqas = GradeSubmittedQuiz(GetQuizById(answers[0].quizId), uqqas);
             List<UserQuizQuestionAnswer> addedUqqas = new List<UserQuizQuestionAnswer>();
             addedUqqas = query.submitQuiz(uqqas);
             if(addedUqqas.Count > 0)
@@ -945,7 +945,7 @@ namespace HumanArcCompliance.Controllers
             return Json(jQuestion, JsonRequestBehavior.AllowGet);
         }
 
-        public List<UserQuizQuestionAnswer> GradeQuiz(UserQuizViewModel quiz, List<UserQuizQuestionAnswer> uqqas)
+        public List<UserQuizQuestionAnswer> GradeSubmittedQuiz(UserQuizViewModel quiz, List<UserQuizQuestionAnswer> uqqas)
         {
             int questionCount = quiz.questions.Count();
             foreach(UserQuizVMQuestion vmQuestion in quiz.questions)
