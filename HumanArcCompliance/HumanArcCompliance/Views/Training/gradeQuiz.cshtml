@@ -3,15 +3,6 @@
 <div ng-app="QuizApp" ng-controller="QuizCtrl">
     <div ng-show="status.isSubmitted">
         <div class="row">
-            <div class="col-sm-4">
-
-            </div>
-            <div class="col-sm-4">
-                <h3>{{status.text}}</h3>
-            </div>
-            <div class="col-sm-4">
-
-            </div>
         </div>
         <div class="row">
             <div class="col-sm-3 pull-left">
@@ -43,54 +34,19 @@
                 <h4>Referenced Media: @Html.DisplayFor(m => m.media)</h4>
             </div>
         </div>
-        <div class="row" ng-if="!status.started">
-            <div class="col-sm-5">
-            </div>
-            <div class="col-sm-2">
-                <input class="btn btn-default" type="button" ng-click="start()" value="Start" />
-            </div>
-            <div class="col-sm-5">
-
-            </div>
-        </div>
-        <div ng-if="status.started">
-            <p>{{quiz.question.type}}</p>
-            <div ng-if="quiz.question.type != 'shortAnswer'">
-                {{next()}}
-            </div>
-            <div ng-if="quiz.question.type == 'shortAnswer'">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4>Question {{quiz.currentQuestion + 1}}</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3>{{quiz.question.questionText}}</h3>
-                        <div ng-if="quiz.question.type == 'shortAnswer'">
-                            <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="quiz.question.answerText" placeholder="Answer Here" readonly></textarea>
-                        </div>
-                    </div>
+        <div ng-repeat="question in quiz.questions">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Question {{question.iterator+1}}</h4>
+                    <p>{{question.questionText}}</p>
                 </div>
             </div>
-        </div>
-        <div class="row" ng-if="status.started">
-            <div class="col-sm-2">
-                <input class="btn btn-default" type="button" ng-click="previous()" ng-disabled="status.isFirstQuestion" value="Previous" />
-            </div>
-            <div class="col-sm-8">
-            </div>
-            <div class="col-sm-2">
-                <div ng-if="status.isLastQuestion">
-                    <input ng-disabled="(quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
-                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='') || status.isTaken" data-toggle="modal"
-                           data-target="#confirm-submit" ng-click="setLastQuestion()" class="btn btn-default pull-right"
-                           type="button" value="Submit" />
-                </div>
-                <div ng-if="!status.isLastQuestion">
-                    <input class="btn btn-default pull-right" type="button" ng-click="next()" ng-disabled="!status.started ||
-                           (quiz.question.type != 'shortAnswer' && quiz.question.selectedAnswer==0) ||
-                           (quiz.question.type == 'shortAnswer' && quiz.question.answerText=='')" value="Next" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea rows="5" class="form-control" id="shortAnswerQuestion" ng-model="question.answerText" readonly></textarea>
+                    <br />
+                    <input class="btn btn-default pull-left" type="button" ng-click="accept()" value="Accept" />
+                    <input class="btn btn-default pull-left" type="button" ng-click="reject()" value="Reject" />
                 </div>
             </div>
         </div>
@@ -101,7 +57,7 @@
                         Confirm Submit
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to submit this quiz?
+                        Are you finished grading?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

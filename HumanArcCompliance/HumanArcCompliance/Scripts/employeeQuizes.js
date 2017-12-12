@@ -47,14 +47,11 @@
                     { title: "Title" }
                 ]
             });
-            $('#needsGraded tbody tr').on('click', function () {
+            $('#needsGraded').on('click', 'tbody tr', function () {
                 var data = $('#needsGraded').DataTable().row(this).data();
                 window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
             });
-            $('#completed tbody tr').on('click', function () {
-                var data = $('#needsGraded').DataTable().row(this).data();
-                window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
-            });
+           
         }
     });
 });

@@ -16,20 +16,16 @@
 <div id="main-container">
     <div>
         <h2>Edit or Remove Exisiting Training</h2>
-        <h4>Review already existing training below by clicking on the edit button to edit, or the remove button to remove.</h4><br /><br />
+        <p class="text-muted">Review already existing training below by clicking on the edit button to edit, or the remove button to remove.</p>
     </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                @* creates table based off 'AllTraining.js' script *@
-                <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"></table>
-                @* button placement to add a new training, goes to 'addTraining.cshtml' page *@
-                <input type="submit" value="Add A New Training" id="AddTrainingButton"
-                       class="btn btn-primary" role="button" aria-disabled="false"
-                       onclick="location.href='@Url.Action("AddTraining", "Training")'" />
-            </div>
-            <div class="col-md-1"></div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            @* creates table based off 'AllTraining.js' script *@
+            <table id="trainingTable" class="display" cellspacing="0" style="width:100%;"></table>
+            @* button placement to add a new training, goes to 'addTraining.cshtml' page *@
+            <input type="submit" value="Add A New Training" id="AddTrainingButton"
+                    class="btn btn-primary" role="button" aria-disabled="false"
+                    onclick="location.href='@Url.Action("AddTraining", "Training")'" />
         </div>
     </div>
 

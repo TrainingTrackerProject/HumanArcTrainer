@@ -8,6 +8,7 @@ namespace HumanArcCompliance.Models
 {
     public class GradeViewModel
     {
+        public int UserId { get; set; }
         public int QuizId { get; set; }
         public string title { get; set; }
         public string description { get; set; }

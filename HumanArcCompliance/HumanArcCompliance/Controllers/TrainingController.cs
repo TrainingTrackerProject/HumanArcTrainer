@@ -244,6 +244,7 @@ namespace HumanArcCompliance.Controllers
                 RedirectToAction("ManageEmployees", "Training");
             }
             UserViewModel vmUser = session.getSessionUser();
+            Queries query = new Queries();
             if (vmUser == null)
             {
                 if (!val.getUserCredentials(Request))
@@ -255,8 +256,7 @@ namespace HumanArcCompliance.Controllers
             if (!val.checkUserAuth(vmUser, hrGroup))
             {
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
-            }
-            
+            }          
             GradeViewModel gvmQuiz = GetGradedQuizById(userId, quizId);
             return View(gvmQuiz);
         }
@@ -754,9 +754,10 @@ namespace HumanArcCompliance.Controllers
             return Json(uqvm, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ViewGradeQuiz(int uId, int id)
+        public ActionResult ViewGradeQuiz(int id)
         {
             UserViewModel vmUser = session.getSessionUser();
+            Queries query = new Queries();
             if (vmUser == null)
             {
                 if (!val.getUserCredentials(Request))
@@ -770,9 +771,9 @@ namespace HumanArcCompliance.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid User Credentials" });
             }
             GradeViewModel gvm = new GradeViewModel();
-            gvm = GetGradedQuizById(uId, id);
-            Queries query = new Queries();
-            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(query.getUserBySam(vmUser.SAMAccountName).id, id);
+            User user = query.getUserBySam(vmUser.modelToUser(vmUser).SAMAccountName);
+            gvm = GetGradedQuizById(user.id, id);
+            List<UserQuizQuestionAnswer> uqqas = query.getQuizByUserIdQuizId(user.id, id);
             
             if (uqqas.Count > 0)
             {
@@ -850,12 +851,47 @@ namespace HumanArcCompliance.Controllers
                 uqqa.questionId = answer.questionId;
                 uqqa.answerId = answer.answerId;
                 uqqa.userId = user.id;
-                uqqa.text = answer.answerText;               
-                uqqas.Add(uqqa);               
+                uqqa.text = answer.answerText;
+                uqqas.Add(uqqa);
             }
             List<UserQuizQuestionAnswer> addedUqqas = new List<UserQuizQuestionAnswer>();
             addedUqqas = query.submitQuiz(uqqas);
             if(addedUqqas.Count > 0)
+            {
+                return Json("Quiz Completed", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Failed to submit quiz", JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SubmitGrade(UserAnswer[] answers)
+        {
+            UserViewModel vmUser = session.getSessionUser();
+            if (vmUser == null)
+            {
+                if (!val.getUserCredentials(Request))
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+                vmUser = session.getSessionUser();
+            }
+
+            Queries query = new Queries();
+            User user = query.getUserBySam(vmUser.modelToUser(session.getSessionUser()).SAMAccountName);
+            //var result = JsonConvert.DeserializeObject<List<UserAnswer>>(answers);
+            List<UserQuizQuestionAnswer> uqqas = new List<UserQuizQuestionAnswer>();
+            foreach (UserAnswer answer in answers)
+            {
+                UserQuizQuestionAnswer uqqa = new UserQuizQuestionAnswer();
+                uqqa.quizId = answer.quizId;
+                uqqa.questionId = answer.questionId;
+                uqqa.answerId = answer.answerId;
+                uqqa.userId = user.id;
+                uqqa.text = answer.answerText;
+                uqqas.Add(uqqa);
+            }
+            List<UserQuizQuestionAnswer> addedUqqas = new List<UserQuizQuestionAnswer>();
+            addedUqqas = query.submitQuiz(uqqas);
+            if (addedUqqas.Count > 0)
             {
                 return Json("Quiz Completed", JsonRequestBehavior.AllowGet);
             }
