@@ -4,9 +4,10 @@
 var app = angular.module('QuizApp', ['ngRoute']);
 app.controller('QuizCtrl', function ($scope, $http) {
     var submittedAnswers = [];
-    var i = 0;
+    var questionIterator = 0;
     $scope.data;
     $scope.quiz = {
+        iterator: 0,
         answer: 0,
         quizId: 0,
         questions: [{
@@ -23,16 +24,29 @@ app.controller('QuizCtrl', function ($scope, $http) {
         }
     }
     $http.post('/Training/ViewGradeQuiz', JSON.stringify({ id: quizId }), config).then(function (res) {
+        $scope.quiz.questions.splice(0,1)
         $scope.data = res.data;
-        $.each(res.data.juqqas, function (index, value) {
-            var answer = {
+        for (var i = 0; i < $scope.data.questions.length; i++) {
+            if ($scope.data.questions[i].type == 'shortAnswer') {
+                for (var j = 0; j < $scope.data.juqqas.length; j++) {
+                    if ($scope.data.questions[i].id === $scope.data.juqqas[j].questionId) {
+                        var question = $scope.data.questions[i];
+                        var juqqa = $scope.data.juqqas[j];
+                        $scope.quiz.questions.push({
+                            iterator: i,
+                            questionId: question.id,
+                            questionText: question.text,
+                            type: 'shortAnswer',
+                            answerText: juqqa.text
+                        });
+                        questionIterator++;
+                    }
+                }
+            }
+            /*var answer = {
                 answerId: value.answerId,
                 answerText: value.text
-            }
-            submittedAnswers.push(answer)
-        })
-        if ($scope.data.questions[i].type == 'shortAnswer') {
-            $scope.data.questions[i].answerText = submittedAnswers[$scope.quiz.currentQuestion].answerText
+            }*/
         }
     });
     /*
