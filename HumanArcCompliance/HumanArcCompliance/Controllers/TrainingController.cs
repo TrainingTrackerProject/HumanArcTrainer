@@ -880,7 +880,6 @@ namespace HumanArcCompliance.Controllers
                 uqqa.quizId = decision.quizId;
                 uqqa.userId = decision.userId;
                 uqqa.questionId = decision.questionId;
-                uqqa.answerId = decision.answerId;
                 uqqa.isApproved = decision.isApproved;
                 uqqas.Add(uqqa);
             }
