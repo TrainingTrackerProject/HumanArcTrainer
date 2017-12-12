@@ -847,6 +847,8 @@ namespace HumanArcCompliance.Controllers
                 uqqa.answerId = answer.answerId;
                 uqqa.userId = user.id;
                 uqqa.text = answer.answerText;
+                uqqa.isChecked = false;
+                uqqa.isApproved = false;
                 uqqas.Add(uqqa);
             }
             uqqas = GradeSubmittedQuiz(GetQuizById(answers[0].quizId), uqqas);
@@ -947,17 +949,17 @@ namespace HumanArcCompliance.Controllers
             int questionCount = quiz.questions.Count();
             foreach(UserQuizVMQuestion vmQuestion in quiz.questions)
             {
-                if(vmQuestion.type != "shortAnswer")
+                if (vmQuestion.type != "shortAnswer")
                 {
                     for (var i = 0; i < vmQuestion.answers.Count(); i++)
                     {
                         if (vmQuestion.answers[i].id == uqqas[i].answerId)
                         {
+                            uqqas[i].isChecked = true;
                             uqqas[i].isApproved = true;
                         }
                     }
                 }
-                
             }
             return uqqas;
         }
