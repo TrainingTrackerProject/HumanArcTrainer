@@ -33,7 +33,19 @@ namespace HumanArcCompliance.Models
             public System.DateTime startDate { get; set; }
             public System.DateTime preferredDate { get; set; }
             public System.DateTime expirationDate { get; set; }
+        }
 
+        public class JGroup
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+            public JGroup generateGroup(Group group)
+            {
+                JGroup jGroup = new JGroup();
+                jGroup.id = group.id;
+                jGroup.name = group.name;
+                return jGroup;
+            }
         }
 
         public class JUserQuizQuestionAnswer
@@ -48,10 +60,6 @@ namespace HumanArcCompliance.Models
             public string text { get; set; }
         }
 
-        public class JIds
-        {
-            public int[] ids { get; set; }
-        }
         public class GradingDecision
         {
             public int quizId { get; set; }
@@ -59,6 +67,14 @@ namespace HumanArcCompliance.Models
             public int questionId { get; set; }
             public int answerId { get; set; }
             public bool isApproved { get; set; }
+        }
+
+        public class UserAnswer
+        {
+            public int quizId { get; set; }
+            public int questionId { get; set; }
+            public int answerId { get; set; }
+            public string answerText { get; set; }
         }
     }
 }

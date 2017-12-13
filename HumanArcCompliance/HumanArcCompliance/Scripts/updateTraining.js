@@ -271,24 +271,18 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
         });
     };
 
-
     var today = new Date();
     var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0
+    var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
-
     if (dd < 10) {
         dd = '0' + dd
     }
-
     if (mm < 10) {
         mm = '0' + mm
     }
     today = mm + '/' + dd + '/' + yyyy;
     var todayInt = Date.parse(today);
-    //compare dates
-
-
 
     $('.dateInfo').on('change keyup', function () {
         var startDate = Date.parse($("#startDate").val());
@@ -297,7 +291,7 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
         startDateCheck(startDate);
         preferredDateCheck(preferredDate, startDate);
         expirationDateCheck(expirationDate, preferredDate);
-    })
+    });
 
 
     function startDateCheck(startDate) {

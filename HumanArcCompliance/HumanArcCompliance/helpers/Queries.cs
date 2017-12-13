@@ -12,13 +12,10 @@ namespace HumanArcCompliance.helpers
 {
     public class Queries
     {
-      
-
         string conn = ConfigurationManager.ConnectionStrings["HumanArcEntities"].ConnectionString;
 
         public void checkExistingUser(User myUser)
         {
-
             HumanArcEntities db = new HumanArcEntities();
             User thisUser = db.Users.First(user => user.SAMAccountName == myUser.SAMAccountName);
             if(thisUser != null)
@@ -33,10 +30,8 @@ namespace HumanArcCompliance.helpers
                 db.Users.Add(myUser);
             }
             db.SaveChanges();
-
         }
     
-
         public List<User> getAllUsers()
         {
             HumanArcEntities db = new HumanArcEntities();
@@ -186,7 +181,6 @@ namespace HumanArcCompliance.helpers
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
                 return uqqas;
             }
         }
@@ -235,11 +229,6 @@ namespace HumanArcCompliance.helpers
             return true;
         }
 
-        /// <summary>
-        /// This methods removes a question and all associated answers. There is no check for UQQAs because this can only be done before the start date of the quiz.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public bool RemoveQuestion(int id)
         {
             HumanArcEntities db = new HumanArcEntities();
@@ -304,29 +293,16 @@ namespace HumanArcCompliance.helpers
                 {
                     quiz = ctx.Quizes.First(q => q.id == updatedQuiz.id);
                 }
-
                 quiz.description = updatedQuiz.description;
                 quiz.media = updatedQuiz.media;
                 quiz.startDate = updatedQuiz.startDate;
                 quiz.preferDate = updatedQuiz.preferDate;
                 quiz.expiredDate = updatedQuiz.expiredDate;
-
-                //save modified entity using new Context
                 using (var dbCtx = new HumanArcEntities())
                 {
                     dbCtx.Entry(quiz).State = EntityState.Modified;
-
                     dbCtx.SaveChanges();
                 }
-                //HumanArcEntities db = new HumanArcEntities();
-                //db.Quizes.Attach(updatedQuiz);
-                //var entry = db.Entry(updatedQuiz);
-
-                //entry.Property(e => e.description).IsModified = true;
-                //entry.Property(e => e.startDate).IsModified = true;
-                //entry.Property(e => e.preferDate).IsModified = true;
-                //entry.Property(e => e.expiredDate).IsModified = true;
-                //db.SaveChanges();
             }
             catch(Exception e)
             {

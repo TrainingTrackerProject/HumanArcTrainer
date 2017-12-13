@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     if ($('#hrCheck').val() === "false") {
         var hrContent = $('.humanResources');
         hrContent.each(function (key, value) {
@@ -20,14 +19,5 @@ $(document).ready(function () {
             $(this).parent().addClass('active');
         }
     });
-
     document.getElementById("fullBody").style.display = "block";
-    //allows user to see or not see certain material
-    //if (document.getElementById("memberOf").value.contains('HRGroup')) {
-    //    alert("hr");
-    //}
-    //else if (document.getElementById("memberOf").value.split(',').contains('managers')) {
-    //    alert("manager");
-    //}
-    
 });

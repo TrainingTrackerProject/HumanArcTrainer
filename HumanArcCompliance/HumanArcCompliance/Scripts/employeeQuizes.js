@@ -18,7 +18,6 @@
                 } else {
                     notCompleted.push([value.userId, value.quizId, value.quizTitle]);
                 }
-                console.log(value);
             });
             $('#needsGraded').DataTable({
                 data: needsGraded,
@@ -48,10 +47,12 @@
                 ]
             });
             $('#needsGraded').on('click', 'tbody tr', function () {
+                console.log($('#hrCheck').val());
+                if($('#hrCheck').val() == 'True'){
                 var data = $('#needsGraded').DataTable().row(this).data();
                 window.location.href = "/Training/GradeQuiz/?id=" + data[1];
-            });
-           
+                }
+            });          
         }
     });
 });
