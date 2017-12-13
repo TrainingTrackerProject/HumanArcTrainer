@@ -11,6 +11,15 @@ and sean uncomment end are those which use the ADSearcher code. Places that are 
 //group uncomment end are places that does not use ADSearcher and instead strictly uses users in the database that were created from 
 active directory. 
 
+*** Update to this above
+	There is a validate functino in the validation helper class which is only used by local (non AD) testing
+	There is a block of code which looks like the above explanation, in the training controller. This is only 1 method but does need 		to be uncommented in order for Active Driectry code to work properly.
+	In the Home controller there are several items:
+		The Login method is commented out and replaced with a simple method instead of actual validation
+		There are 2 peices of code which have comments like the above description as well. These are not full methods
+			but instead peices of the Index method which calls different functions depanding if you are connected
+			to active directory or not. 
+
 Road Map:
 
 The bulk of our code lays in the 'Views' and 'Scripts' folders. The 'Controllers' and 'helpers' folders also hold some significant code. 
@@ -65,6 +74,9 @@ helpers:
 
 
 **Disclaimer!! We are still cleaning up the code. Variences in style and structure will be unified by end of the project.**
+
+
+***Not all files are listed here, that is in the user guides instead***
 
 
 
