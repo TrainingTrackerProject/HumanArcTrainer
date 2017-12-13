@@ -138,7 +138,7 @@ app.controller('updateQuestionController', function ($scope, $http, $compile) {
         tempVars.ids = JSON.parse(table.row($(this).parent()).data()[0])
         tempVars.rowIndex = table.row($(this).parent()).index();
         sentJson.answerIds = tempVars.ids;
-        $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: tempVars.ids[0] }), config).then(function (res) {
+        $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: tempVars.ids }), config).then(function (res) {
             $scope.status.isEditing = true;
             $scope.questionData.questionId = res.data.id;
             $scope.questionData.questionType = res.data.questionType;
