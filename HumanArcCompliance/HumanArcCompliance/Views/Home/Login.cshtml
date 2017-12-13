@@ -8,7 +8,6 @@
                 <label class="control-label col-md-2">Username</label>
                 <div class="col-md-4">
                     <input type="text" id="username" />
-                    @*@Html.TextBox("username", null, new { @autocomplete = "off", @class = "form-control", @id = "username" })*@
                     @Html.ValidationMessage("username", "*")
                 </div>
             </div>
@@ -18,7 +17,6 @@
                 <div class="col-md-4">
                     <input type="text" id="password" />
 
-                    @*@Html.Password("password", null, new { @autocomplete = "off", @class = "form-control", @id= "password"  })*@
                     @Html.ValidationMessage("password", "*")
                 </div>
             </div>
@@ -33,7 +31,6 @@
 
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-6">
-                    @*<input type="submit" value="Log In" id="LogOnButton" class="btn btn-primary" role="button" aria-disabled="false" />*@
                     @Html.ActionLink("Submit", "Login", "Home", new { id = "myLink" })
 
                 </div>
