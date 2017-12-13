@@ -17,8 +17,10 @@ function pageLoad() {
                 var completed = [];
 
                 $.each(data, function (index, value) {
-                    var preferDateDisplay = new Date(parseInt(value.preferredDate.slice(6, 19), 10)).toDateString();
-                    var expireDateDisplay = new Date(parseInt(value.expirationDate.slice(6, 19), 10)).toDateString();
+                    var preferNum = value.preferredDate.slice(6, 19);
+                    var preferDateDisplay = new Date(parseInt(preferNum, 10)).toDateString();
+                    var expireNum = value.expirationDate.slice(6, 19);
+                    var expireDateDisplay = new Date(parseInt(expireNum, 10)).toDateString();
                     var today = new Date();
                     var dd = today.getDate();
                     var mm = today.getMonth() + 1;

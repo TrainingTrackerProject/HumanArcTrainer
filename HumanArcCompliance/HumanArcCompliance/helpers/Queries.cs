@@ -17,19 +17,22 @@ namespace HumanArcCompliance.helpers
         public void checkExistingUser(User myUser)
         {
             HumanArcEntities db = new HumanArcEntities();
-            User thisUser = db.Users.First(user => user.SAMAccountName == myUser.SAMAccountName);
-            if(thisUser != null)
+            try
             {
-                if(myUser.firstName != thisUser.firstName || myUser.lastName != thisUser.lastName || myUser.email != thisUser.email ||myUser.userGroups != thisUser.userGroups || myUser.manager != thisUser.manager)
+                User thisUser = db.Users.First(user => user.SAMAccountName == myUser.SAMAccountName);
+                if (myUser.firstName != thisUser.firstName || myUser.lastName != thisUser.lastName || myUser.email != thisUser.email || myUser.userGroups != thisUser.userGroups || myUser.manager != thisUser.manager)
                 {
                     thisUser = myUser;
                 }
             }
-            else
+            catch (Exception e)
             {
                 db.Users.Add(myUser);
             }
-            db.SaveChanges();
+            finally
+            {
+                db.SaveChanges();
+            }
         }
     
         public List<User> getAllUsers()

@@ -47,6 +47,7 @@ namespace HumanArcCompliance.helpers
             User myUser = new User();
             // find currently logged in user LDAP Query
             ds.Filter = "(&(objectClass=user)(sAMAccountName="+currentUser.SamAccountName+"))";
+            //test user
             //ds.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=tManagerF))";
             ds.Sort = option;
             try
