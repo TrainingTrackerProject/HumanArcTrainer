@@ -138,7 +138,6 @@ app.controller('updateQuestionController', function ($scope, $http, $compile) {
         tempVars.ids = JSON.parse(table.row($(this).parent()).data()[0])
         tempVars.rowIndex = table.row($(this).parent()).index();
         sentJson.answerIds = tempVars.ids;
-        console.log(sentJson.answerIds[0]);
         $http.post('/Training/GetQuestionAnswers', JSON.stringify({ questionId: tempVars.ids[0] }), config).then(function (res) {
             $scope.status.isEditing = true;
             $scope.questionData.questionId = res.data.id;
@@ -180,7 +179,6 @@ app.controller('updateQuestionController', function ($scope, $http, $compile) {
     $scope.updateQuestion = function () {
         $("#questionModal").modal('hide');
         $http.post('/Training/UpdateQuizQuestionAnswers', JSON.stringify({ questionIds: tempVars.ids, questionData: sentJson }), config).then(function (res) {
-            console.log(res);
             var table = $('#questionTable').DataTable();
             table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 if (rowIdx == tempVars.rowIndex) {
@@ -352,7 +350,7 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
         $scope.quizData.expirationDate = formatDate(new Date(parseInt(data.expiredDate.slice(6, 19))));
         var questionData = [];
         $.each(res.data.questions, function (index, value) {
-            var question = [value.id, value.text, value.type, editButton, removeButton]
+            var question = [value.id, value.type, value.text, editButton, removeButton]
             questionData.push(question);
         });
         $scope.savedForm = angular.copy($scope.quizData);

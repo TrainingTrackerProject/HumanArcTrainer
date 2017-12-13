@@ -4,15 +4,11 @@
 @Html.HiddenFor(m => m.QuizId, new { id = "quizId" })
 <link rel="stylesheet" type="text/css" href="~/Content/addTraining.css" />
 <link rel="stylesheet" type="text/css" href="~/Content/datepicker.css" />
-
-
 <h2>Add Quiz</h2>
 <div ng-app="updateQuizApp">
     <div class="row">
         <div class="col-md-8">
-
             <div ng-controller="updateQuizController" ng-init="quizData">
-
                 <form id="quizForm" name="quizForm" ng-submit="updateQuiz">
                     <fieldset ng-disabled="status.passedStartDate">
                         <div class="form-group required">
@@ -242,7 +238,7 @@
                     </div>
                 </div>
                 <br />
-                <h4 hidden id="responseMessage">testing</h4>
+                <h4 hidden id="responseMessage"></h4>
                 <table id="questionTable"></table>
             </div>
             <br />

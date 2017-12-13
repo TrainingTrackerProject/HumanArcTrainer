@@ -188,7 +188,6 @@ app.controller('addQuestionController', function ($scope, $http, $compile) {
     $scope.updateQuestion = function () {
         $("#questionModal").modal('hide');
         $http.post('/Training/UpdateQuizQuestionAnswers', JSON.stringify({questionIds: tempVars.ids, questionData: sentJson }), config).then(function (res) {
-            console.log(res);
             var table = $('#questionTable').DataTable();
             table.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 if (rowIdx == tempVars.rowIndex) {
@@ -222,7 +221,7 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
     }
 
     $scope.setGroups = function () {      
-        console.log($scope.quizData.groups);
+        
     }
 
     $('.quizFormInfo').on('change keyup paste', function () {
@@ -259,11 +258,9 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
 
     $scope.addQuiz = function () {
         $scope.savedForm = angular.copy($scope.quizData);
-        console.log($scope.savedForm)
         enableAddQuestion();
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
-        console.log($scope.quizData);
         if (quizId != 0) {
             $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
                 quizId = res.data[0];
@@ -367,13 +364,14 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify({ ids: questionIds }),
             success: function (res, status) {
-                console.log(res);
                 if (res == true) {
-                    console.log("Successfully Deleted Question")
+                    $("#responseMessage").removeClass("text-danger")
+                    $("#responseMessage").addClass('text-success').html("Successfully Deleted Question").show().delay(5000).fadeOut();
                     removeQuestionFromTable();
                 }
                 else {
-                    console.log("There was an error deleting the question");
+                    $("#responseMessage").removeClass("text-success")
+                    $("#responseMessage").addClass('text-danger').html("There was an error deleting the question").show().delay(5000).fadeOut();
                 }
             }
         }).then(function (response) {
