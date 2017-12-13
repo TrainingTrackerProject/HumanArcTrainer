@@ -1,7 +1,6 @@
-﻿
-var userData = [];
+﻿var userData = [];
 $(document).ready(function () {
-    getAllUsers();
+    pageLoad();
     $('#employeeTable tbody').on('click', 'tr', function () {
 
         var data = $('#employeeTable').DataTable().row(this).data()
@@ -10,8 +9,12 @@ $(document).ready(function () {
 
     });
 });
+function pageLoad() {
+    showLoadingScreen("Loading Employees Please Wait");
+    var timeout = setTimeout(function () {
+        hideLoadingScreen();
+    }, 5000);
 
-getAllUsers = function () {
     if (document.getElementById("hrCheck").value == "True") {
         $.ajax({
             url: '/Training/GetAllUsers',
@@ -23,7 +26,10 @@ getAllUsers = function () {
             },
             error: function () {
             }
-        });
+        }).then(function () {
+            hideLoadingScreen();
+            clearTimeout(timeout);
+        }); 
     } else {
         $.ajax({
             url: '/Training/GetAllManagersUsers',
@@ -31,15 +37,18 @@ getAllUsers = function () {
             cache: false,
             success: function (data, status) {
                 fillDataTable(data);
-                
+
             },
             error: function () {
             }
-        });
+        }).then(function () {
+            hideLoadingScreen();
+            clearTimeout(timeout);
+        }); 
     }
-}
+} 
 
-fillDataTable = function (users) {
+function fillDataTable(users) {
     if (document.getElementById("hrCheck").value == "True") {
         $.each(users, function (index, value) {
             if (value.hasUngradedQuiz) {
@@ -78,4 +87,18 @@ fillDataTable = function (users) {
         var data = $('#employeeTable').DataTable().row(this).data();
         window.location.href = "/Training/EmployeeQuizes/?id=" + data[0];
     });
+}
+
+function showLoadingScreen(message) {
+    document.getElementById('spinnerText').innerHTML = message;
+    $('#spinner').fadeIn("fast");
+    document.getElementById('main-container').style.display = "none";
+    document.getElementById('spinner').style.display = "block";
+}
+
+function hideLoadingScreen() {
+    $("#spinner").fadeOut("fast");
+    document.getElementById('spinner').style.display = "none";
+    document.getElementById('main-container').style.display = "block";
+    $('#spinner').stop();
 }

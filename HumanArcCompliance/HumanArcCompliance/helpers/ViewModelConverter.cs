@@ -57,8 +57,22 @@ namespace HumanArcCompliance.helpers
             juqqa.answerId = uqqa.answerId;
             juqqa.userId = uqqa.userId;
             juqqa.text = uqqa.text;
-            juqqa.isChecked = (bool)uqqa.isChecked;
-            juqqa.isApproved = (bool)uqqa.isApproved;
+            if (uqqa.isChecked != null)
+            {
+                juqqa.isChecked = (bool)uqqa.isChecked;
+            }
+            else
+            {
+                juqqa.isChecked = false;
+            }
+            if(uqqa.isApproved != null)
+            {
+                juqqa.isApproved = (bool)uqqa.isApproved;
+            }
+            else
+            {
+                juqqa.isApproved = false;
+            }
             return juqqa;
         }
     }
