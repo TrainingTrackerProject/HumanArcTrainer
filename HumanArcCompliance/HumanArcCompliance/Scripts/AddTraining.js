@@ -275,7 +275,7 @@ app.controller('addQuizController', function ($scope, $http, $timeout) {
         console.log($scope.quizData);
         if (quizId != 0) {
             $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
-
+                quizId = res.data[0];
             });
         }
         else {

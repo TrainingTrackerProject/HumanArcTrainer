@@ -21,6 +21,14 @@ namespace HumanArcCompliance.Models
         public List<UserQuizVMQuestion> questions { get; set; }
         public List<UserQuizGroup> groups { get; set; }
         public List<JUserQuizQuestionAnswer> juqqas { get; set; }
+
+        public UserQuizGroup GroupToUserQuizGroup(Group group)
+        {
+            UserQuizGroup uqGroup = new UserQuizGroup();
+            uqGroup.id = group.id;
+            uqGroup.name = group.name;
+            return uqGroup;
+        }
     }
 
     public class UserQuizVMQuestion
@@ -43,4 +51,5 @@ namespace HumanArcCompliance.Models
         public int id { get; set; }
         public string name { get; set; }
     }
+
 }

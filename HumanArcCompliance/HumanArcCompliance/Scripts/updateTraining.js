@@ -199,7 +199,10 @@ app.controller('updateQuestionController', function ($scope, $http, $compile) {
 });
 
 app.controller('updateQuizController', function ($scope, $http, $timeout) {
-    
+    $scope.status = {
+        passedStartDate: false
+    }
+    $scope.name = "quiz"
     $scope.savedForm;
     $scope.inactive = true;
     $scope.quizData = {}
@@ -240,15 +243,15 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
 
 
 
-    $scope.name = "quiz"
-
+    
+    $scope.groups = []
     var groups = [];
     $http.get('/Training/GetAllGroups').then(function (data) {
         $.each(data.data, function (index, value) {
-            groups.push(value);
+            $scope.groups.push(value);
         });
     });
-    $scope.groups = groups;
+    
 
     var config = {
         headers: {
@@ -256,16 +259,15 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
         }
     }
 
-
     $scope.updateQuiz = function () {
         $scope.savedForm = angular.copy($scope.quizData);
         console.log($scope.savedForm)
         enableAddQuestion();
         $("#confirm-submit").modal('hide');
         $('#trainingTitle').attr('disabled', 'disabled');
-        console.log($scope.quizData);
         $http.post('/Training/UpdateQuiz', { quizData: JSON.stringify($scope.quizData) }, config).then(function (res) {
-
+            quizId = res.data[0];
+            $('#quizId').val(res.data[0]);
         });
     };
 
@@ -282,82 +284,84 @@ app.controller('updateQuizController', function ($scope, $http, $timeout) {
     if (mm < 10) {
         mm = '0' + mm
     }
-
     today = mm + '/' + dd + '/' + yyyy;
-
-    var t = Date.parse(today);
+    var todayInt = Date.parse(today);
     //compare dates
 
 
 
     $('.dateInfo').on('change keyup', function () {
-        var startDate = $("#startDate").val();
-        var preferredDate = $("#preferredDate").val();
-        var expirationDate = $("#expirationDate").val();
-
-        var s = Date.parse(startDate);
-
-        var p = Date.parse(preferredDate);
-        var e = Date.parse(expirationDate);
-        startDateCheck(s);
-        preferredDateCheck(p, s);
-        expirationDateCheck(e, p);
+        var startDate = Date.parse($("#startDate").val());
+        var preferredDate = Date.parse($("#preferredDate").val());
+        var expirationDate = Date.parse($("#expirationDate").val());
+        startDateCheck(startDate);
+        preferredDateCheck(preferredDate, startDate);
+        expirationDateCheck(expirationDate, preferredDate);
     })
 
 
-    function startDateCheck(s) {
-        if (Number.isInteger(s) && s < t) {
+    function startDateCheck(startDate) {
+        if (Number.isInteger(startDate) && startDate < todayInt) {
             document.getElementById('startWarning').innerHTML = "Start date must be on or after today's date"
             $("#startDate").val("");
         }
-        else if (Number.isInteger(s)) {
+        else if (Number.isInteger(startDate)) {
             document.getElementById('startWarning').innerHTML = ""
         }
     }
 
-    function preferredDateCheck(p, s) {
-        if (!Number.isInteger(s)) {
+    function preferredDateCheck(preferredDate, startDate) {
+        if (!Number.isInteger(startDate)) {
             $("#preferredDate").val("");
         }
-        if (Number.isInteger(p) && p < s && Number.isInteger(s)) {
+        if (Number.isInteger(preferredDate) && preferredDate < startDate && Number.isInteger(startDate)) {
             document.getElementById('preferredWarning').innerHTML = "Preferred date must be after start date"
             $("#preferredDate").val("");
         }
-        else if (Number.isInteger(p)) {
+        else if (Number.isInteger(preferredDate)) {
             document.getElementById('preferredWarning').innerHTML = ""
         }
     }
 
-    function expirationDateCheck(e, p) {
-        if (!Number.isInteger(p)) {
+    function expirationDateCheck(expirationDate, preferredDate) {
+        if (!Number.isInteger(preferredDate)) {
             $("#expirationDate").val("");
         }
-        if (Number.isInteger(e) && e < p && Number.isInteger(p)) {
+        if (Number.isInteger(expirationDate) && expirationDate < preferredDate && Number.isInteger(preferredDate)) {
             document.getElementById('expirationWarning').innerHTML = "Expiration date must be after preferred date"
             $("#expirationDate").val("");
         }
-        else if (Number.isInteger(e)) {
+        else if (Number.isInteger(expirationDate)) {
             document.getElementById('expirationWarning').innerHTML = ""
         }
     }
 
-    $http.post('/Training/EditTraining', JSON.stringify({ id: quizId }), config).then(function (res) {
-        
+    $http.post('/Training/EditTraining', JSON.stringify({ id: quizId }), config).then(function (res) {       
         data = res.data;
-        console.log(data);
-        console.log(data.title);
-
+        $scope.inactive = false;
         $scope.quizData.title = data.title;
         $scope.quizData.description = data.description;
         $scope.quizData.media = data.media;
+        $scope.quizData.groups = [];
+        $.each(data.groups, function (index, value) {
+            $scope.quizData.groups.push(value.id);
+        });       
+        var editButton = "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>";
+        var removeButton = "<button class='btn btn-default remove'>remove</button>"
+        if (parseInt(data.startDate.slice(6, 19)) < todayInt) {
+            $scope.status.passedStartDate = true;
+            editButton = "<button disabled='disabled' data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>";
+            removeButton = "<button disabled='disabled' class='btn btn-default remove'>remove</button>"
+        }
         $scope.quizData.startDate = formatDate(new Date(parseInt(data.startDate.slice(6, 19))));
         $scope.quizData.preferredDate = formatDate(new Date(parseInt(data.preferDate.slice(6, 19))));
         $scope.quizData.expirationDate = formatDate(new Date(parseInt(data.expiredDate.slice(6, 19))));
         var questionData = [];
         $.each(res.data.questions, function (index, value) {
-            var question = [value.id, value.text, value.type, "<button data-toggle='modal' data-target='#questionModal' class='btn btn-default edit'>Edit</button>", "<button class='btn btn-default remove'>remove</button>"]
+            var question = [value.id, value.text, value.type, editButton, removeButton]
             questionData.push(question);
         });
+        $scope.savedForm = angular.copy($scope.quizData);
 
         $('#questionTable').DataTable({
             data: questionData,
@@ -396,13 +400,14 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify({ ids: questionIds }),
             success: function (res, status) {
-                console.log(res);
                 if (res == true) {
-                    console.log("Successfully Deleted Question")
-                    removeQuestionFromTable();
+                    $("#responseMessage").removeClass("text-danger")
+                    $("#responseMessage").addClass('text-success').html("Successfully Deleted Question").show().delay(5000).fadeOut();
+                    removeQuestionFromTable();                  
                 }
                 else {
-                    console.log("There was an error deleting the question");
+                    $("#responseMessage").removeClass("text-success")
+                    $("#responseMessage").addClass('text-danger').html("There was an error deleting the question").show().delay(5000).fadeOut();
                 }
             }
         }).then(function (response) {

@@ -193,10 +193,10 @@ namespace HumanArcCompliance.Controllers
             {
                 return RedirectToAction("Index", "home", new { error = "Cannot Locate Quiz" });
             }
-            else if (!vmUser.userGroups.Contains(query.getGroupById(query.getQuizById(id).groupId).name))
-            {
-                return RedirectToAction("Index", "home", new { error = "Invalid Quiz" });
-            }
+            //else if (!vmUser.userGroups.Contains(query.getGroupById(query.getQuizById(id).groupId).name))
+            //{
+            //    return RedirectToAction("Index", "home", new { error = "Invalid Quiz" });
+            //}
             UserQuizViewModel uqvmQuiz = GetQuizById(id);
             uqvmQuiz.isHR = vmUser.isHR;
             uqvmQuiz.isManager = vmUser.isManager;
@@ -523,7 +523,7 @@ namespace HumanArcCompliance.Controllers
                                 double numberCorrect = 0;
                                 foreach(UserQuizQuestionAnswer uqqa in uqqas)
                                 {
-                                    if ((bool)uqqa.isApproved)
+                                    if ( uqqa.isApproved != null && (bool)uqqa.isApproved)
                                     {
                                         numberCorrect++;
                                     }
@@ -533,7 +533,7 @@ namespace HumanArcCompliance.Controllers
                                         employeeQuiz.isGraded = false;
                                     }
                                 }
-                                employeeQuiz.percentCorrect = numberCorrect / uqqaCount;
+                                employeeQuiz.percentCorrect = Math.Round((numberCorrect / uqqaCount), 2);
                             }                           
                             employeeQuizes.Add(employeeQuiz);
                         }                       
@@ -788,7 +788,13 @@ namespace HumanArcCompliance.Controllers
             Quize quiz = query.getQuizById(quizId);
 
             UserQuizViewModel uqvmQuiz = new UserQuizViewModel();
-
+            List<Quize> quizzes = query.getQuizByTitle(quiz.title);
+            List<UserQuizGroup> groups = new List<UserQuizGroup>();
+            foreach(Quize q in quizzes)
+            {
+                groups.Add(uqvmQuiz.GroupToUserQuizGroup(query.getGroupById(q.groupId)));
+            }
+            uqvmQuiz.groups = groups;
             uqvmQuiz.QuizId = quizId;
             uqvmQuiz.title = quiz.title;
             uqvmQuiz.description = quiz.description;
@@ -947,13 +953,13 @@ namespace HumanArcCompliance.Controllers
         public List<UserQuizQuestionAnswer> GradeSubmittedQuiz(UserQuizViewModel quiz, List<UserQuizQuestionAnswer> uqqas)
         {
             int questionCount = quiz.questions.Count();
-            foreach(UserQuizVMQuestion vmQuestion in quiz.questions)
+            for(int i = 0; i < questionCount; i++)
             {
-                if (vmQuestion.type != "shortAnswer")
+                if (quiz.questions[i].type != "shortAnswer")
                 {
-                    for (var i = 0; i < vmQuestion.answers.Count(); i++)
+                    for (var j = 0; j < quiz.questions[i].answers.Count(); j++)
                     {
-                        if (vmQuestion.answers[i].id == uqqas[i].answerId)
+                        if (quiz.questions[i].answers[j].isCorrect && quiz.questions[i].answers[j].id == uqqas[i].answerId)
                         {
                             uqqas[i].isChecked = true;
                             uqqas[i].isApproved = true;
