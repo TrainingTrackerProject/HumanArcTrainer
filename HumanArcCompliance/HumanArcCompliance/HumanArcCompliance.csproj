@@ -381,6 +381,7 @@
       <DependentUpon>HumanArcEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="helpers\ADSearcher.cs" />
+    <Compile Include="helpers\ViewModelConverter.cs" />
     <Compile Include="Models\Deserializers.cs" />
     <Compile Include="helpers\Queries.cs" />
     <Compile Include="helpers\sessionStorage.cs" />
@@ -401,10 +402,8 @@
       <DependentUpon>HumanArcEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\EmployeeQuizesViewModel.cs" />
+    <Compile Include="Models\GradeViewModel.cs" />
     <Compile Include="Models\ManageEmployeeViewModel.cs" />
-    <Compile Include="Models\QuizViewModel.cs" />
-    <Compile Include="Models\Serializers.cs" />
-    <Compile Include="Models\SubmitQuizDeserializer.cs" />
     <Compile Include="Models\UserQuizViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -423,18 +422,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\addTraining.css" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\datepicker.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\addEditDelete.jpg" />
     <Content Include="Content\Images\complianceLogo.png" />
     <Content Include="Content\Images\loader128.gif" />
     <Content Include="Content\Images\loader32.gif" />
     <Content Include="Content\Images\manage.png" />
-    <Content Include="Content\Images\redGradient.jpg" />
     <Content Include="Content\Images\training.png" />
     <Content Include="Content\index.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
@@ -498,25 +494,25 @@
       <DependentUpon>HumanArcEntities.edmx</DependentUpon>
       <LastGenOutput>HumanArcEntities.cs</LastGenOutput>
     </Content>
+    <Content Include="Content\Images\sort_asc.png" />
+    <Content Include="Content\Images\sort_asc_disabled.png" />
+    <Content Include="Content\Images\sort_both.png" />
+    <Content Include="Content\Images\sort_desc.png" />
+    <Content Include="Content\Images\sort_desc_disabled.png" />
     <Content Include="Scripts\addTraining.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\AllTraining.js" />
-    <Content Include="Scripts\editTraining.js" />
+    <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\employeeQuizes.js" />
-    <Content Include="Scripts\gradingQuiz.js" />
+    <Content Include="Scripts\gradeQuiz.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <EntityDeploy Include="HumanArcEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>HumanArcEntities.Designer.cs</LastGenOutput>
@@ -524,8 +520,6 @@
     <Content Include="HumanArcEntities.edmx.diagram">
       <DependentUpon>HumanArcEntities.edmx</DependentUpon>
     </Content>
-    <Content Include="Scripts\jquery-ui-1.12.1.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\Quiz.js" />
     <Content Include="Scripts\myTraining.js" />
