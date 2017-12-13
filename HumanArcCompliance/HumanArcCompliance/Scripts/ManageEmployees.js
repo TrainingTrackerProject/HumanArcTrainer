@@ -37,7 +37,6 @@ function pageLoad() {
             cache: false,
             success: function (data, status) {
                 fillDataTable(data);
-
             },
             error: function () {
             }

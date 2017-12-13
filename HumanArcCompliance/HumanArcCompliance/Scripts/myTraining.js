@@ -17,21 +17,11 @@ function pageLoad() {
                 var completed = [];
 
                 $.each(data, function (index, value) {
-                    var preferShow = value.preferredDate;
-                    var preferResult = preferShow.slice(6, 19);
-                    var preferNum = Number(preferResult);
-                    var newPreferDate = new Date(parseInt(preferResult, 10));
-                    var preferDateDisplay = newPreferDate.toDateString();
-
-                    var expireShow = value.expirationDate;
-                    var expireResult = expireShow.slice(6, 19);
-                    var expireNum = Number(expireResult);
-                    var newExpireDate = new Date(parseInt(expireResult, 10));
-                    var expireDateDisplay = newExpireDate.toDateString();
-
+                    var preferDateDisplay = new Date(parseInt(value.preferredDate.slice(6, 19), 10)).toDateString();
+                    var expireDateDisplay = new Date(parseInt(value.expirationDate.slice(6, 19), 10)).toDateString();
                     var today = new Date();
                     var dd = today.getDate();
-                    var mm = today.getMonth() + 1; //January is 0
+                    var mm = today.getMonth() + 1;
                     var yyyy = today.getFullYear();
                     if (dd < 10) {
                         dd = '0' + dd
@@ -40,27 +30,26 @@ function pageLoad() {
                         mm = '0' + mm
                     }
                     today = mm + '/' + dd + '/' + yyyy;
-
-                    var t = Date.parse(today);
+                    var todayInt = Date.parse(today);
 
                     var pDate = "<span>" + preferDateDisplay + "</span>";
 
-                    if (t < preferNum) {
+                    if (todayInt < preferNum) {
                         pDate = "<span class='greenFont'>" + preferDateDisplay + "</span>";
                     }
-                    else if (t >= preferNum && t <= expireNum) {
+                    else if (todayInt >= preferNum && todayInt <= expireNum) {
                         pDate = "<span class='orangeFont'>" + preferDateDisplay + "</span>";
                     }
 
                     var eDate = "<span>" + expireDateDisplay + "</span>";
 
-                    if (t >= expireNum) {
+                    if (todayInt >= expireNum) {
                         pDate = "<span class='redFont'>" + preferDateDisplay + " QUIZ CLOSED</span>"
                         eDate = "<span class='redFont'>" + expireDateDisplay + " QUIZ CLOSED</span>";
                     }
 
                     $('#notCompleted').on("mouseover", "tbody tr", function () {
-                        if (t >= expireNum) {
+                        if (todayInt >= expireNum) {
                             var row = $('#notCompleted').DataTable().row(this).node();
                             $(row).addClass("cursorChange");
                         }

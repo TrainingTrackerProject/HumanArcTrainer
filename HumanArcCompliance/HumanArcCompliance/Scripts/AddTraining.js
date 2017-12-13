@@ -35,7 +35,6 @@ $(document).on('change', '.hide-file', function () {
     $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
 });
 
-
 var app = angular.module('addQuizApp', ['ngRoute']);
 
 app.controller('addQuestionController', function ($scope, $http, $compile) {
@@ -383,9 +382,6 @@ $(document).ready(function () {
     });
 
     function removeQuestionFromTable() {
-        $('#questionTable').DataTable()
-            .row(row)
-            .remove()
-            .draw();
+        $('#questionTable').DataTable().row(row).remove().draw();
     }
 });

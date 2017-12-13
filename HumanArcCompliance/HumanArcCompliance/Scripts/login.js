@@ -3,12 +3,6 @@
         event.preventDefault();
         login();
     });
-    //$('#myLink').click(function () {
-    //    var username = $('#username').val(); // get the textbox value
-    //    var password = $('#password').val();
-    //    //location.href = url; // redirect
-    //    return true; // cancel default redirect
-    //});
 });
 
 function login() {

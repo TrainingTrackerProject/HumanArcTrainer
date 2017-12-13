@@ -2,9 +2,6 @@
     $('[data-toggle="tooltip"]').tooltip();
 });
 
-//Dataset for To Do list for My Training
-
-//Counts number of quizzes user has to still complete
 $.ajax({
     url: '/Training/GetUserQuizes',
     type: 'GET',
@@ -16,10 +13,7 @@ $.ajax({
                 counter++;  
             }
         });  
-
         $('#quizNum').html(counter);
-
-
     }
 });
 
