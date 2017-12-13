@@ -381,6 +381,7 @@
       <DependentUpon>HumanArcEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="helpers\ADSearcher.cs" />
+    <Compile Include="helpers\ViewModelConverter.cs" />
     <Compile Include="Models\Deserializers.cs" />
     <Compile Include="helpers\Queries.cs" />
     <Compile Include="helpers\sessionStorage.cs" />
@@ -401,10 +402,8 @@
       <DependentUpon>HumanArcEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\EmployeeQuizesViewModel.cs" />
+    <Compile Include="Models\GradeViewModel.cs" />
     <Compile Include="Models\ManageEmployeeViewModel.cs" />
-    <Compile Include="Models\QuizViewModel.cs" />
-    <Compile Include="Models\Serializers.cs" />
-    <Compile Include="Models\SubmitQuizDeserializer.cs" />
     <Compile Include="Models\UserQuizViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -505,9 +504,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\AllTraining.js" />
-    <Content Include="Scripts\editTraining.js" />
     <Content Include="Scripts\employeeQuizes.js" />
-    <Content Include="Scripts\gradingQuiz.js" />
+    <Content Include="Scripts\gradeQuiz.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
